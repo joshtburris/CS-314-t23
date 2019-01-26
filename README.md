@@ -5,3 +5,4 @@
 |Joshua Burris|joshtb|joshtburris|joshtburris@yahoo.com|
 | Kurt Wimer | Kwimer | KurtWimer | kwimer@rams.colostate.edu |
 | Timothy Rooney | tprooney | tprooney | tprooney@rams.colostate.edu |
+| Caleb Tong | calebt | CalebET | calebt@rams.colostate.edu |
