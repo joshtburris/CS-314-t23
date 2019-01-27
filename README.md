@@ -1,4 +1,4 @@
-# T23 Name
+# T23 - Byte Me
 
 | name | eID | GitHub Username | Email |
 |------|-----|-----------------|-------|
