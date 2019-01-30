@@ -11,7 +11,7 @@ export default class App extends Component {
   constructor (props){
     super(props);
     this.pages = [
-      { title: 't## team name', page: ''},
+      { title: 't23 Byte Me', page: ''},
       { title: 'Calculator', page: 'calc'},
       { title: 'Options', page: 'options'},
       { title: '\u2699', page: 'settings' }
