@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import Pane from '../Pane';
-
+import KurtImage from '../../../../../team/KurtWimer/Kurt.jpg'
 /*
 Information about the members of t23. (Name, 1 paragraph bio and pic)
 */
@@ -30,8 +30,11 @@ export default class About extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs="12">
+                    <Col xs="9">
                         {this.renderKurt()}
+                    </Col>
+                    <Col xs="3">
+                        {this.renderKurtImg()}
                     </Col>
                 </Row>
                 <Row>
@@ -60,9 +63,20 @@ export default class About extends Component {
     renderKurt(){
         return(
             <Pane header={'Kurt Wimer'}
-                  bodyJSX={'Insert biography here...'}/>
+                  bodyJSX={'I am a third year CS Major born and raised in Fort Collins. Currently I work as a teaching assistant for CS370, Operating Systems.\ ' +
+                  'Outside of class I spend my time playing Video Games, spinning poi, and listening to Music./' +
+                  'I am partial to EDM and Rock but enjoy just about every genre from Jazz to Jam Bands.'}/>
         );
     }
+    renderKurtImg(){
+        return(
+            <img
+                style={{width: 200,height: 200, alignitems: 'center', justifycontent: 'center'}}
+                src={KurtImage}
+            />
+        );
+    }
+
 
     renderJosh(){
         return(
