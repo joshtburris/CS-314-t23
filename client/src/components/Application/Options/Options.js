@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Container, Row, Col} from 'reactstrap'
-import Pane from '../Pane';
-import Units from './Units'
+import Pane from '../Pane'
+import Units from './Units';
 
 /* Options allows the user to change the parameters for planning
  * and rendering the trip map and itinerary.
