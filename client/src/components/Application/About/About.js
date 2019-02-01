@@ -85,11 +85,14 @@ export default class About extends Component {
         );
     }
 
-    renderKelyn(){
-        return(
+    renderKelyn() {
+        return (
             <Pane header={'Kelyn Shaffner'}
-                  bodyJSX={'Insert biography here...'}/>
+                  bodyJSX={'I am a Senior at CSU, majoring in ACT, and this is the last class I need to graduate.' +
+                  ' I am working full-time while taking this class online. In my free time, I enjoy ' +
+                  'playing video games, hanging out with friends, and doing things outdoors. '}/>
         );
     }
+    }
 
-}
+
