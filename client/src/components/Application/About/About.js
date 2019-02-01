@@ -63,16 +63,18 @@ export default class About extends Component {
     renderKurt(){
         return(
             <Pane header={'Kurt Wimer'}
-                  bodyJSX={'I am a third year CS Major born and raised in Fort Collins. Currently I work as a teaching assistant for CS370, Operating Systems.\ ' +
-                  'Outside of class I spend my time playing Video Games, spinning poi, and listening to Music./' +
-                  'I am partial to EDM and Rock but enjoy just about every genre from Jazz to Jam Bands.'}/>
-        );
-    }
-    renderKurtImg(){
-        return(
-            <img
-                style={{width: 200,height: 200, alignitems: 'center', justifycontent: 'center'}}
-                src={KurtImage}
+                  bodyJSX={
+                      <div> <Row> <Col xs="3">
+                          <img
+                              style={{width: 200,height: 200, alignitems: 'center', justifycontent: 'center'}}
+                              src={KurtImage}
+                          /> </Col>
+                          <Col xs="9"> <p>
+                              I am a third year CS Major born and raised in Fort Collins. Currently I work as a teaching assistant for CS370, Operating Systems.
+                              Outside of class I spend my time playing Video Games, spinning poi, and listening to Music.
+                              I am partial to EDM and Rock but enjoy just about every genre from Jazz to Jam Bands.
+                          </p> </Col> </Row> </div>
+                  }
             />
         );
     }
