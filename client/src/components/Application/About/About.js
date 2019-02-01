@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import Pane from '../Pane';
 import KurtImage from '../../../../../team/KurtWimer/Kurt.jpg'
+import KelynImage from '../../../../../team/kshaffner/Kelyn.jpg'
 /*
 Information about the members of t23. (Name, 1 paragraph bio and pic)
 */
@@ -25,8 +26,11 @@ export default class About extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs="12">
+                    <Col xs="9">
                         {this.renderKelyn()}
+                    </Col>
+                    <Col xs="3">
+                        {this.renderKelynImage()}
                     </Col>
                 </Row>
                 <Row>
@@ -90,9 +94,19 @@ export default class About extends Component {
             <Pane header={'Kelyn Shaffner'}
                   bodyJSX={'I am a Senior at CSU, majoring in ACT, and this is the last class I need to graduate.' +
                   ' I am working full-time while taking this class online. In my free time, I enjoy ' +
-                  'playing video games, hanging out with friends, and doing things outdoors. '}/>
+                  'playing video games, hanging out with friends, and doing things outdoors. I also like to travel.' +
+                  'Last summer, I spent three months in Europe and visited fifteen cities over ten countries.'}/>
         );
     }
+    renderKelynImage(){
+        return(
+            <img
+                style={{width: 200,height: 200, alignitems: 'center', justifycontent: 'center'}}
+                src={KelynImage}
+            />
+        );
     }
+
+}
 
 
