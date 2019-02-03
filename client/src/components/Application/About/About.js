@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import Pane from '../Pane';
 import KurtImage from '../../../../../team/KurtWimer/Kurt.jpg'
+import CalebImg from '../../../../../team/CalebET/Caleb.jpg'
 /*
 Information about the members of t23. (Name, 1 paragraph bio and pic)
 */
@@ -30,7 +31,7 @@ export default class About extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs="9">
+                    <Col xs="12">
                         {this.renderKurt()}
                     </Col>
                 </Row>
@@ -46,9 +47,24 @@ export default class About extends Component {
     renderCaleb(){
         return(
             <Pane header={'Caleb Tong'}
-                  bodyJSX={'Insert biography here...'}/>
+                  bodyJSX={
+                      <div> <Row> <Col xs="3">
+                          <img
+                              style={{width: 200,height: 200, alignitems: 'center', justifycontent: 'center'}}
+                              src={CalebImg}
+                          /> </Col>
+                          <Col xs="9"> <p>
+                              My full name is Caleb Eddrick Tong Yiu Shywin. I am born and raised overseas, in Malaysia specifically. I am currently studying in
+                              CSU for an undergraduate degree majoring in Computer Science and minoring in Math. I particularly enjoy the seas as that is the kind of
+                              environment I grew up in. I also enjoy reading and some video gaming. My personality is that of an INTP, which apparently have some
+                              shortcomings in the emotional department, (which I do apologise in advance if I do insult you unintentionally) so I hope that you can
+                              bear with me and/or tell me directly what I can do about it.
+                          </p> </Col> </Row> </div>
+                  }
+            />
         );
     }
+
 
     renderTim(){
         return(
@@ -57,20 +73,22 @@ export default class About extends Component {
         );
     }
 
-    renderKurt(){
-        return(
+    renderKurt() {
+        return (
             <Pane header={'Kurt Wimer'}
                   bodyJSX={
-                      <div> <Row> <Col xs="3">
+                      <div><Row> <Col xs="3">
                           <img
-                              style={{width: 200,height: 200, alignitems: 'center', justifycontent: 'center'}}
+                              style={{width: 200, height: 200, alignitems: 'center', justifycontent: 'center'}}
                               src={KurtImage}
                           /> </Col>
-                          <Col xs="9"> <p>
-                              I am a third year CS Major born and raised in Fort Collins. Currently I work as a teaching assistant for CS370, Operating Systems.
-                              Outside of class I spend my time playing Video Games, spinning poi, and listening to Music.
+                          <Col xs="9"><p>
+                              I am a third year CS Major born and raised in Fort Collins. Currently I work as a teaching
+                              assistant for CS370, Operating Systems.
+                              Outside of class I spend my time playing Video Games, spinning poi, and listening to
+                              Music.
                               I am partial to EDM and Rock but enjoy just about every genre from Jazz to Jam Bands.
-                          </p> </Col> </Row> </div>
+                          </p></Col> </Row></div>
                   }
             />
         );
@@ -84,11 +102,14 @@ export default class About extends Component {
         );
     }
 
-    renderKelyn(){
-        return(
+    renderKelyn() {
+        return (
             <Pane header={'Kelyn Shaffner'}
-                  bodyJSX={'Insert biography here...'}/>
+                  bodyJSX={'I am a Senior at CSU, majoring in ACT, and this is the last class I need to graduate.' +
+                  ' I am working full-time while taking this class online. In my free time, I enjoy ' +
+                  'playing video games, hanging out with friends, and doing things outdoors. '}/>
         );
     }
+
 
 }
