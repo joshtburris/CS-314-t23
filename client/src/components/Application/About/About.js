@@ -72,7 +72,8 @@ export default class About extends Component {
     renderTim(){
         return(
             <Pane header={'Timothy Rooney'}
-                  bodyJSX={'Insert biography here...'}/>
+                  bodyJSX={'I am a CSU Senior, majoring in Computer Science. I have lived in Longmont, Colorado for most of my life.' +
+                  'In my free time, I enjoy playing video games, chatting with friends, and generally relaxing.'}/>
         );
     }
 
