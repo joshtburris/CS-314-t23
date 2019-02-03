@@ -33,9 +33,6 @@ export default class About extends Component {
                     <Col xs="9">
                         {this.renderKurt()}
                     </Col>
-                    <Col xs="3">
-                        {this.renderKurtImg()}
-                    </Col>
                 </Row>
                 <Row>
                     <Col xs="12">
