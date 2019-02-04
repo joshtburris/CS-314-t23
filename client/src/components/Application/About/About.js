@@ -31,11 +31,8 @@ export default class About extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs="9">
+                    <Col xs="12">
                         {this.renderKurt()}
-                    </Col>
-                    <Col xs="3">
-                        {this.renderKurtImg()}
                     </Col>
                 </Row>
                 <Row>
@@ -49,24 +46,24 @@ export default class About extends Component {
 
     renderCaleb(){
         return(
-                <Pane header={'Caleb Tong'}
+            <Pane header={'Caleb Tong'}
                   bodyJSX={
                       <div> <Row> <Col xs="3">
                           <img
-                          style={{width: 200,height: 200, alignitems: 'center', justifycontent: 'center'}}
-                          src={CalebImg}
+                              style={{width: 200,height: 200, alignitems: 'center', justifycontent: 'center'}}
+                              src={CalebImg}
                           /> </Col>
-                            <Col xs="9"> <p>
-                                My full name is Caleb Eddrick Tong Yiu Shywin. I am born and raised overseas, in Malaysia specifically. I am currently studying in
-                                CSU for an undergraduate degree majoring in Computer Science and minoring in Math. I particularly enjoy the seas as that is the kind of
-                                environment I grew up in. I also enjoy reading and some video gaming. My personality is that of an INTP, which apparently have some
-                                shortcomings in the emotional department, (which I do apologise in advance if I do insult you unintentionally) so I hope that you can
-                                bear with me and/or tell me directly what I can do about it.
-                            </p> </Col> </Row> </div>
-                          }
-                />
-              );
-        }
+                          <Col xs="9"> <p>
+                              My full name is Caleb Eddrick Tong Yiu Shywin. I am born and raised overseas, in Malaysia specifically. I am currently studying in
+                              CSU for an undergraduate degree majoring in Computer Science and minoring in Math. I particularly enjoy the seas as that is the kind of
+                              environment I grew up in. I also enjoy reading and some video gaming. My personality is that of an INTP, which apparently have some
+                              shortcomings in the emotional department, (which I do apologise in advance if I do insult you unintentionally) so I hope that you can
+                              bear with me and/or tell me directly what I can do about it.
+                          </p> </Col> </Row> </div>
+                  }
+            />
+        );
+    }
 
 
     renderTim(){
@@ -77,19 +74,23 @@ export default class About extends Component {
         );
     }
 
-    renderKurt(){
-        return(
+    renderKurt() {
+        return (
             <Pane header={'Kurt Wimer'}
-                  bodyJSX={'I am a third year CS Major born and raised in Fort Collins. Currently I work as a teaching assistant for CS370, Operating Systems.\ ' +
-                  'Outside of class I spend my time playing Video Games, spinning poi, and listening to Music./' +
-                  'I am partial to EDM and Rock but enjoy just about every genre from Jazz to Jam Bands.'}/>
-        );
-    }
-    renderKurtImg(){
-        return(
-            <img
-                style={{width: 200,height: 200, alignitems: 'center', justifycontent: 'center'}}
-                src={KurtImage}
+                  bodyJSX={
+                      <div><Row> <Col xs="3">
+                          <img
+                              style={{width: 200, height: 200, alignitems: 'center', justifycontent: 'center'}}
+                              src={KurtImage}
+                          /> </Col>
+                          <Col xs="9"><p>
+                              I am a third year CS Major born and raised in Fort Collins. Currently I work as a teaching
+                              assistant for CS370, Operating Systems.
+                              Outside of class I spend my time playing Video Games, spinning poi, and listening to
+                              Music.
+                              I am partial to EDM and Rock but enjoy just about every genre from Jazz to Jam Bands.
+                          </p></Col> </Row></div>
+                  }
             />
         );
     }
