@@ -117,9 +117,9 @@ export default class About extends Component {
                               src={KelynImage}
                           /> </Col>
                           <Col xs="9"> <p>
-                              I am a Senior at CSU, majoring in ACT, and this is the last class I need to graduate.' +
-                              ' I am working full-time while taking this class online. In my free time, I enjoy ' +
-                              'playing video games, hanging out with friends, and doing things outdoors.
+                              I am a Senior at CSU, majoring in ACT, and this is the last class I need to graduate.
+                              I am working full-time while taking this class online. In my free time, I enjoy
+                              playing video games, hanging out with friends, and doing things outdoors.
                           </p> </Col> </Row> </div>
                   }
             />
