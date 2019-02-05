@@ -102,15 +102,15 @@ export default class About extends Component {
             <Pane header={'Joshua Burris'}
                   bodyJSX={
                       <div> <Row>
+                          <Col xs="3"> <img style={{width: 200,height: 200, alignitems: 'center', justifycontent: 'center'}}
+                                            src={JoshImg} />
+                          </Col>
                           <Col xs="9"> <p>
                               I'm a Junior at Colorado State University majoring in Computer Science and minoring in
                               Mathematics. I have a big interest in cyber security that I hope I can pursue after
                               college. I also love cooking and video games like Skyrim, Red Dead Redemption 2, and
                               Pokemon Go.
                           </p> </Col>
-                          <Col xs="3"> <img style={{width: 200,height: 200, alignitems: 'center', justifycontent: 'center'}}
-                                            src={JoshImg} />
-                          </Col>
                       </Row> </div>
                   }/>
         );
