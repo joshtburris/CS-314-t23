@@ -54,4 +54,9 @@ public class TIPDistance extends TIPHeader {
   int getDistance() {
     return distance;
   }
+
+  @Override
+  public String toString(){
+    return getClass().getName() + String.format("\tOrigin: %s\tDestination: %s\tRadius: %f",origin.toString(),destination.toString(),earthRadius);
+  }
 }

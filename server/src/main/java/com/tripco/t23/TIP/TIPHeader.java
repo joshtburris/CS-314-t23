@@ -5,4 +5,9 @@ public abstract class TIPHeader {
   protected String requestType;
 
   public abstract void buildResponse();
+
+  @Override
+  public String toString(){
+    return getClass().getName() + String.format("\tRequest Version: %d\tRequest Type: %s",requestVersion,requestType);
+  }
 }

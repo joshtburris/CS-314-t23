@@ -49,4 +49,8 @@ public class TIPConfig extends TIPHeader {
     return this.placeAttributes;
   }
 
+  @Override
+  public String toString(){
+    return getClass().getName() + String.format("\tServer Name: %s\tPlace Attributes: %s",getServerName(),getPlaceAttributes().toString());
+  }
 }

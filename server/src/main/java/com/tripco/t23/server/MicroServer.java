@@ -144,5 +144,8 @@ class MicroServer {
         + "}";
   }
 
-
+  @Override
+  public String toString() {
+    return getClass().getName();
+  }
 }

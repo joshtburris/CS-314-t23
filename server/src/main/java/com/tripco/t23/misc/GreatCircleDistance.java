@@ -6,5 +6,8 @@ import java.lang.Math;
  */
 public class GreatCircleDistance {
 
-
+    @Override
+    public String toString() {
+        return getClass().getName();
+    }
 }
