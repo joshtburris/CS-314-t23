@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'reactstrap'
 import Pane from '../Pane';
 import KurtImage from '../../../../../team/KurtWimer/Kurt.jpg'
 import CalebImg from '../../../../../team/CalebET/Caleb.jpg'
+import JoshImg from '../../../../../team/joshtburris/Josh.jpg'
 /*
 Information about the members of t23. (Name, 1 paragraph bio and pic)
 */
@@ -99,7 +100,19 @@ export default class About extends Component {
     renderJosh(){
         return(
             <Pane header={'Joshua Burris'}
-                  bodyJSX={'Insert biography here...'}/>
+                  bodyJSX={
+                      <div> <Row>
+                          <Col xs="3"> <img style={{width: 200,height: 200, alignitems: 'center', justifycontent: 'center'}}
+                                            src={JoshImg} />
+                          </Col>
+                          <Col xs="9"> <p>
+                              I'm a Junior at Colorado State University majoring in Computer Science and minoring in
+                              Mathematics. I have a big interest in cyber security that I hope I can pursue after
+                              college. I also love cooking and video games like Skyrim, Red Dead Redemption 2, and
+                              Pokemon Go.
+                          </p> </Col>
+                      </Row> </div>
+                  }/>
         );
     }
 
