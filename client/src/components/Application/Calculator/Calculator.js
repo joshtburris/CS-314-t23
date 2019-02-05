@@ -126,4 +126,10 @@ export default class Calculator extends Component {
     location[field] = value;
     this.setState({[stateVar]: location});
   }
+
+  convertDistanceLinearly(multiplier){return this.state.distance * multiplier}
+
+  distanceInKilometers(){return this.convertDistanceLinearly(1.60934)}
+
+  distanceInNauticalMiles(){return this.convertDistanceLinearly(0.868976)}
 }
