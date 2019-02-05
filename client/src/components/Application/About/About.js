@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'reactstrap'
 import Pane from '../Pane';
 import KurtImage from '../../../../../team/KurtWimer/Kurt.jpg'
 import CalebImg from '../../../../../team/CalebET/Caleb.jpg'
+import KelynImage from '../../../../../team/kshaffner/Kelyn.jpg'
 import JoshImg from '../../../../../team/joshtburris/Josh.jpg'
 /*
 Information about the members of t23. (Name, 1 paragraph bio and pic)
@@ -116,14 +117,24 @@ export default class About extends Component {
         );
     }
 
-    renderKelyn() {
-        return (
+
+
+    renderKelyn(){
+        return(
             <Pane header={'Kelyn Shaffner'}
-                  bodyJSX={'I am a Senior at CSU, majoring in ACT, and this is the last class I need to graduate.' +
-                  ' I am working full-time while taking this class online. In my free time, I enjoy ' +
-                  'playing video games, hanging out with friends, and doing things outdoors. '}/>
+                  bodyJSX={
+                      <div> <Row> <Col xs="3">
+                          <img
+                              style={{width: 200,height: 200, alignitems: 'center', justifycontent: 'center'}}
+                              src={KelynImage}
+                          /> </Col>
+                          <Col xs="9"> <p>
+                              I am a Senior at CSU, majoring in ACT, and this is the last class I need to graduate.
+                              I am working full-time while taking this class online. In my free time, I enjoy
+                              playing video games, hanging out with friends, and doing things outdoors.
+                          </p> </Col> </Row> </div>
+                  }
+            />
         );
     }
-
-
 }
