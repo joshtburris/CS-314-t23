@@ -4,6 +4,7 @@ import Pane from '../Pane';
 import KurtImage from '../../../../../team/KurtWimer/Kurt.jpg'
 import CalebImg from '../../../../../team/CalebET/Caleb.jpg'
 import KelynImage from '../../../../../team/kshaffner/Kelyn.jpg'
+
 /*
 Information about the members of t23. (Name, 1 paragraph bio and pic)
 */
