@@ -5,7 +5,7 @@
 
 | name | eID | GitHub Username | Email |
 |------|-----|-----------------|-------|
-|Joshua Burris|joshtb|joshtburris|joshtburris@yahoo.com|
+| Joshua Burris | joshtb | joshtburris | joshtb@rams.colostate.edu |
 | Kurt Wimer | Kwimer | KurtWimer | kwimer@rams.colostate.edu |
 | Timothy Rooney | tprooney | tprooney | tprooney@rams.colostate.edu |
 | Caleb Tong | calebt | CalebET | calebt@rams.colostate.edu |
