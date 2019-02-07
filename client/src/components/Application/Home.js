@@ -10,6 +10,18 @@ import Pane from './Pane'
  * Renders the home page.
  */
 export default class Home extends Component {
+    constructor(props){
+        super(props);
+
+        this.userLocationCoordinates = this.userLocationCoordinates.bind(this);
+
+        this.state={
+            currentLocation: {
+                lat: 40.576179,
+                lon: -105.080773
+            }
+        }
+    }
 
   render() {
     return (
@@ -38,12 +50,12 @@ export default class Home extends Component {
     // 1: bounds={this.coloradoGeographicBoundaries()}
     // 2: center={this.csuOvalGeographicCoordinates()} zoom={10}
     return (
-      <Map center={this.csuOvalGeographicCoordinates()} zoom={10}
+      <Map center={this.userLocationCoordinates()} zoom={10}
            style={{height: 500, maxwidth: 700}}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                    attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
         />
-        <Marker position={this.csuOvalGeographicCoordinates()}
+        <Marker position={this.userLocationCoordinates()}
                 icon={this.markerIcon()}>
           <Popup className="font-weight-extrabold">Colorado State University</Popup>
         </Marker>
@@ -65,6 +77,23 @@ export default class Home extends Component {
 
   csuOvalGeographicCoordinates() {
     return L.latLng(40.576179, -105.080773);
+  }
+
+  userLocationCoordinates() {
+      if(navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+              loc => {
+                  console.log(loc.coords.latitude);
+                  console.log(loc.coords.longitude);
+                  this.setState({
+                      currentLocation: {
+                          lat: loc.coords.latitude,
+                          lon: loc.coords.longitude
+                      }
+                  });
+              });
+          return L.latLng(this.state.currentLocation.lat, this.state.currentLocation.lon);
+      }
   }
 
   markerIcon() {
