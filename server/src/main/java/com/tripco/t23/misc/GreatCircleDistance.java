@@ -9,6 +9,9 @@ import java.lang.Math;
  */
 public class GreatCircleDistance {
     public static Double HaversineFormula(double lat_1, double lon_1, double lat_2, double lon_2, float earthRadius){
+        /*
+        * Code from: https://rosettacode.org/wiki/Haversine_formula#Java
+        */
         double diff_lat = Math.toRadians(lat_2 - lat_1);
         double diff_lon = Math.toRadians(lon_2 - lon_1);
         lat_1 = Math.toRadians(lat_1);
