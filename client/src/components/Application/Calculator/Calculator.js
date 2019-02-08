@@ -103,6 +103,12 @@ export default class Calculator extends Component {
 
     sendServerRequestWithBody('distance', tipConfigRequest, this.props.settings.serverPort)
       .then((response) => {
+          // Reset the border color of all input fields to default
+          for (var i = 0; i < 4; i++) {
+              var first = (i < 2) ? 'origin' : 'destination';
+              var last = (i % 2 == 0) ? 'Latitude' : 'Longitude';
+              document.getElementById(first.concat(last)).style.borderColor = '';
+          }
         if(response.statusCode >= 200 && response.statusCode <= 299) {
           this.setState({
             distance: response.body.distance,
@@ -114,9 +120,18 @@ export default class Calculator extends Component {
             errorMessage: this.props.createErrorBanner(
                 response.statusText,
                 response.statusCode,
-                `Request to ${ this.props.settings.serverPort } failed.`
+                `Request to ${ this.props.settings.serverPort } failed: invalid input.`
             )
           });
+            // Highlight invalid input fields, that includes empty input.
+            for (var i = 0; i < 4; i++) {
+                var first = (i<2) ? 'origin' : 'destination';
+                var last = (i%2==0) ? 'Latitude' : 'Longitude';
+                var element = document.getElementById(first.concat(last));
+                if ( isNaN(parseFloat(element.value)) ) {
+                    element.style.borderColor = 'Red';
+                }
+            }
         }
       });
   }
