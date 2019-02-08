@@ -5,6 +5,7 @@ import KurtImage from '../../../../../team/KurtWimer/Kurt.jpg'
 import CalebImg from '../../../../../team/CalebET/Caleb.jpg'
 import KelynImage from '../../../../../team/kshaffner/Kelyn.jpg'
 import JoshImg from '../../../../../team/joshtburris/Josh.jpg'
+import TimImg from '../../../../../team/tprooney/TimImage.jpg'
 /*
 Information about the members of t23. (Name, 1 paragraph bio and pic)
 */
@@ -71,8 +72,18 @@ export default class About extends Component {
     renderTim(){
         return(
             <Pane header={'Timothy Rooney'}
-                  bodyJSX={'I am a CSU Senior, majoring in Computer Science. I have lived in Longmont, Colorado for most of my life.' +
-                  'In my free time, I enjoy playing video games, chatting with friends, and generally relaxing.'}/>
+                  bodyJSX={
+                      <div><Row> <Col xs="3">
+                          <img
+                            style={{width: 200, height: 200, alignitems: 'center', justifycontent: 'center'}}
+                            src={TimImg}
+                          /> </Col>
+                          <Col xs="9"><p>
+                              I am a CSU Senior, majoring in Computer Science. I have lived in Longmont, Colorado for most of my life.
+                              In my free time, I enjoy playing video games, chatting with friends, and generally relaxing.
+                          </p></Col> </Row></div>
+                  }
+            />
         );
     }
 
