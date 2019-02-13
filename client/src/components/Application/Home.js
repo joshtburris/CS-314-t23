@@ -31,7 +31,12 @@ export default class Home extends Component {
             {this.renderMap()}
           </Col>
           <Col xs={12} sm={12} md={5} lg={4} xl={3}>
-            {this.renderIntro()}
+            <Row> <Col>
+              {this.renderIntro()}
+            </Col> </Row>
+            <Row> <Col>
+              {this.renderItinerary()}
+            </Col> </Row>
           </Col>
         </Row>
       </Container>
@@ -67,6 +72,13 @@ export default class Home extends Component {
     return(
       <Pane header={'Bon Voyage!'}
             bodyJSX={'Let us help you plan your next trip.'}/>
+    );
+  }
+
+  renderItinerary(){
+    return(
+        <Pane header={'Save Your Itinerary'}
+              bodyJSX={'open file'}/>
     );
   }
 
