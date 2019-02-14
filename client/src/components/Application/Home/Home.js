@@ -4,7 +4,7 @@ import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
 import { Map, Marker, Popup, TileLayer} from 'react-leaflet';
-import Pane from './Pane'
+import Pane from '../Pane'
 
 /*
  * Renders the home page.
