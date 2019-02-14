@@ -25,6 +25,14 @@ export default class Itinerary extends Component {
 
     }
 
+    reorderElement(key, location){
+
+    }
+
+    reverseElements(){
+
+    }
+
     saveFile(){
 
     }
