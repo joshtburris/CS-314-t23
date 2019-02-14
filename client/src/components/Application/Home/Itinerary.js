@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
-
+import Pane from "../Pane";
 
 export default class Itinerary extends Component {
     constructor(props) {
@@ -14,7 +14,10 @@ export default class Itinerary extends Component {
     }
 
     render(){
-
+        return(
+            <Pane header={'Save Your Itinerary'}
+                  bodyJSX={'open file'}/>
+        );
     }
 
     addElement(id){
