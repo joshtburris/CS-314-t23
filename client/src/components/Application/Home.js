@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Container, Row, Col} from 'reactstrap';
+import {Container, Row, Col, Input} from 'reactstrap';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
@@ -32,6 +32,7 @@ export default class Home extends Component {
           </Col>
           <Col xs={12} sm={12} md={5} lg={4} xl={3}>
             {this.renderIntro()}
+            {this.renderItinerary()}
           </Col>
         </Row>
       </Container>
@@ -70,7 +71,31 @@ export default class Home extends Component {
     );
   }
 
-  coloradoGeographicBoundaries() {
+  renderItinerary(){
+    return(
+      <Pane header={'Upload an Itinerary'}
+            bodyJSX={
+                <div className="App">
+                    <input type="file" name="" id="" onChange={this.handleSelectedFile} />
+                    <button onClick={this.handleUpload}>Upload</button>
+                </div>
+            }/>
+      );
+  }
+
+    handleSelectedFile(event){
+        this.setState({
+            selectedFile: event.target.files[0],
+            loaded: 0,
+        })
+    }
+
+    handleUpload(){
+
+    }
+
+
+    coloradoGeographicBoundaries() {
     // northwest and southeast corners of the state of Colorado
     return L.latLngBounds(L.latLng(41, -109), L.latLng(37, -102));
   }
