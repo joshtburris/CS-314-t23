@@ -76,22 +76,26 @@ export default class Home extends Component {
       <Pane header={'Upload an Itinerary'}
             bodyJSX={
                 <div className="App">
-                    <input type="file" name="" id="" onChange={this.handleSelectedFile} />
+                    <input type="file" name="" id="input" onChange={this.handleFiles} />
                     <button onClick={this.handleUpload}>Upload</button>
                 </div>
             }/>
       );
   }
 
-    handleSelectedFile(event){
+    handleFiles(){
         this.setState({
             selectedFile: event.target.files[0],
             loaded: 0,
         })
     }
 
-    handleUpload(){
-
+    handleUpload(files){
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const reader = new FileReader();
+            reader.readAsText(file);
+        }
     }
 
 
