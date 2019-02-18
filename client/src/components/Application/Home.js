@@ -14,6 +14,7 @@ export default class Home extends Component {
         super(props);
 
         this.userLocationCoordinates = this.userLocationCoordinates.bind(this);
+        this.handleFiles = this.handleFiles.bind(this);
 
         this.state={
             currentLocation: {
@@ -71,33 +72,34 @@ export default class Home extends Component {
     );
   }
 
+  /*<button onClick={this.handleUpload}>Upload</button>*/
+
   renderItinerary(){
     return(
       <Pane header={'Upload an Itinerary'}
             bodyJSX={
                 <div className="App">
                     <input type="file" name="" id="input" onChange={this.handleFiles} />
-                    <button onClick={this.handleUpload}>Upload</button>
                 </div>
             }/>
       );
   }
 
     handleFiles(){
-        this.setState({
-            selectedFile: event.target.files[0],
-            loaded: 0,
-        })
-    }
 
-    handleUpload(files){
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            const reader = new FileReader();
-            reader.readAsText(file);
+        let fileReader;
+
+        const handleFileRead = (e) => {
+            const content = fileReader.result;
+            this.setState({
+                fileContents: content,
+            });
         }
-    }
 
+        fileReader = new FileReader();
+        fileReader.onloadend = handleFileRead;
+        fileReader.readAsText(event.target.files[0]);
+    }
 
     coloradoGeographicBoundaries() {
     // northwest and southeast corners of the state of Colorado
