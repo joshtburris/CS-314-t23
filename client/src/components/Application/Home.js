@@ -14,6 +14,7 @@ export default class Home extends Component {
         super(props);
 
         this.userLocationCoordinates = this.userLocationCoordinates.bind(this);
+        this.handleFiles = this.handleFiles.bind(this);
 
         this.state={
             currentLocation: {
@@ -75,11 +76,33 @@ export default class Home extends Component {
     );
   }
 
+  /*<button onClick={this.handleUpload}>Upload</button>*/
+
   renderItinerary(){
     return(
-        <Pane header={'Save Your Itinerary'}
-              bodyJSX={'open file'}/>
-    );
+      <Pane header={'Upload an Itinerary'}
+            bodyJSX={
+                <div className="App">
+                    <input type="file" name="" id="input" onChange={this.handleFiles} />
+                </div>
+            }/>
+      );
+  }
+
+  handleFiles(){
+
+      let fileReader;
+
+      const handleFileRead = (e) => {
+          const content = fileReader.result;
+          this.setState({
+              fileContents: content,
+          });
+      }
+
+      fileReader = new FileReader();
+      fileReader.onloadend = handleFileRead;
+      fileReader.readAsText(event.target.files[0]);
   }
 
   coloradoGeographicBoundaries() {
