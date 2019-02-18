@@ -40,7 +40,7 @@ export default class Itinerary extends Component {
 
     }
 
-    loadLoadFile(){
+    loadFile(){
 
     }
 
