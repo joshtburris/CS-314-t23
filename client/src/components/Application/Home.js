@@ -32,8 +32,12 @@ export default class Home extends Component {
             {this.renderMap()}
           </Col>
           <Col xs={12} sm={12} md={5} lg={4} xl={3}>
-            {this.renderIntro()}
-            {this.renderItinerary()}
+            <Row> <Col>
+              {this.renderIntro()}
+            </Col> </Row>
+            <Row> <Col>
+              {this.renderItinerary()}
+            </Col> </Row>
           </Col>
         </Row>
       </Container>
@@ -85,23 +89,23 @@ export default class Home extends Component {
       );
   }
 
-    handleFiles(){
+  handleFiles(){
 
-        let fileReader;
+      let fileReader;
 
-        const handleFileRead = (e) => {
-            const content = fileReader.result;
-            this.setState({
-                fileContents: content,
-            });
-        }
+      const handleFileRead = (e) => {
+          const content = fileReader.result;
+          this.setState({
+              fileContents: content,
+          });
+      }
 
-        fileReader = new FileReader();
-        fileReader.onloadend = handleFileRead;
-        fileReader.readAsText(event.target.files[0]);
-    }
+      fileReader = new FileReader();
+      fileReader.onloadend = handleFileRead;
+      fileReader.readAsText(event.target.files[0]);
+  }
 
-    coloradoGeographicBoundaries() {
+  coloradoGeographicBoundaries() {
     // northwest and southeast corners of the state of Colorado
     return L.latLngBounds(L.latLng(41, -109), L.latLng(37, -102));
   }
