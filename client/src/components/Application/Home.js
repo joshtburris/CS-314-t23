@@ -66,10 +66,11 @@ export default class Home extends Component {
 
 
   renderIntro() {
-    return(
-      <Pane header={'Bon Voyage!'}
-            bodyJSX={'Let us help you plan your next trip.'}/>
-    );
+      return (
+          <Pane header={'Bon Voyage!'}
+                bodyJSX={'Let us help you plan your next trip.'}/>
+      );
+  }
 
   coloradoGeographicBoundaries() {
     // northwest and southeast corners of the state of Colorado
