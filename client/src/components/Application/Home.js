@@ -14,6 +14,7 @@ export default class Home extends Component {
         super(props);
 
         this.userLocationCoordinates = this.userLocationCoordinates.bind(this);
+        this.handleFiles = this.handleFiles.bind(this);
 
         this.state={
             currentLocation: {
@@ -63,12 +64,12 @@ export default class Home extends Component {
     )
   }
 
+
   renderIntro() {
     return(
       <Pane header={'Bon Voyage!'}
             bodyJSX={'Let us help you plan your next trip.'}/>
     );
-  }
 
   coloradoGeographicBoundaries() {
     // northwest and southeast corners of the state of Colorado
