@@ -22,12 +22,16 @@ export default class Itinerary extends Component {
                     {this.renderMap()}
                 </Col>
                 <Col>
-                    <Pane>
-                        header={'Save Your Itinerary'}
-                        bodyJSX={'open file'}
-                    </Pane>
+                    {this.renderItinerary()}
                 </Col>
             </Container>
+        );
+    }
+
+    renderItinerary(){
+        return(
+            <Pane header={'Save Your Itinerary'}
+                  bodyJSX={'open file'}/>
         );
     }
 
