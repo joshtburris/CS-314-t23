@@ -41,7 +41,7 @@ export default class Home extends Component {
             </Col> </Row>
           </Col>
         </Row>
-      </Cont  ainer>
+      </Container>
     );
   }
 
