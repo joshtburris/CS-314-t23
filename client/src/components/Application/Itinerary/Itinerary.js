@@ -55,7 +55,7 @@ export default class Itinerary extends Component {
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                            attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                 />
-                <Polygon/>
+                <Polygon positions = {[this.getLL()]}/>
             </Map>
         )
     }
@@ -69,6 +69,7 @@ export default class Itinerary extends Component {
         for (let place in this.state.places) {
             LL.push(L.latLng([place.latitude, place.longitude]))
         }
+        return LL
     }
 
     saveFile(){

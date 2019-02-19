@@ -14,7 +14,6 @@ export default class Home extends Component {
         super(props);
 
         this.userLocationCoordinates = this.userLocationCoordinates.bind(this);
-        this.handleFiles = this.handleFiles.bind(this);
 
         this.state={
             currentLocation: {
