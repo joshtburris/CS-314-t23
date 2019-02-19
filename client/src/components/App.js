@@ -15,6 +15,7 @@ export default class App extends Component {
       { title: 'About', page: 'about'},
       { title: 'Calculator', page: 'calc'},
       { title: 'Options', page: 'options'},
+      { title: 'Itinerary', page: 'itinerary'},
       { title: '\u2699', page: 'settings' }
     ];
 

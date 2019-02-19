@@ -1,39 +1,66 @@
 import React, { Component } from 'react'
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
+import Container from "reactstrap/es/Container";
+import Col from "reactstrap/es/Col";
+import {Map, Marker, Popup, TileLayer, Polygon} from "react-leaflet";
 
 export default class Itinerary extends Component {
     constructor(props) {
         super(props);
-
         this.state={
-            'options'        : {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit]},
-            'places'         : [],
-            'distances'      : []
+            'options': {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit]},
+            'places': [],
+            'distances': []
         }
     }
 
     render(){
         return(
-            <Pane header={'Save Your Itinerary'}
-                  bodyJSX={'open file'}/>
+            <Container>
+                <Col>
+                    {this.renderMap()}
+                </Col>
+                <Col>
+                    <Pane>
+                        header={'Save Your Itinerary'}
+                        bodyJSX={'open file'}
+                    </Pane>
+                </Col>
+            </Container>
         );
     }
 
-    addElement(id){
-
+    renderMap() {
+        return (
+            <Pane header={'Itinerary'}
+                  bodyJSX={this.renderLeafletMap()}/>
+        );
     }
 
-    removeElement(id){
-
+    renderLeafletMap() {
+        // initial map placement can use either of these approaches:
+        // 1: bounds={this.coloradoGeographicBoundaries()}
+        // 2: center={this.csuOvalGeographicCoordinates()} zoom={10}
+        return (
+            <Map center={this.csuOvalGeographicCoordinates()} zoom={10}
+                 style={{height: 500, maxwidth: 700}}>
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                           attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+                />
+            </Map>
+        )
     }
 
-    reorderElement(key, location){
-
+    csuOvalGeographicCoordinates() {
+        return L.latLng(40.576179, -105.080773);
     }
 
-    reverseElements(){
-
+    getLL(){
+        let LL = [];
+        for (let place in this.state.places) {
+            LL.push(L.latLng([place.latitude, place.longitude]))
+        }
     }
 
     saveFile(){
@@ -44,7 +71,7 @@ export default class Itinerary extends Component {
 
     }
 
-    calculateDistances() {
+    calculateDistances(){
         const tipConfigRequest = {
             'type'        : 'itinerary',
             'version'     : 2,
