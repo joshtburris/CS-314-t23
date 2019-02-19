@@ -31,7 +31,10 @@ export default class Itinerary extends Component {
     renderItinerary(){
         return(
             <Pane header={'Save Your Itinerary'}
-                  bodyJSX={'open file'}/>
+                  bodyJSX={
+                      <div className="App">
+                      <input type="file" name="" id="input" onChange={this.loadFile} />
+                      </div>}/>
         );
     }
 
@@ -72,7 +75,18 @@ export default class Itinerary extends Component {
     }
 
     loadFile(){
+        let fileReader;
 
+        const handleFileRead = (e) => {
+            const content = fileReader.result;
+            this.setState({
+                fileContents: content,
+            });
+        };
+
+        fileReader = new FileReader();
+        fileReader.onloadend = handleFileRead;
+        fileReader.readAsText(event.target.files[0]);
     }
 
     calculateDistances(){
