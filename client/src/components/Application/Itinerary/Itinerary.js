@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
-import Container from "reactstrap/es/Container";
-import Col from "reactstrap/es/Col";
+import {Container, Row, Col} from 'reactstrap'
 import {Map, Marker, Popup, TileLayer, Polygon} from "react-leaflet";
 
 export default class Itinerary extends Component {
@@ -11,19 +10,22 @@ export default class Itinerary extends Component {
         this.state={
             'options': {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit]},
             'places': [],
-            'distances': []
+            'distances': [],
+            fileContent: null,
+            errorMessage: null
         }
+        this.loadFile = this.loadFile.bind(this);
     }
 
     render(){
         return(
             <Container>
-                <Col>
+                <Row> <Col xs={12} sm={12} md={7} lg={8} xl={9}>
                     {this.renderMap()}
                 </Col>
-                <Col>
+                <Col xs={12} sm={12} md={5} lg={4} xl={3}>
                     {this.renderItinerary()}
-                </Col>
+                </Col> </Row>
             </Container>
         );
     }
@@ -32,9 +34,11 @@ export default class Itinerary extends Component {
         return(
             <Pane header={'Save Your Itinerary'}
                   bodyJSX={
-                      <div className="App">
-                      <input type="file" name="" id="input" onChange={this.loadFile} />
-                      </div>}/>
+                      <Container>
+                          <Row>
+                              <input type="file" name="" id="input" onChange={this.loadFile} />
+                          </Row>
+                      </Container>}/>
         );
     }
 
