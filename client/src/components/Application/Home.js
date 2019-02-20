@@ -91,7 +91,6 @@ export default class Home extends Component {
   }
 
   handleFiles(){
-
       let fileReader;
 
       const handleFileRead = (e) => {
@@ -99,7 +98,7 @@ export default class Home extends Component {
           this.setState({
               fileContents: content,
           });
-      }
+      };
 
       fileReader = new FileReader();
       fileReader.onloadend = handleFileRead;
