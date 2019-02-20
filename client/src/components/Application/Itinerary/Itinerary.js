@@ -1,39 +1,79 @@
 import React, { Component } from 'react'
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
+import {Container, Row, Col} from 'reactstrap'
+import {Map, Marker, Popup, TileLayer, Polygon} from "react-leaflet";
 
 export default class Itinerary extends Component {
     constructor(props) {
         super(props);
-
         this.state={
-            'options'        : {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit]},
-            'places'         : [],
-            'distances'      : []
+            'options': {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit]},
+            'places': [],
+            'distances': [],
+            fileContent: null,
+            errorMessage: null
         }
+        this.loadFile = this.loadFile.bind(this);
     }
 
     render(){
         return(
-            <Pane header={'Save Your Itinerary'}
-                  bodyJSX={'open file'}/>
+            <Container>
+                <Row> <Col xs={12} sm={12} md={7} lg={8} xl={9}>
+                    {this.renderMap()}
+                </Col>
+                <Col xs={12} sm={12} md={5} lg={4} xl={3}>
+                    {this.renderItinerary()}
+                </Col> </Row>
+            </Container>
         );
     }
 
-    addElement(id){
-
+    renderItinerary(){
+        return(
+            <Pane header={'Save Your Itinerary'}
+                  bodyJSX={
+                      <Container>
+                          <Row>
+                              <input type="file" name="" id="input" onChange={this.loadFile} />
+                          </Row>
+                      </Container>}/>
+        );
     }
 
-    removeElement(id){
-
+    renderMap() {
+        return (
+            <Pane header={'Itinerary'}
+                  bodyJSX={this.renderLeafletMap()}/>
+        );
     }
 
-    reorderElement(key, location){
-
+    renderLeafletMap() {
+        // initial map placement can use either of these approaches:
+        // 1: bounds={this.coloradoGeographicBoundaries()}
+        // 2: center={this.csuOvalGeographicCoordinates()} zoom={10}
+        return (
+            <Map center={this.csuOvalGeographicCoordinates()} zoom={10}
+                 style={{height: 500, maxwidth: 700}}>
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                           attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+                />
+                <Polygon positions = {[this.getLL()]}/>
+            </Map>
+        )
     }
 
-    reverseElements(){
+    csuOvalGeographicCoordinates() {
+        return L.latLng(40.576179, -105.080773);
+    }
 
+    getLL(){
+        let LL = [];
+        for (let place in this.state.places) {
+            LL.push(L.latLng([place.latitude, place.longitude]))
+        }
+        return LL
     }
 
     saveFile(){
@@ -41,10 +81,21 @@ export default class Itinerary extends Component {
     }
 
     loadFile(){
+        let fileReader;
 
+        const handleFileRead = (e) => {
+            const content = fileReader.result;
+            this.setState({
+                fileContents: content,
+            });
+        };
+
+        fileReader = new FileReader();
+        fileReader.onloadend = handleFileRead;
+        fileReader.readAsText(event.target.files[0]);
     }
 
-    calculateDistances() {
+    calculateDistances(){
         const tipConfigRequest = {
             'type'        : 'itinerary',
             'version'     : 2,
