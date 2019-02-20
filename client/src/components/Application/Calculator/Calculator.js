@@ -4,6 +4,7 @@ import { Button } from 'reactstrap'
 import { Form, Label, Input } from 'reactstrap'
 import { sendServerRequestWithBody } from '../../../api/restfulAPI'
 import Pane from '../Pane';
+import coordinates from 'parse-coords'
 
 export default class Calculator extends Component {
   constructor(props) {
@@ -14,10 +15,12 @@ export default class Calculator extends Component {
     this.createInputField = this.createInputField.bind(this);
 
     this.state = {
-      origin: {latitude: '', longitude: ''},
-      destination: {latitude: '', longitude: ''},
-      distance: 0,
-      errorMessage: null
+        origin: '',
+        originIsValid: true,
+        destination: '',
+        destinationIsValid: true,
+        distance: 0,
+        errorMessage: null
     };
   }
 
@@ -53,17 +56,18 @@ export default class Calculator extends Component {
     );
   }
 
-  createInputField(stateVar, coordinate) {
+  createInputField(stateVar, location) {
     let updateStateVarOnChange = (event) => {
-      this.updateLocationOnChange(stateVar, event.target.name, event.target.value)};
+      this.updateLocationOnChange(stateVar, event.target.value)};
 
-    let capitalizedCoordinate = coordinate.charAt(0).toUpperCase() + coordinate.slice(1);
+    let capitalizedCoordinate = location.charAt(0).toUpperCase() + location.slice(1);
+    let color = coordinates(this.state[stateVar])=== null ? "red": "black";
     return (
-      <Input name={coordinate} placeholder={capitalizedCoordinate}
+      <Input name={location} placeholder={capitalizedCoordinate}
              id={`${stateVar}${capitalizedCoordinate}`}
-             value={this.state[stateVar][coordinate]}
+             value={this.state[stateVar]}
              onChange={updateStateVarOnChange}
-             style={{width: "100%"}} />
+             style={{width: "100%", borderColor: color}} />
     );
 
   }
@@ -73,8 +77,7 @@ export default class Calculator extends Component {
       <Pane header={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
             bodyJSX={
               <Form >
-                {this.createInputField(stateVar, 'latitude')}
-                {this.createInputField(stateVar, 'longitude')}
+                {this.createInputField(stateVar, 'default text')}
               </Form>
             }
       />);
@@ -93,22 +96,19 @@ export default class Calculator extends Component {
   }
 
   calculateDistance() {
+    if(!(coordinates(this.state.origin) && coordinates(this.state.destination))){
+      return;
+    }
     const tipConfigRequest = {
       'type'        : 'distance',
       'version'     : 1,
-      'origin'      : this.state.origin,
-      'destination' : this.state.destination,
+      'origin'      : {'latitude': coordinates(this.state.origin).lat, 'longitude': coordinates(this.state.origin).lng},
+      'destination' : {'latitude': coordinates(this.state.destination).lat, 'longitude': coordinates(this.state.destination).lng},
       'earthRadius' : this.props.options.units[this.props.options.activeUnit]
     };
 
     sendServerRequestWithBody('distance', tipConfigRequest, this.props.settings.serverPort)
       .then((response) => {
-          // Reset the border color of all input fields to default
-          for (var i = 0; i < 4; i++) {
-              var first = (i < 2) ? 'origin' : 'destination';
-              var last = (i % 2 == 0) ? 'Latitude' : 'Longitude';
-              document.getElementById(first.concat(last)).style.borderColor = '';
-          }
         if(response.statusCode >= 200 && response.statusCode <= 299) {
           this.setState({
             distance: response.body.distance,
@@ -123,22 +123,11 @@ export default class Calculator extends Component {
                 `Request to ${ this.props.settings.serverPort } failed: invalid input.`
             )
           });
-            // Highlight invalid input fields, that includes empty input.
-            for (var i = 0; i < 4; i++) {
-                var first = (i<2) ? 'origin' : 'destination';
-                var last = (i%2==0) ? 'Latitude' : 'Longitude';
-                var element = document.getElementById(first.concat(last));
-                if ( isNaN(parseFloat(element.value)) ) {
-                    element.style.borderColor = 'Red';
-                }
-            }
         }
       });
   }
 
-  updateLocationOnChange(stateVar, field, value) {
-    let location = Object.assign({}, this.state[stateVar]);
-    location[field] = value;
-    this.setState({[stateVar]: location});
+  updateLocationOnChange(stateVar, value) {
+      this.setState({[stateVar]: value}, () => {this.calculateDistance()});
   }
 }
