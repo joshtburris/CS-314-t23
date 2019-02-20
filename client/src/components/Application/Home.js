@@ -71,8 +71,9 @@ export default class Home extends Component {
       );
   }
 
+
   coloradoGeographicBoundaries() {
-    // northwest and southeast corners of the state of Colorado
+    // northwest and southeas< Itinerary-Mapt corners of the state of Colorado
     return L.latLngBounds(L.latLng(41, -109), L.latLng(37, -102));
   }
 
@@ -94,7 +95,7 @@ export default class Home extends Component {
                   });
               });
           return L.latLng(this.state.currentLocation.lat, this.state.currentLocation.lon);
-      }
+      } 
   }
 
   markerIcon() {
