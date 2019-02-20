@@ -3,7 +3,6 @@ package com.tripco.t23.TIP;
 import com.tripco.t23.misc.GreatCircleDistance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.lang.Math;
 import java.util.Map;
 
 
@@ -24,7 +23,7 @@ public class TIPDistance extends TIPHeader {
   private Map origin;
   private Map destination;
   private Float earthRadius;
-  private Integer distance;
+  private long distance;
 
   private final transient Logger log = LoggerFactory.getLogger(TIPDistance.class);
 
@@ -44,18 +43,15 @@ public class TIPDistance extends TIPHeader {
   }
 
 
+  long getDistance(){
+    return distance;
+  }
   @Override
   public void buildResponse() {
-    this.distance = getDistance();
+    this.distance = GreatCircleDistance.getDistance(origin, destination, earthRadius);
     log.trace("buildResponse -> {}", this);
   }
 
-
-  int getDistance() {
-    Double distance_to_round= (GreatCircleDistance.HaversineFormula(Double.parseDouble(this.origin.get("latitude").toString()), Double.parseDouble(this.origin.get("longitude").toString()),
-            Double.parseDouble(this.destination.get("latitude").toString()), Double.parseDouble(this.destination.get("longitude").toString()),earthRadius)+.5); //.5 is added for rounding purposes
-    return distance_to_round.intValue();
-  }
 
   @Override
   public String toString(){
