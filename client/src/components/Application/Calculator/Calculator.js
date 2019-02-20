@@ -52,7 +52,12 @@ export default class Calculator extends Component {
     return (
         <Pane header={'Calculator'}
               bodyJSX={<div>Determine the distance between the origin and destination.
-                Change the units on the <b>Options</b> page.</div>}/>
+                Change the units on the <b>Options</b> page.
+              Valid formats are as follows with examplesl, note that only DMS accepts N/S/E/W and it may NOT be comma seperated.
+                  <table><tr><td>Decimal Degree</td> <td>41.40338, 2.17403</td></tr>
+                  <tr><td>Degrees Decimal Minutes</td><td>47°38.938 122° 20.887</td></tr>
+                  <tr><td>Degrees Minutes Decimal Seconds</td><td>41°24'12.2"N 2°10'26.5"E</td></tr></table>
+              </div>}/>
     );
   }
 
@@ -61,7 +66,7 @@ export default class Calculator extends Component {
       this.updateLocationOnChange(stateVar, event.target.value)};
 
     let capitalizedCoordinate = location.charAt(0).toUpperCase() + location.slice(1);
-    let color = coordinates(this.state[stateVar])=== null ? "red": "black";
+    let color = this.validateCoordinates(stateVar) ? "black": "red";
     return (
       <Input name={location} placeholder={capitalizedCoordinate}
              id={`${stateVar}${capitalizedCoordinate}`}
@@ -96,9 +101,7 @@ export default class Calculator extends Component {
   }
 
   calculateDistance() {
-    if(!(coordinates(this.state.origin) && coordinates(this.state.destination))){
-      return;
-    }
+    if (!this.validateCoordinates("origin") || !this.validateCoordinates("destination")) return;
     const tipConfigRequest = {
       'type'        : 'distance',
       'version'     : 1,
@@ -125,6 +128,18 @@ export default class Calculator extends Component {
           });
         }
       });
+  }
+
+  validateCoordinates(statevar){
+    try {
+        if(!coordinates(this.state[statevar]) || !coordinates(this.state[statevar]).lat || !coordinates(this.state[statevar]).lng){
+            return false;
+        }
+        else return true;    
+    }  
+    catch (e) {
+        return false;
+    }
   }
 
   updateLocationOnChange(stateVar, value) {
