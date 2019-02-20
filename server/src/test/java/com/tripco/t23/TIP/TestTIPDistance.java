@@ -25,12 +25,14 @@ public class TestTIPDistance {
     csu.put("name", "Oval, Colorado State University, Fort Collins, Colorado, USA");
   }
 
+
+
   @Test
   public void testOriginDestinationSame() {
     TIPDistance trip = new TIPDistance(version, csu, csu, radiusMiles);
     trip.buildResponse();
-    int expect = 0;
-    int actual = trip.getDistance();
+    long expect = 0;
+    long actual = trip.getDistance();
     assertEquals("origin and destination are the same", expect, actual);
   }
 }

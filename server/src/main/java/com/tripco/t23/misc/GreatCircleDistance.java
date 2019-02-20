@@ -2,6 +2,7 @@ package com.tripco.t23.misc;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.Map;
 
 import java.lang.Math;
 
@@ -24,6 +25,12 @@ public class GreatCircleDistance {
         log.trace("Haversine result ->{}",finalValue);
 
         return finalValue;
+    }
+
+    public static long getDistance(Map origin, Map destination, float earthRadius) {
+        Double distance_to_round= (GreatCircleDistance.HaversineFormula(Double.parseDouble(origin.get("latitude").toString()), Double.parseDouble(origin.get("longitude").toString()),
+                Double.parseDouble(destination.get("latitude").toString()), Double.parseDouble(destination.get("longitude").toString()),earthRadius)+.5); //.5 is added for rounding purposes
+        return distance_to_round.intValue();
     }
 
     @Override
