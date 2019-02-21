@@ -3,27 +3,32 @@ import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
 import {Container, Row, Col} from 'reactstrap'
 import {Map, Marker, Popup, TileLayer, Polygon} from "react-leaflet";
+import { Button } from 'reactstrap'
 
 export default class Itinerary extends Component {
     constructor(props) {
         super(props);
         this.state={
             'options': {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit]},
-            'places': [],
+            'itPlaces': [],
             'distances': [],
             fileContent: null,
             errorMessage: null
         }
         this.loadFile = this.loadFile.bind(this);
+        this.generateItinerary = this.generateItinerary.bind(this);
+        this.generateItinerary = this.generateItinerary.bind(this);
+        this.saveFile = this.saveFile.bind(this);
+        this.itineraryHeader = this.itineraryHeader.bind(this);
     }
 
     render(){
         return(
             <Container>
-                <Row> <Col xs={12} sm={12} md={7} lg={8} xl={9}>
+                <Row> <Col xs={12} sm={12} md={7} lg={8} xl={8}>
                     {this.renderMap()}
                 </Col>
-                <Col xs={12} sm={12} md={5} lg={4} xl={3}>
+                <Col xs={12} sm={12} md={5} lg={4} xl={4}>
                     {this.renderItinerary()}
                 </Col> </Row>
             </Container>
@@ -35,8 +40,12 @@ export default class Itinerary extends Component {
             <Pane header={'Save Your Itinerary'}
                   bodyJSX={
                       <Container>
+                              {this.generateItinerary()}
                           <Row>
                               <input type="file" name="" id="input" onChange={this.loadFile} />
+                              <form onSubmit={this.saveFile}>
+                                  <Button type='submit'  color="link" > Save </Button>
+                              </form>
                           </Row>
                       </Container>}/>
         );
@@ -76,23 +85,81 @@ export default class Itinerary extends Component {
         return LL
     }
 
-    saveFile(){
+    generateItinerary(){
+        let myItinerary = [];
+        let place = [];
+        let dist = 0;
+        let tempLoc = [];
+        myItinerary.push(this.itineraryHeader());
 
+        for(place in this.state.itPlaces){
+            tempLoc.push(this.state.itPlaces[place].name);
+            myItinerary.push(
+                <div key={"places_"+place}> <Row> <Col xs="6" sm="6" md="6" lg="6" xl="6">
+                        {this.state.itPlaces[place].name}
+                    </Col>
+                    <Col xs="5" sm="5" md="5" lg="5" xl="5">
+                        {dist}
+                    </Col> </Row> </div>
+            );
+            dist = dist + this.state.distances[place];
+        }
+        if(this.state.itPlaces[0]){
+            myItinerary.push(
+                <div key={"places_round_trip"}> <Row> <Col xs="6" sm="6" md="6" lg="6" xl="6">
+                    {tempLoc[0]}
+                </Col>
+                <Col xs="5" sm="5" md="5" lg="5" xl="5">
+                    {dist}
+                </Col> </Row> </div>
+            );}
+        return(myItinerary);
+    }
+
+    itineraryHeader(){
+        let tempList = [];
+        tempList.push(
+            <div key={"itinerary_header"}> <Row> <Col xs="6" sm="6" md="6" lg="6" xl="6">
+                <b>Destinations</b>
+            </Col>
+            <Col xs="6" sm="6" md="6" lg="5" xl="6">
+                <b>Total Distance</b>
+            </Col> </Row> </div>);
+        return(tempList);
+    }
+
+    saveFile(){
+        let saveFile = new File("Itinerary.json", "write");
+        saveFile.open();
+        saveFile.write(this.state.fileContent);
+        console.log(this.state.itPlaces[0].name);
+        console.log(this.state.distances[0]);
     }
 
     loadFile(){
         let fileReader;
-
         const handleFileRead = (e) => {
+            //read the text-format file to a string
             const content = fileReader.result;
+
+            //parse the string into a JSON file
+            let fileInfo = JSON.parse(content);
+
+            //set places and distances equal to the JSON file's places and distances
             this.setState({
-                fileContents: content,
+                'itPlaces': fileInfo.places,
+                'distances': fileInfo.distances,
+                fileContent: fileInfo
             });
+            console.log(fileInfo);
         };
 
         fileReader = new FileReader();
         fileReader.onloadend = handleFileRead;
+        //read the first file in
+        //NOTE: File must be formatted in double quotations (")
         fileReader.readAsText(event.target.files[0]);
+
     }
 
     calculateDistances(){
@@ -100,7 +167,7 @@ export default class Itinerary extends Component {
             'type'        : 'itinerary',
             'version'     : 2,
             'options'      : this.state.options,
-            'places' : this.state.places,
+            'places' : this.state.itPlaces,
         };
 
         sendServerRequestWithBody('itinerary', tipConfigRequest, this.props.settings.serverPort)
