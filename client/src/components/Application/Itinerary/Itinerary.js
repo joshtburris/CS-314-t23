@@ -3,7 +3,7 @@ import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
 import {Container, Row, Col} from 'reactstrap'
 import {Map, Marker, Popup, TileLayer, Polygon} from "react-leaflet";
-import { Button } from 'reactstrap'
+import FileSaver from "file-saver";
 
 export default class Itinerary extends Component {
     constructor(props) {
@@ -16,9 +16,8 @@ export default class Itinerary extends Component {
             errorMessage: null
         }
         this.loadFile = this.loadFile.bind(this);
-        this.generateItinerary = this.generateItinerary.bind(this);
-        this.generateItinerary = this.generateItinerary.bind(this);
         this.saveFile = this.saveFile.bind(this);
+        this.generateItinerary = this.generateItinerary.bind(this);
         this.itineraryHeader = this.itineraryHeader.bind(this);
     }
 
@@ -43,8 +42,8 @@ export default class Itinerary extends Component {
                               {this.generateItinerary()}
                           <Row>
                               <input type="file" name="" id="input" onChange={this.loadFile} />
-                              <form onSubmit={this.saveFile}>
-                                  <Button type='submit'  color="link" > Save </Button>
+                              <form>
+                                  <input type="submit" value="Save..." id="saveButton" color="link" onClick={this.saveFile} />
                               </form>
                           </Row>
                       </Container>}/>
@@ -129,11 +128,8 @@ export default class Itinerary extends Component {
     }
 
     saveFile(){
-        let saveFile = new File("Itinerary.json", "write");
-        saveFile.open();
-        saveFile.write(this.state.fileContent);
-        console.log(this.state.itPlaces[0].name);
-        console.log(this.state.distances[0]);
+        var file = new Blob([JSON.stringify(this.state.fileContent)], {type: "text/plain;charset=utf-8"});  // Source="https://www.npmjs.com/package/file-saver/v/1.3.2"
+        saveAs(file, "MyItinerary.txt");
     }
 
     loadFile(){
