@@ -24,10 +24,6 @@ export default class Application extends Component {
 
     this.state = {
       serverConfig: null,
-      itineraryLocation: {
-          locations: ['blah'],
-          distances: [0]
-      },
       planOptions: {
         units: {'miles':3959,'Nautical Miles':3440, 'kilometers':6371},
         activeUnit: 'miles' // This is where we will automatically update the units based on user location.
@@ -59,12 +55,6 @@ export default class Application extends Component {
       newSettings[field] = value;
       this.setState({clientSettings: newSettings});
     }
-  }
-
-  updateItineraryLocation(option, value){
-    let itineraryCopy = Object.assign({}, this.state.itineraryLocation)
-    itineraryCopy[option] = value;
-    this.setState({'itineraryLocation': itineraryCopy});
   }
 
   updatePlanOption(option, value) {

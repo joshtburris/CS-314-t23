@@ -17,17 +17,18 @@ export default class Itinerary extends Component {
         }
         this.loadFile = this.loadFile.bind(this);
         this.generateItinerary = this.generateItinerary.bind(this);
-        this.uploadFile = this.uploadFile.bind(this);
         this.generateItinerary = this.generateItinerary.bind(this);
+        this.saveFile = this.saveFile.bind(this);
+        this.itineraryHeader = this.itineraryHeader.bind(this);
     }
 
     render(){
         return(
             <Container>
-                <Row> <Col xs={12} sm={12} md={7} lg={8} xl={9}>
+                <Row> <Col xs={12} sm={12} md={7} lg={8} xl={8}>
                     {this.renderMap()}
                 </Col>
-                <Col xs={12} sm={12} md={5} lg={4} xl={3}>
+                <Col xs={12} sm={12} md={5} lg={4} xl={4}>
                     {this.renderItinerary()}
                 </Col> </Row>
             </Container>
@@ -42,8 +43,8 @@ export default class Itinerary extends Component {
                               {this.generateItinerary()}
                           <Row>
                               <input type="file" name="" id="input" onChange={this.loadFile} />
-                              <form onSubmit={this.uploadFile}>
-                                  <Button type='submit'  color="link" > Submit </Button>
+                              <form onSubmit={this.saveFile}>
+                                  <Button type='submit'  color="link" > Save </Button>
                               </form>
                           </Row>
                       </Container>}/>
@@ -85,43 +86,72 @@ export default class Itinerary extends Component {
     }
 
     generateItinerary(){
-        var myItinerary = [];
-        var place = [];
-        var dist = 0;
+        let myItinerary = [];
+        let place = [];
+        let dist = 0;
+        let tempLoc = [];
+        myItinerary.push(this.itineraryHeader());
+
         for(place in this.state.itPlaces){
+            tempLoc.push(this.state.itPlaces[place].name);
             myItinerary.push(
-                <div key={"places_"+place}> <Row> <Col xs="5" sm="5" md="5" lg="5" xl="5">
+                <div key={"places_"+place}> <Row> <Col xs="6" sm="6" md="6" lg="6" xl="6">
                         {this.state.itPlaces[place].name}
                     </Col>
                     <Col xs="5" sm="5" md="5" lg="5" xl="5">
-                        {this.state.distances[place]}
+                        {dist}
                     </Col> </Row> </div>
             );
-
+            dist = dist + this.state.distances[place];
         }
+        if(this.state.itPlaces[0]){
+            myItinerary.push(
+                <div key={"places_round_trip"}> <Row> <Col xs="6" sm="6" md="6" lg="6" xl="6">
+                    {tempLoc[0]}
+                </Col>
+                <Col xs="5" sm="5" md="5" lg="5" xl="5">
+                    {dist}
+                </Col> </Row> </div>
+            );}
+        return(myItinerary);
+    }
+
+    itineraryHeader(){
+        let tempList = [];
+        tempList.push(
+            <div key={"itinerary_header"}> <Row> <Col xs="6" sm="6" md="6" lg="6" xl="6">
+                <b>Destinations</b>
+            </Col>
+            <Col xs="6" sm="6" md="6" lg="5" xl="6">
+                <b>Total Distance</b>
+            </Col> </Row> </div>);
+        return(tempList);
     }
 
     saveFile(){
-
+        let saveFile = new File("Itinerary.json", "write");
+        saveFile.open();
+        saveFile.write(this.state.fileContent);
+        console.log(this.state.itPlaces[0].name);
+        console.log(this.state.distances[0]);
     }
 
     loadFile(){
         let fileReader;
-
         const handleFileRead = (e) => {
             //read the text-format file to a string
             const content = fileReader.result;
 
             //parse the string into a JSON file
-            var fileInfo = JSON.parse(content);
+            let fileInfo = JSON.parse(content);
 
             //set places and distances equal to the JSON file's places and distances
             this.setState({
                 'itPlaces': fileInfo.places,
                 'distances': fileInfo.distances,
+                fileContent: fileInfo
             });
-            console.log(this.state.itPlaces);
-            console.log("distances: " + this.state.distances);
+            console.log(fileInfo);
         };
 
         fileReader = new FileReader();
@@ -129,29 +159,7 @@ export default class Itinerary extends Component {
         //read the first file in
         //NOTE: File must be formatted in double quotations (")
         fileReader.readAsText(event.target.files[0]);
-        this.setState({
-            fileContent: fileReader
-        });
-    }
 
-    uploadFile(file) {
-        file.preventDefault();
-        let place = [];
-        let tempLoc = [];
-        let tempDis = [];
-        for (place in this.state.itPlaces){
-            tempLoc.push(this.state.itPlaces[place].name);
-            tempDis.push(this.state.distances[place]);
-        }
-
-        console.log(tempLoc);
-        console.log(tempDis);
-        this.props.itineraryLocation.locations = tempLoc;
-        this.props.itineraryLocation.distances = tempDis;
-        let updateLoc = this.props.itineraryLocation.locations;
-        let updateDis = this.props.itineraryLocation.distances;
-        this.props.updateItineraryLocation('locations', updateLoc);
-        this.props.updateItineraryLocation('distances', updateDis);
     }
 
     calculateDistances(){
