@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
 import {Container, Row, Col} from 'reactstrap'
-import {Map, Marker, Popup, TileLayer, Polygon} from "react-leaflet";
+import {Map, Marker, Popup, TileLayer, Polyline} from "react-leaflet";
 import { Button } from 'reactstrap'
 
 export default class Itinerary extends Component {
@@ -68,7 +68,7 @@ export default class Itinerary extends Component {
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                            attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                 />
-                <Polygon positions = {[this.getLL()]}/>
+                <Polyline positions = {[this.getLL()]}/>
             </Map>
         )
     }
@@ -81,6 +81,9 @@ export default class Itinerary extends Component {
         let LL = [];
         for (let i in this.state.places) {
             LL.push(L.latLng(parseFloat(this.state.places[i].latitude), parseFloat(this.state.places[i].longitude)))
+        }
+        if (this.state.places[0] != null) {
+            LL.push(L.latLng(parseFloat(this.state.places[0].latitude), parseFloat(this.state.places[0].longitude)));
         }
         return LL
     }
