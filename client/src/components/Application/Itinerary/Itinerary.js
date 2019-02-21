@@ -3,6 +3,7 @@ import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
 import {Container, Row, Col} from 'reactstrap'
 import {Map, Marker, Popup, TileLayer, Polygon} from "react-leaflet";
+import { Button } from 'reactstrap'
 
 export default class Itinerary extends Component {
     constructor(props) {
@@ -15,6 +16,9 @@ export default class Itinerary extends Component {
             errorMessage: null
         }
         this.loadFile = this.loadFile.bind(this);
+        this.generateItinerary = this.generateItinerary.bind(this);
+        this.uploadFile = this.uploadFile.bind(this);
+        this.generateItinerary = this.generateItinerary.bind(this);
     }
 
     render(){
@@ -35,8 +39,12 @@ export default class Itinerary extends Component {
             <Pane header={'Save Your Itinerary'}
                   bodyJSX={
                       <Container>
+                              {this.generateItinerary()}
                           <Row>
                               <input type="file" name="" id="input" onChange={this.loadFile} />
+                              <form onSubmit={this.uploadFile}>
+                                  <Button type='submit'  color="link" > Submit </Button>
+                              </form>
                           </Row>
                       </Container>}/>
         );
@@ -76,6 +84,23 @@ export default class Itinerary extends Component {
         return LL
     }
 
+    generateItinerary(){
+        var myItinerary = [];
+        var place = [];
+        var dist = 0;
+        for(place in this.state.itPlaces){
+            myItinerary.push(
+                <div key={"places_"+place}> <Row> <Col xs="5" sm="5" md="5" lg="5" xl="5">
+                        {this.state.itPlaces[place].name}
+                    </Col>
+                    <Col xs="5" sm="5" md="5" lg="5" xl="5">
+                        {this.state.distances[place]}
+                    </Col> </Row> </div>
+            );
+
+        }
+    }
+
     saveFile(){
 
     }
@@ -95,6 +120,8 @@ export default class Itinerary extends Component {
                 'itPlaces': fileInfo.places,
                 'distances': fileInfo.distances,
             });
+            console.log(this.state.itPlaces);
+            console.log("distances: " + this.state.distances);
         };
 
         fileReader = new FileReader();
@@ -102,6 +129,29 @@ export default class Itinerary extends Component {
         //read the first file in
         //NOTE: File must be formatted in double quotations (")
         fileReader.readAsText(event.target.files[0]);
+        this.setState({
+            fileContent: fileReader
+        });
+    }
+
+    uploadFile(file) {
+        file.preventDefault();
+        let place = [];
+        let tempLoc = [];
+        let tempDis = [];
+        for (place in this.state.itPlaces){
+            tempLoc.push(this.state.itPlaces[place].name);
+            tempDis.push(this.state.distances[place]);
+        }
+
+        console.log(tempLoc);
+        console.log(tempDis);
+        this.props.itineraryLocation.locations = tempLoc;
+        this.props.itineraryLocation.distances = tempDis;
+        let updateLoc = this.props.itineraryLocation.locations;
+        let updateDis = this.props.itineraryLocation.distances;
+        this.props.updateItineraryLocation('locations', updateLoc);
+        this.props.updateItineraryLocation('distances', updateDis);
     }
 
     calculateDistances(){
