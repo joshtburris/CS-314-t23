@@ -9,7 +9,7 @@ export default class Itinerary extends Component {
         super(props);
         this.state={
             'options': {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit]},
-            'places': [],
+            'itPlaces': [],
             'distances': [],
             fileContent: null,
             errorMessage: null
@@ -84,14 +84,23 @@ export default class Itinerary extends Component {
         let fileReader;
 
         const handleFileRead = (e) => {
+            //read the text-format file to a string
             const content = fileReader.result;
+
+            //parse the string into a JSON file
+            var fileInfo = JSON.parse(content);
+
+            //set places and distances equal to the JSON file's places and distances
             this.setState({
-                fileContents: content,
+                'itPlaces': fileInfo.places,
+                'distances': fileInfo.distances,
             });
         };
 
         fileReader = new FileReader();
         fileReader.onloadend = handleFileRead;
+        //read the first file in
+        //NOTE: File must be formatted in double quotations (")
         fileReader.readAsText(event.target.files[0]);
     }
 
@@ -100,7 +109,7 @@ export default class Itinerary extends Component {
             'type'        : 'itinerary',
             'version'     : 2,
             'options'      : this.state.options,
-            'places' : this.state.places,
+            'places' : this.state.itPlaces,
         };
 
         sendServerRequestWithBody('itinerary', tipConfigRequest, this.props.settings.serverPort)
