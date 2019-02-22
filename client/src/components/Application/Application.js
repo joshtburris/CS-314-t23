@@ -89,17 +89,18 @@ export default class Application extends Component {
                         config={this.state.serverConfig}
                         updateOption={this.updatePlanOption}/>;
       case 'settings':
-        return <Settings settings={this.state.clientSettings}
+        return <Settings planOptions={this.state.planOptions}
+                         settings={this.state.clientSettings}
                          serverConfig={this.state.serverConfig}
-                         updateSetting={this.updateClientSetting}/>;
+                         updateSetting={this.updateClientSetting}
+                         updateOption={this.updatePlanOption}/>;
       case 'about':
-        return <About options={this.state.planOptions}
-                      settings={this.state.clientSettings}
-                      updateSetting={this.updateClientSetting}/>;
+        return <About/>;
       case 'itinerary':
         return <Itinerary options={this.state.planOptions}
                           settings={this.state.clientSettings}
                           createErrorBanner={this.createErrorBanner}/>;
+
       default:
         return <Home/>;
     }

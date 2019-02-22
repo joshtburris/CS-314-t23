@@ -30,11 +30,6 @@ export default class About extends Component {
                 </Row>
                 <Row>
                     <Col xs="12">
-                        {this.renderKelyn()}
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs="12">
                         {this.renderKurt()}
                     </Col>
                 </Row>
@@ -128,24 +123,4 @@ export default class About extends Component {
         );
     }
 
-
-
-    renderKelyn(){
-        return(
-            <Pane header={'Kelyn Shaffner'}
-                  bodyJSX={
-                      <div> <Row> <Col xs="3">
-                          <img
-                              style={{width: 200,height: 200, alignitems: 'center', justifycontent: 'center'}}
-                              src={KelynImage}
-                          /> </Col>
-                          <Col xs="9"> <p>
-                              I am a Senior at CSU, majoring in ACT, and this is the last class I need to graduate.
-                              I am working full-time while taking this class online. In my free time, I enjoy
-                              playing video games, hanging out with friends, and doing things outdoors.
-                          </p> </Col> </Row> </div>
-                  }
-            />
-        );
-    }
 }
