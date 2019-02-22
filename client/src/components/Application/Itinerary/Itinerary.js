@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
 import {Container, Row, Col} from 'reactstrap'
-import {Map, Marker, Popup, TileLayer, Polygon} from "react-leaflet";
+import {Map, Marker, Popup, TileLayer, Polyline} from "react-leaflet";
 import { Button } from 'reactstrap'
 
 export default class Itinerary extends Component {
@@ -10,7 +10,7 @@ export default class Itinerary extends Component {
         super(props);
         this.state={
             'options': {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit]},
-            'itPlaces': [],
+            'places': [],
             'distances': [],
             fileContent: null,
             errorMessage: null
@@ -68,7 +68,7 @@ export default class Itinerary extends Component {
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                            attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                 />
-                <Polygon positions = {[this.getLL()]}/>
+                <Polyline positions = {[this.getLL()]}/>
             </Map>
         )
     }
@@ -79,8 +79,11 @@ export default class Itinerary extends Component {
 
     getLL(){
         let LL = [];
-        for (let place in this.state.places) {
-            LL.push(L.latLng([place.latitude, place.longitude]))
+        for (let i in this.state.places) {
+            LL.push(L.latLng(parseFloat(this.state.places[i].latitude), parseFloat(this.state.places[i].longitude)))
+        }
+        if (this.state.places[0] != null) {
+            LL.push(L.latLng(parseFloat(this.state.places[0].latitude), parseFloat(this.state.places[0].longitude)));
         }
         return LL
     }
@@ -92,11 +95,11 @@ export default class Itinerary extends Component {
         let tempLoc = [];
         myItinerary.push(this.itineraryHeader());
 
-        for(place in this.state.itPlaces){
-            tempLoc.push(this.state.itPlaces[place].name);
+        for(place in this.state.places){
+            tempLoc.push(this.state.places[place].name);
             myItinerary.push(
                 <div key={"places_"+place}> <Row> <Col xs="6" sm="6" md="6" lg="6" xl="6">
-                        {this.state.itPlaces[place].name}
+                        {this.state.places[place].name}
                     </Col>
                     <Col xs="5" sm="5" md="5" lg="5" xl="5">
                         {dist}
@@ -104,7 +107,7 @@ export default class Itinerary extends Component {
             );
             dist = dist + this.state.distances[place];
         }
-        if(this.state.itPlaces[0]){
+        if(this.state.places[0]){
             myItinerary.push(
                 <div key={"places_round_trip"}> <Row> <Col xs="6" sm="6" md="6" lg="6" xl="6">
                     {tempLoc[0]}
@@ -132,7 +135,7 @@ export default class Itinerary extends Component {
         let saveFile = new File("Itinerary.json", "write");
         saveFile.open();
         saveFile.write(this.state.fileContent);
-        console.log(this.state.itPlaces[0].name);
+        console.log(this.state.places[0].name);
         console.log(this.state.distances[0]);
     }
 
@@ -147,7 +150,7 @@ export default class Itinerary extends Component {
 
             //set places and distances equal to the JSON file's places and distances
             this.setState({
-                'itPlaces': fileInfo.places,
+                'places': fileInfo.places,
                 'distances': fileInfo.distances,
                 fileContent: fileInfo
             });
@@ -167,7 +170,7 @@ export default class Itinerary extends Component {
             'type'        : 'itinerary',
             'version'     : 2,
             'options'      : this.state.options,
-            'places' : this.state.itPlaces,
+            'places' : this.state.places,
         };
 
         sendServerRequestWithBody('itinerary', tipConfigRequest, this.props.settings.serverPort)
