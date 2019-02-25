@@ -43,7 +43,7 @@ export default class Itinerary extends Component {
                           <Row>
                               <input type="file" name="" id="input" onChange={this.loadFile} />
                               <form>
-                                  <input type="submit" value="Save..." id="saveButton" color="link" onClick={this.saveFile} />
+                                  <input type="submit" value="Save..." id="saveButton" color="link" onClick={(e) => this.saveFile(e)} />
                               </form>
                           </Row>
                       </Container>}/>
@@ -127,7 +127,8 @@ export default class Itinerary extends Component {
         return(tempList);
     }
 
-    saveFile(){
+    saveFile(event){
+        event.preventDefault()
         var file = new Blob([JSON.stringify(this.state)], {type: "text/plain;charset=utf-8"});  // Source="https://www.npmjs.com/package/file-saver/v/1.3.2"
         saveAs(file, "MyItinerary.txt");
     }
