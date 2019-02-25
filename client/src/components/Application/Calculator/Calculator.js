@@ -102,7 +102,7 @@ export default class Calculator extends Component {
     if (!this.validateCoordinates("origin") || !this.validateCoordinates("destination")) return;
     const tipConfigRequest = {
       'type'        : 'distance',
-      'version'     : 1,
+      'version'     : 2,
       'origin'      : {'latitude': coordinates(this.state.origin).lat, 'longitude': coordinates(this.state.origin).lng},
       'destination' : {'latitude': coordinates(this.state.destination).lat, 'longitude': coordinates(this.state.destination).lng},
       'earthRadius' : this.props.options.units[this.props.options.activeUnit]
