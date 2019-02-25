@@ -20,7 +20,13 @@ export default class Itinerary extends Component {
         this.saveFile = this.saveFile.bind(this);
         this.generateItinerary = this.generateItinerary.bind(this);
         this.itineraryHeader = this.itineraryHeader.bind(this);
+        this.addLocation = this.addLocation.bind(this)
     }
+
+    addLocation(id, name, latitude, longitude){
+        this.state.places.push({id: id, name: name, latitude: latitude, longitude: longitude})
+    }
+
 
     render(){
         return(

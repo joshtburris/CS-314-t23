@@ -16,9 +16,7 @@ export default class Calculator extends Component {
 
     this.state = {
         origin: '',
-        originIsValid: true,
         destination: '',
-        destinationIsValid: true,
         distance: 0,
         errorMessage: null
     };
@@ -61,14 +59,14 @@ export default class Calculator extends Component {
     );
   }
 
-  createInputField(stateVar, location) {
+  createInputField(stateVar) {
     let updateStateVarOnChange = (event) => {
       this.updateLocationOnChange(stateVar, event.target.value)};
 
-    let capitalizedCoordinate = location.charAt(0).toUpperCase() + location.slice(1);
+    let capitalizedCoordinate = stateVar.charAt(0).toUpperCase() + stateVar.slice(1);
     let color = this.validateCoordinates(stateVar) ? "black": "red";
     return (
-      <Input name={location} placeholder={capitalizedCoordinate}
+      <Input name={stateVar} placeholder={capitalizedCoordinate}
              id={`${stateVar}${capitalizedCoordinate}`}
              value={this.state[stateVar]}
              onChange={updateStateVarOnChange}
@@ -82,7 +80,7 @@ export default class Calculator extends Component {
       <Pane header={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
             bodyJSX={
               <Form >
-                {this.createInputField(stateVar, 'default text')}
+                {this.createInputField(stateVar)}
               </Form>
             }
       />);

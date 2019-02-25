@@ -18,22 +18,20 @@ function testCreateInputFields() {
   ));
 
   let numberOfInputs = calculator.find('Input').length;
-  expect(numberOfInputs).toEqual(4);
+  expect(numberOfInputs).toEqual(2);
 
   let actualInputs = [];
   calculator.find('Input').map((input) => actualInputs.push(input.prop('name')));
 
   let expectedInputs = [
-    'latitude',
-    'longitude',
-    'latitude',
-    'longitude'
+    'origin',
+    'destination',
   ];
 
   expect(actualInputs).toEqual(expectedInputs);
 }
 
-/* Tests that createForm() correctly renders 4 Input components */
+/* Tests that createForm() correctly renders 2 Input components */
 test('Testing the createForm() function in Calculator', testCreateInputFields);
 
 function testInputsOnChange() {
@@ -41,7 +39,7 @@ function testInputsOnChange() {
       <Calculator options={startProperties.options}/>
   ));
 
-  for (let inputIndex = 0; inputIndex < 4; inputIndex++){
+  for (let inputIndex = 0; inputIndex < 2; inputIndex++){
     simulateOnChangeEvent(inputIndex, calculator);
   }
 
