@@ -95,7 +95,7 @@ export default class Home extends Component {
                   });
               });
           return L.latLng(this.state.currentLocation.lat, this.state.currentLocation.lon);
-      } 
+      }
   }
 
   markerIcon() {

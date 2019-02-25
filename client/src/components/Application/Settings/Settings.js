@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Container, Row, Col} from 'reactstrap';
 import Interop from './Interop';
+import CustomUnit from './CustomUnit'
 import Pane from '../Pane';
 
 /**
@@ -26,6 +27,11 @@ export default class Settings extends Component {
             <Interop serverPort={this.props.settings.serverPort}
                      serverConfig={this.props.serverConfig}
                      updateSetting={this.props.updateSetting}/>
+          </Col>
+          <Col xs="12" sm="12" md="10" lg="8" xl="6">
+              <CustomUnit updatePlanOption={this.props.updateOption}
+                          updateSetting={this.props.updateSetting}
+                          planOptions={this.props.planOptions}/>
           </Col>
         </Row>
       </Container>
