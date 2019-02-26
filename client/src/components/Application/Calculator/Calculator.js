@@ -15,9 +15,9 @@ export default class Calculator extends Component {
     this.createInputField = this.createInputField.bind(this);
 
     this.state = {
-        origin: '',
-        destination: '',
-        distance: 0,
+        origin: this.props.calculatorInput.origin,
+        destination: this.props.calculatorInput.destination,
+        distance: this.calculateDistance(),
         errorMessage: null
     };
   }
@@ -98,12 +98,12 @@ export default class Calculator extends Component {
   }
 
   calculateDistance() {
-    if (!this.validateCoordinates("origin") || !this.validateCoordinates("destination")) return;
+    if (!this.validateCoordinates("origin") || !this.validateCoordinates("destination")) return 0;
     const tipConfigRequest = {
       'type'        : 'distance',
       'version'     : 2,
-      'origin'      : {'latitude': coordinates(this.state.origin).lat, 'longitude': coordinates(this.state.origin).lng},
-      'destination' : {'latitude': coordinates(this.state.destination).lat, 'longitude': coordinates(this.state.destination).lng},
+      'origin'      : {'latitude': coordinates(this.props.calculatorInput.origin).lat, 'longitude': coordinates(this.props.calculatorInput.origin).lng},
+      'destination' : {'latitude': coordinates(this.props.calculatorInput.destination).lat, 'longitude': coordinates(this.props.calculatorInput.destination).lng},
       'earthRadius' : this.props.options.units[this.props.options.activeUnit]
     };
 
@@ -129,7 +129,7 @@ export default class Calculator extends Component {
 
   validateCoordinates(statevar){
     try {
-        if(!coordinates(this.state[statevar]) || !coordinates(this.state[statevar]).lat || !coordinates(this.state[statevar]).lng){
+        if(!coordinates(this.props.calculatorInput[statevar]) || !coordinates(this.props.calculatorInput[statevar]).lat || !coordinates(this.props.calculatorInput[statevar]).lng){
             return false;
         }
         else return true;    
@@ -141,5 +141,11 @@ export default class Calculator extends Component {
 
   updateLocationOnChange(stateVar, value) {
       this.setState({[stateVar]: value}, () => {this.calculateDistance()});
+      this.updateCalculatorInput(stateVar, value);
   }
+
+  updateCalculatorInput(stateVar, value) {
+    this.props.calculatorInput[stateVar] = value;
+  }
+
 }
