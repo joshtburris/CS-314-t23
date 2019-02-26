@@ -43,7 +43,7 @@ function testInputsOnChange() {
     simulateOnChangeEvent(inputIndex, calculator);
   }
 
-  expect(calculator.state().origin.latitude).toEqual(0);
+  expect(calculator.state().origin.latitude).toEqual(0)?;
   expect(calculator.state().origin.longitude).toEqual(1);
   expect(calculator.state().destination.latitude).toEqual(2);
   expect(calculator.state().destination.longitude).toEqual(3);

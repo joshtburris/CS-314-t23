@@ -12,7 +12,7 @@ public class TestTipItinerary {
     /* Radius and location values shared by test cases */
     private Map<String, Object> csu;
     private Map<String, Object> options;
-    private final int version = 1;
+    private final int version = 2;
 
     @Before
     public void createDataForTestCases() {
@@ -33,7 +33,24 @@ public class TestTipItinerary {
         trip.buildResponse();
         long[] expect = {0, 0};
         long[] actual = trip.getDistances();
-
         assertArrayEquals("origin and destination are the same", expect, actual);
+    }
+
+    @Test
+    public void testNoPlaces(){
+        TIPItinerary trip = new TIPItinerary(version, options, new Map[0]);
+        trip.buildResponse();;
+        long[] expect = {};
+        long[] actual = trip.getDistances();
+        assertArrayEquals("No places", expect, actual);
+    }
+
+    @Test
+    public void testOnePlace(){
+        TIPItinerary trip = new TIPItinerary(version, options, new Map[]{csu});
+        trip.buildResponse();
+        long[] expect = {0};
+        long[] actual = trip.getDistances();
+        assertArrayEquals("One place", expect, actual);
     }
 }

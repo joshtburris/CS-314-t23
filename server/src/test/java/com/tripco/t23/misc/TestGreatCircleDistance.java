@@ -20,13 +20,13 @@ public class TestGreatCircleDistance {
 
     @Test
     public void testCoordinates() {
-        Double actualDistance_Test_1 = GreatCircleDistance.HaversineFormula(latitude_1, longitude_1, latitude_2, longitude_2, radiusMiles);
-        Double expect_1 = 274.19989972041026;
+        long actualDistance_Test_1 = GreatCircleDistance.HaversineFormula(latitude_1, longitude_1, latitude_2, longitude_2, radiusMiles);
+        long expect_1 = 274L;
         assertEquals("distance calculated are the same", expect_1, actualDistance_Test_1);
 
 
-        Double actualDistance_Test_2 = GreatCircleDistance.HaversineFormula(latitude_NP, longitude_NP, latitude_SP, longitude_SP, radiusMiles);
-        Double expect_2 = 12434.423722908401;
+        long actualDistance_Test_2 = GreatCircleDistance.HaversineFormula(latitude_NP, longitude_NP, latitude_SP, longitude_SP, radiusMiles);
+        long expect_2 = 12434L;
         assertEquals("distance calculated are the same", expect_2, actualDistance_Test_2);
     }
 

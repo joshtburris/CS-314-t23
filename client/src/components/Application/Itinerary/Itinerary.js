@@ -70,6 +70,7 @@ export default class Itinerary extends Component {
         // 2: center={this.csuOvalGeographicCoordinates()} zoom={10}
         return (
             <Map center={this.csuOvalGeographicCoordinates()} zoom={10}
+                 /*bounds = {}*/
                  style={{height: 500, maxwidth: 700}}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                            attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"

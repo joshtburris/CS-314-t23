@@ -33,7 +33,7 @@ public class TIPItinerary extends TIPHeader{
 
     @Override
     public void buildResponse() {
-        Float earthRadius = Float.parseFloat(options.get("earthRadius").toString());
+        double earthRadius = Double.parseDouble(options.get("earthRadius").toString());
         for (int i =0; i < places.length; i++){
             this.distances[i] = GreatCircleDistance.getDistance(places[i], places[(i+1)%places.length], earthRadius);
         }
