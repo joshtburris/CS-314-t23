@@ -138,7 +138,7 @@ export default class Itinerary extends Component {
     }
 
     saveFile(event){
-        event.preventDefault()
+        event.preventDefault();
         var file = new Blob([JSON.stringify(this.state)], {type: "text/plain;charset=utf-8"});  // Source="https://www.npmjs.com/package/file-saver/v/1.3.2"
         saveAs(file, "MyItinerary.txt");
     }
@@ -158,7 +158,6 @@ export default class Itinerary extends Component {
                 'distances': fileInfo.distances,
                 fileContent: fileInfo
             });
-            console.log(fileInfo);
         };
 
         fileReader = new FileReader();

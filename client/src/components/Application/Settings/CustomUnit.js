@@ -85,15 +85,15 @@ export default class CustomUnit extends Component{
                 </Col>
                 <Col xs="2" sm="2" md="2" lg="2" xl="2">
                     <form onSubmit={this.updateUnits}>
-                        <Button type='submit'  color="link" > + </Button>
+                        <Button type='submit'  color="link" > <b>+</b> </Button>
                     </form>
             </Col> </Row> </Container>
         );
     }
 
     generateList(){
-        var mylist = []
-        var unit = ''
+        var mylist = [];
+        var unit = '';
         for(unit in this.props.planOptions.units){
             if(unit != 'miles' && unit != 'Nautical Miles' && unit != 'kilometers'){
                 mylist.push(
@@ -104,7 +104,7 @@ export default class CustomUnit extends Component{
                             {this.props.planOptions.units[unit]}
                         </Col>
                         <Col xs="2" sm="2" md="2" lg="2" xl="2">
-                            <Button type='submit' color="link" onClick={()=>{this.deleteUnits(unit);}} > - </Button>
+                            <Button type='submit' color="link" onClick={()=>{this.deleteUnits(unit);}} > <b>X</b> </Button>
                         </Col> </Row> </div>);
             }
         }
@@ -119,6 +119,9 @@ export default class CustomUnit extends Component{
             }
         }
         this.props.updatePlanOption('units', temp);
+        if (temp[unit] === temp[this.props.planOptions.activeUnit]){
+            this.props.updatePlanOption('activeUnit', 'miles');
+        }
     }
 
     updateInputText(event) {
@@ -133,6 +136,10 @@ export default class CustomUnit extends Component{
         unit.preventDefault();
         let updatedUnits = this.props.planOptions.units;
         updatedUnits[this.state.inputText] = this.state.inputNum;
+        this.setState({
+            inputText: '',
+            inputNum: ''
+        });
         this.props.updatePlanOption('units', updatedUnits);
     }
 
