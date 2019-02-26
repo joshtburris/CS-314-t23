@@ -35,7 +35,7 @@ public class TIPConfig extends TIPHeader {
   @Override
   public void buildResponse() {
     this.serverName = "t23 Byte Me";
-    this.placeAttributes = Arrays.asList("latitude", "longitude", "name");
+    this.placeAttributes = Arrays.asList("latitude", "longitude", "name", "id", "municipality", "altitude");
     log.trace("buildResponse -> {}", this);
   }
 
@@ -44,7 +44,13 @@ public class TIPConfig extends TIPHeader {
     return this.serverName;
   }
 
+  public String getType(){
+    return this.requestType;
+  }
 
+  public int getVersion(){
+    return this.requestVersion;
+  }
   List<String> getPlaceAttributes() {
     return this.placeAttributes;
   }

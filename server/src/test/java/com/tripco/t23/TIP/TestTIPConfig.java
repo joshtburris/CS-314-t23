@@ -20,14 +20,14 @@ public class TestTIPConfig {
 
   @Test
   public void testType() {
-    String type = "config"; //conf.getType();
+    String type = conf.getType();
     assertEquals("config requestType", "config", type);
   }
 
   @Test
   public void testVersion() {
-    int version = 1; //conf.getVersion();
-    assertEquals("config requestVersion", 1, version);
+    int version = conf.getVersion();
+    assertEquals("config requestVersion", 2, version);
   }
 
   @Test
@@ -39,6 +39,6 @@ public class TestTIPConfig {
   @Test
   public void testPlaceAttributes() {
     List<String> attr = conf.getPlaceAttributes();
-    assertEquals("config attribute size", 3, attr.size());
+    assertEquals("config attribute size", 6, attr.size());
   }
 }
