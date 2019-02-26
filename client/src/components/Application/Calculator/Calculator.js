@@ -92,7 +92,6 @@ export default class Calculator extends Component {
             bodyJSX={
               <div>
               <h5>{this.state.distance} {this.props.options.activeUnit}</h5>
-              <Button onClick={this.calculateDistance}>Calculate</Button>
             </div>}
       />
     );
