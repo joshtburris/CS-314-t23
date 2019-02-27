@@ -26,13 +26,10 @@ export default class Calculator extends Component {
     return (
       <Container>
         { this.state.errorMessage }
-        <Row>
-          <Col>
+        <Row> <Col>
             {this.createHeader()}
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12} sm={6} md={4} lg={3}>
+        </Col> </Row>
+        <Row> <Col xs={12} sm={6} md={4} lg={3}>
             {this.createForm('origin')}
           </Col>
           <Col xs={12} sm={6} md={4} lg={3}>
@@ -62,7 +59,6 @@ export default class Calculator extends Component {
   createInputField(stateVar) {
     let updateStateVarOnChange = (event) => {
       this.updateLocationOnChange(stateVar, event.target.value)};
-
     let capitalizedCoordinate = stateVar.charAt(0).toUpperCase() + stateVar.slice(1);
     let color = this.validateCoordinates(stateVar) ? "black": "red";
     return (

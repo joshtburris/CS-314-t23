@@ -28,7 +28,10 @@ export default class Application extends Component {
         units: {'miles':3959,'Nautical Miles':3440, 'kilometers':6371},
         activeUnit: 'miles' // This is where we will automatically update the units based on user location.
       },
-      calculatorInput: {'origin':'' , 'destination':''},
+      calculatorInput: {
+        origin:'',
+        destination:''
+      },
       clientSettings: {
         serverPort: getOriginalServerPort()
       },

@@ -12,9 +12,17 @@ const startProperties = {
   }
 };
 
+const startInput = {
+    'calculatorInput': {
+        'origin':'',
+        'destination':''
+    }
+};
+
 function testCreateInputFields() {
   const calculator = mount((
-      <Calculator options={startProperties.options}/>
+      <Calculator options={startProperties.options}
+                  calculatorInput={startInput.calculatorInput}/>
   ));
 
   let numberOfInputs = calculator.find('Input').length;
@@ -36,17 +44,16 @@ test('Testing the createForm() function in Calculator', testCreateInputFields);
 
 function testInputsOnChange() {
   const calculator = mount((
-      <Calculator options={startProperties.options}/>
+      <Calculator options={startProperties.options}
+                  calculatorInput={startInput.calculatorInput}/>
   ));
 
   for (let inputIndex = 0; inputIndex < 2; inputIndex++){
     simulateOnChangeEvent(inputIndex, calculator);
   }
 
-  expect(calculator.state().origin.latitude).toEqual(0)?;
-  expect(calculator.state().origin.longitude).toEqual(1);
-  expect(calculator.state().destination.latitude).toEqual(2);
-  expect(calculator.state().destination.longitude).toEqual(3);
+  expect(calculator.state().origin).toEqual(0);
+  expect(calculator.state().destination).toEqual(1);
 }
 
 function simulateOnChangeEvent(inputIndex, reactWrapper) {
@@ -54,16 +61,10 @@ function simulateOnChangeEvent(inputIndex, reactWrapper) {
   let event = {target: {name: eventName, value: inputIndex}};
   switch(inputIndex) {
     case 0:
-      reactWrapper.find('#originLatitude').at(0).simulate('change', event);
+      reactWrapper.find('#originOrigin').at(0).simulate('change', event);
       break;
     case 1:
-      reactWrapper.find('#originLatitude').at(0).simulate('change', event);
-      break;
-    case 2:
-      reactWrapper.find('#destinationLatitude').at(0).simulate('change', event);
-      break;
-    case 3:
-      reactWrapper.find('#destinationLongitude').at(0).simulate('change', event);
+      reactWrapper.find('#destinationDestination').at(0).simulate('change', event);
       break;
     default:
   }
