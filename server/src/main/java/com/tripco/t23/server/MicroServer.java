@@ -8,6 +8,7 @@ import com.tripco.t23.TIP.TIPHeader;
 
 import java.lang.reflect.Type;
 
+import com.tripco.t23.TIP.TIPItinerary;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
@@ -88,7 +89,7 @@ class MicroServer {
   }
 
   private String processTIPitineraryRequest(Request request, Response response){
-    return processTIPrequest(TIPDistance.class, request, response);
+    return processTIPrequest(TIPItinerary.class, request, response);
   }
 
   private String processTIPdistanceRequest(Request request, Response response) {

@@ -37,7 +37,34 @@ public class TestTipItinerary {
     }
 
     @Test
-    public void testNoPlaces(){
+    public void testSample() {
+        Map<String, Object>dnvr = new HashMap<>();
+        dnvr.put("latitude", "39.7392");
+        dnvr.put("longitude", "-104.9903");
+        dnvr.put("name", "Denver");
+
+        Map<String, Object>bldr = new HashMap<>();
+        bldr.put("latitude", "40.01499");
+        bldr.put("longitude", "-105.27055");
+        bldr.put("name", "Boulder");
+
+        Map<String, Object>foco = new HashMap<>();
+        foco.put("latitude", "40.585258");
+        foco.put("longitude", "-105.084419");
+        foco.put("name", "Fort Collins");
+
+        Map<String, Object> options = new HashMap<>();
+        options.put("title", "My Trip");
+        options.put("earthRadius", "3958.761316");
+
+        TIPItinerary trip = new TIPItinerary(version, options, new Map[]{dnvr, bldr, foco});
+        trip.buildResponse();
+        long[] expect = {24,41,59};
+        long[] actual = trip.getDistances();
+        assertArrayEquals("Sample from tip.md", expect, actual);
+    }
+  
+    public void testNoPlaces() {
         TIPItinerary trip = new TIPItinerary(version, options, new Map[0]);
         trip.buildResponse();;
         long[] expect = {};
@@ -46,7 +73,7 @@ public class TestTipItinerary {
     }
 
     @Test
-    public void testOnePlace(){
+    public void testOnePlace() {
         TIPItinerary trip = new TIPItinerary(version, options, new Map[]{csu});
         trip.buildResponse();
         long[] expect = {0};
@@ -54,3 +81,4 @@ public class TestTipItinerary {
         assertArrayEquals("One place", expect, actual);
     }
 }
+

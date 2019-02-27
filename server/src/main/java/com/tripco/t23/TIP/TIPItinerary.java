@@ -9,16 +9,14 @@ public class TIPItinerary extends TIPHeader{
     private Map[] places;
     private long[] distances;
     private Map options;
-    private Integer requestVersion;
 
-    private final transient Logger log = LoggerFactory.getLogger(TIPDistance.class);
+    private final transient Logger log = LoggerFactory.getLogger(TIPItinerary.class);
 
         TIPItinerary(int version, Map options, Map[] places) {
-        this();
-        this.requestVersion = version;
-        this.places = places;
-        this.options = options;
-        this.distances = new long[places.length];
+            this();
+            this.requestVersion = version;
+            this.places = places;
+            this.options = options;
     }
 
 
@@ -34,6 +32,8 @@ public class TIPItinerary extends TIPHeader{
     @Override
     public void buildResponse() {
         double earthRadius = Double.parseDouble(options.get("earthRadius").toString());
+        this.distances = new long[places.length];
+      
         for (int i =0; i < places.length; i++){
             this.distances[i] = GreatCircleDistance.getDistance(places[i], places[(i+1)%places.length], earthRadius);
         }
