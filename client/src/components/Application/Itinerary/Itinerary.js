@@ -2,9 +2,7 @@ import React, { Component } from 'react'
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
 import {Container, Row, Col} from 'reactstrap'
-import FileSaver from "file-saver";
-import {Map, Marker, Popup, TileLayer, Polyline} from "react-leaflet";
-import { Button } from 'reactstrap'
+import {Map, TileLayer, Polyline} from "react-leaflet";
 
 export default class Itinerary extends Component {
     constructor(props) {
@@ -13,14 +11,14 @@ export default class Itinerary extends Component {
             'options': {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit]},
             'places': [],
             'distances': [],
-            fileContent: null,
             errorMessage: null
-        }
+        };
         this.loadFile = this.loadFile.bind(this);
         this.saveFile = this.saveFile.bind(this);
         this.generateItinerary = this.generateItinerary.bind(this);
         this.itineraryHeader = this.itineraryHeader.bind(this);
-        this.addLocation = this.addLocation.bind(this)
+        this.addLocation = this.addLocation.bind(this);
+        this.calculateDistances = this.calculateDistances.bind(this);
     }
 
     addLocation(id, name, latitude, longitude){
@@ -154,11 +152,7 @@ export default class Itinerary extends Component {
             let fileInfo = JSON.parse(content);
 
             //set places and distances equal to the JSON file's places and distances
-            this.setState({
-                'places': fileInfo.places,
-                'distances': fileInfo.distances,
-                fileContent: fileInfo
-            });
+            this.setState({'places': fileInfo.places}, () => this.calculateDistances());
         };
 
         fileReader = new FileReader();
@@ -173,8 +167,8 @@ export default class Itinerary extends Component {
         const tipConfigRequest = {
             'type'        : 'itinerary',
             'version'     : 2,
-            'options'      : this.state.options,
-            'places' : this.state.places,
+            'options'     : this.state.options,
+            'places'      : this.state.places,
         };
 
         sendServerRequestWithBody('itinerary', tipConfigRequest, this.props.settings.serverPort)
