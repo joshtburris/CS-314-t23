@@ -12,7 +12,8 @@ export default class Itinerary extends Component {
             'options': {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit]},
             'places': [],
             'distances': [],
-            errorMessage: null
+            errorMessage: null,
+            boundaries: null
         };
         this.loadFile = this.loadFile.bind(this);
         this.saveFile = this.saveFile.bind(this);
@@ -47,7 +48,7 @@ export default class Itinerary extends Component {
             <Pane header={'Save Your Itinerary'}
                   bodyJSX={
                       <Container>
-                              {this.generateItinerary()}
+                          {this.generateItinerary()}
                           <Row>
                               <input type="file" name="" id="input" onChange={this.loadFile} />
                               <form>
@@ -69,9 +70,9 @@ export default class Itinerary extends Component {
         // initial map placement can use either of these approaches:
         // 1: bounds={this.coloradoGeographicBoundaries()}
         // 2: center={this.csuOvalGeographicCoordinates()} zoom={10}
+
         return (
-            <Map center={this.csuOvalGeographicCoordinates()} zoom={10}
-                 bounds = {this.getBounds()}
+            <Map bounds={this.getBounds()}
                  style={{height: 500, maxwidth: 700}}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                            attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
@@ -81,18 +82,18 @@ export default class Itinerary extends Component {
         )
     }
 
-    csuOvalGeographicCoordinates() {
-        return L.latLng(40.576179, -105.080773);
+    coloradoGeographicBoundaries() {
+        // northwest and southeas< Itinerary-Mapt corners of the state of Colorado
+        return L.latLngBounds(L.latLng(41, -109), L.latLng(37, -102));
     }
 
     getBounds(){
         if(this.state.places.length == 0){
-            return L.latLngBounds(L.latLng(41, -109), L.latLng(37, -102));
+            return this.coloradoGeographicBoundaries();
         }
         let tLat = [];
         let tLon = [];
         for(let place in this.state.places) {
-            // console.log(parseFloat(this.state.places[place].latitude));
             tLat.push(this.state.places[place].latitude);
             tLon.push(this.state.places[place].longitude);
         }
@@ -101,7 +102,7 @@ export default class Itinerary extends Component {
         let minLat = Math.min.apply(null, tLat);
         let minLon = Math.min.apply(null, tLon);
 
-        return L.latLngBounds(L.latLng(Math.floor(minLat), Math.floor(minLon)), L.latLng(Math.ceil(maxLat), Math.ceil(maxLon)));
+        return L.latLngBounds(L.latLng(minLat, minLon), L.latLng(maxLat, maxLon));
     }
 
     getLL(){
@@ -126,8 +127,8 @@ export default class Itinerary extends Component {
             tempLoc.push(this.state.places[place].name);
             myItinerary.push(
                 <div key={"places_"+place}> <Row> <Col xs="6" sm="6" md="6" lg="6" xl="6">
-                        {this.state.places[place].name}
-                    </Col>
+                    {this.state.places[place].name}
+                </Col>
                     <Col xs="5" sm="5" md="5" lg="5" xl="5">
                         {dist}
                     </Col> </Row> </div>
@@ -139,9 +140,9 @@ export default class Itinerary extends Component {
                 <div key={"places_round_trip"}> <Row> <Col xs="6" sm="6" md="6" lg="6" xl="6">
                     {tempLoc[0]}
                 </Col>
-                <Col xs="5" sm="5" md="5" lg="5" xl="5">
-                    {dist}
-                </Col> </Row> </div>
+                    <Col xs="5" sm="5" md="5" lg="5" xl="5">
+                        {dist}
+                    </Col> </Row> </div>
             );}
         return(myItinerary);
     }
@@ -152,9 +153,9 @@ export default class Itinerary extends Component {
             <div key={"itinerary_header"}> <Row> <Col xs="6" sm="6" md="6" lg="6" xl="6">
                 <b>Destinations</b>
             </Col>
-            <Col xs="6" sm="6" md="6" lg="5" xl="6">
-                <b>Total Distance</b>
-            </Col> </Row> </div>);
+                <Col xs="6" sm="6" md="6" lg="5" xl="6">
+                    <b>Total Distance</b>
+                </Col> </Row> </div>);
         return(tempList);
     }
 
@@ -174,13 +175,12 @@ export default class Itinerary extends Component {
                 //set places and distances equal to the JSON file's places and distances
                 this.setState({'places': fileInfo.places}, () => this.calculateDistances());}
             catch (err){
-                console.log(err);
                 this.setState({
                     'places': [],
                     'distances': [],
                     errorMessage: <Alert className='bg-csu-canyon text-white font-weight-extrabold'>
                                       Error(0): Invalid file found. Please select a valid itinerary file.</Alert>
-            });}};
+                });}};
         try {e.preventDefault();
             fileReader = new FileReader();
             fileReader.onloadend = handleFileRead;
