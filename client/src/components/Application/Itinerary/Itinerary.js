@@ -142,9 +142,22 @@ export default class Itinerary extends Component {
         let dist = 0;
         let tempLoc = [];
         myItinerary.push(this.itineraryHeader());
-
+        if(this.state.places.length > 0){
+            myItinerary.push(
+                <div key={"places_first"}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
+                    {this.state.places[0].name}
+                </Col>
+                    <Col xs="4" sm="4" md="4" lg="3" xl="4">
+                        {0}
+                    </Col>
+                    <Col xs="4" sm="4" md="4" lg="3" xl="4">
+                        {dist}
+                    </Col> </Row> </div>
+            );
+            dist = dist + this.state.distances[0];
+        }
         for(let place in this.state.places){
-            tempLoc.push(this.state.places[place].name);
+            if (place == 0) continue;
             myItinerary.push(
                 <div key={"places_"+place}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
                     {this.state.places[place].name}
@@ -160,16 +173,18 @@ export default class Itinerary extends Component {
         }
         if(this.state.places.length > 1){
             myItinerary.push(
-                <div key={"places_round_trip"}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                    {tempLoc[0]}
+                <div key={"places_first"}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
+                    {this.state.places[0].name}
                 </Col>
                     <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                        {this.state.distances[0]}
+                        {this.state.distances[this.state.distances.length-1]}
                     </Col>
                     <Col xs="4" sm="4" md="4" lg="3" xl="4">
                         {dist}
                     </Col> </Row> </div>
-            );}
+            );
+            dist = dist + this.state.distances[0];
+        }
         return(myItinerary);
     }
 
