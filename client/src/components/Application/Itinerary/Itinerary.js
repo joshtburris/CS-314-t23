@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
-import FileSaver from "file-saver";
+import { Alert } from 'reactstrap';
 import {Container, Row, Col} from 'reactstrap'
 import {Map, TileLayer, Polyline} from "react-leaflet";
 
@@ -18,8 +18,9 @@ export default class Itinerary extends Component {
         this.saveFile = this.saveFile.bind(this);
         this.generateItinerary = this.generateItinerary.bind(this);
         this.itineraryHeader = this.itineraryHeader.bind(this);
-        this.addLocation = this.addLocation.bind(this)
+        this.addLocation = this.addLocation.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
+        this.getBounds = this.getBounds.bind(this);
     }
 
     addLocation(id, name, latitude, longitude){
@@ -30,6 +31,7 @@ export default class Itinerary extends Component {
     render(){
         return(
             <Container>
+                { this.state.errorMessage }
                 <Row> <Col xs={12} sm={12} md={7} lg={8} xl={8}>
                     {this.renderMap()}
                 </Col>
@@ -69,7 +71,7 @@ export default class Itinerary extends Component {
         // 2: center={this.csuOvalGeographicCoordinates()} zoom={10}
         return (
             <Map center={this.csuOvalGeographicCoordinates()} zoom={10}
-                 /*bounds = {}*/
+                 bounds = {this.getBounds()}
                  style={{height: 500, maxwidth: 700}}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                            attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
@@ -81,6 +83,25 @@ export default class Itinerary extends Component {
 
     csuOvalGeographicCoordinates() {
         return L.latLng(40.576179, -105.080773);
+    }
+
+    getBounds(){
+        if(this.state.places.length == 0){
+            return L.latLngBounds(L.latLng(41, -109), L.latLng(37, -102));
+        }
+        let tLat = [];
+        let tLon = [];
+        for(let place in this.state.places) {
+            // console.log(parseFloat(this.state.places[place].latitude));
+            tLat.push(this.state.places[place].latitude);
+            tLon.push(this.state.places[place].longitude);
+        }
+        let maxLat = Math.max.apply(null, tLat);
+        let maxLon = Math.max.apply(null, tLon);
+        let minLat = Math.min.apply(null, tLat);
+        let minLon = Math.min.apply(null, tLon);
+
+        return L.latLngBounds(L.latLng(Math.floor(minLat), Math.floor(minLon)), L.latLng(Math.ceil(maxLat), Math.ceil(maxLon)));
     }
 
     getLL(){
@@ -143,24 +164,35 @@ export default class Itinerary extends Component {
         saveAs(file, "MyItinerary.txt");
     }
 
-    loadFile(){
+    loadFile(e){
         let fileReader;
         const handleFileRead = (e) => {
             //read the text-format file to a string
             const content = fileReader.result;
-
             //parse the string into a JSON file
-            let fileInfo = JSON.parse(content);
-
-            //set places and distances equal to the JSON file's places and distances
-            this.setState({'places': fileInfo.places}, () => this.calculateDistances());
-        };
-
-        fileReader = new FileReader();
-        fileReader.onloadend = handleFileRead;
-        //read the first file in
-        //NOTE: File must be formatted in double quotations (")
-        fileReader.readAsText(event.target.files[0]);
+            try{let fileInfo = JSON.parse(content);
+                //set places and distances equal to the JSON file's places and distances
+                this.setState({'places': fileInfo.places}, () => this.calculateDistances());}
+            catch (err){
+                console.log(err);
+                this.setState({
+                    'places': [],
+                    'distances': [],
+                    errorMessage: <Alert className='bg-csu-canyon text-white font-weight-extrabold'>
+                                      Error(0): Invalid file found. Please select a valid itinerary file.</Alert>
+            });}};
+        try {e.preventDefault();
+            fileReader = new FileReader();
+            fileReader.onloadend = handleFileRead;
+            //read the first file in
+            //NOTE: File must be formatted in double quotations (")
+            fileReader.readAsText(event.target.files[0]);
+        }catch (error){
+            this.setState({
+                'places': [],
+                'distances': []
+            });
+        }
     }
 
     calculateDistances(){
