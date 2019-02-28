@@ -97,9 +97,11 @@ export default class CustomUnit extends Component{
         for(unit in this.props.planOptions.units){
             if(unit != 'miles' && unit != 'Nautical Miles' && unit != 'kilometers'){
                 mylist.push(
-                    <div key={"units_"+unit}> <Row> <Col xs="5" sm="5" md="5" lg="5" xl="5">
-                        {unit}
-                    </Col>
+                    <div key={"units_"+unit}>
+                        <Row>
+                        <Col xs="5" sm="5" md="5" lg="5" xl="5">
+                            {unit}
+                        </Col>
                         <Col xs="5" sm="5" md="5" lg="5" xl="5">
                             {this.props.planOptions.units[unit]}
                         </Col>
