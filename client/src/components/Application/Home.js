@@ -12,15 +12,6 @@ import Pane from './Pane'
 export default class Home extends Component {
     constructor(props){
         super(props);
-
-        this.userLocationCoordinates = this.userLocationCoordinates.bind(this);
-
-        this.state={
-            currentLocation: {
-                lat: 40.576179,
-                lon: -105.080773
-            }
-        }
     }
 
   render() {
@@ -49,13 +40,14 @@ export default class Home extends Component {
     // initial map placement can use either of these approaches:
     // 1: bounds={this.coloradoGeographicBoundaries()}
     // 2: center={this.csuOvalGeographicCoordinates()} zoom={10}
+    let c_location = this.props.currentLocation == null ? this.csuOvalGeographicCoordinates() : this.props.getUserLocation();
     return (
-      <Map center={this.userLocationCoordinates()} zoom={10}
+      <Map center={c_location} zoom={10}
            style={{height: 500, maxwidth: 700}}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                    attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
         />
-        <Marker position={this.userLocationCoordinates()}
+        <Marker position={c_location}
                 icon={this.markerIcon()}>
           <Popup className="font-weight-extrabold">Colorado State University</Popup>
         </Marker>
@@ -81,7 +73,7 @@ export default class Home extends Component {
     return L.latLng(40.576179, -105.080773);
   }
 
-  userLocationCoordinates() {
+  /*userLocationCoordinates() {
       if(navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
               loc => {
@@ -96,7 +88,7 @@ export default class Home extends Component {
               });
           return L.latLng(this.state.currentLocation.lat, this.state.currentLocation.lon);
       }
-  }
+  }*/
 
   markerIcon() {
     // react-leaflet does not currently handle default marker icons correctly,

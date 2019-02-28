@@ -35,10 +35,15 @@ export default class Application extends Component {
       clientSettings: {
         serverPort: getOriginalServerPort()
       },
-      errorMessage: null
+      errorMessage: null,
+      currentLocation: {
+          lat: 40.576179,
+          lon: -105.080773
+      }
     };
 
     this.updateServerConfig();
+    this.getUserLocation();
   }
 
   render() {
@@ -65,6 +70,23 @@ export default class Application extends Component {
     let optionsCopy = Object.assign({}, this.state.planOptions);
     optionsCopy[option] = value;
     this.setState({'planOptions': optionsCopy});
+  }
+
+  getUserLocation(){
+      if(navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+              loc => {
+                  console.log(loc.coords.latitude);
+                  console.log(loc.coords.longitude);
+                  this.setState({
+                      currentLocation: {
+                          lat: loc.coords.latitude,
+                          lon: loc.coords.longitude
+                      }
+                  });
+              });
+          return L.latLng(this.state.currentLocation.lat, this.state.currentLocation.lon);
+      }
   }
 
   updateServerConfig() {
