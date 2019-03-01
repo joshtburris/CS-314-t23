@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Row, Col } from 'reactstrap'
-import { Button } from 'reactstrap'
+import { Alert } from 'reactstrap';
 import { Form, Label, Input } from 'reactstrap'
 import { sendServerRequestWithBody } from '../../../api/restfulAPI'
 import Pane from '../Pane';
@@ -18,7 +18,8 @@ export default class Calculator extends Component {
         origin: this.props.calculatorInput.origin,
         destination: this.props.calculatorInput.destination,
         distance: this.calculateDistance(),
-        errorMessage: null
+        errorMessage: null,
+
     };
   }
 
@@ -94,7 +95,16 @@ export default class Calculator extends Component {
   }
 
   calculateDistance() {
-    if (!this.validateCoordinates("origin") || !this.validateCoordinates("destination")) return 0;
+    if (!this.validateCoordinates("origin") || !this.validateCoordinates("destination")){
+        let response = {statusText: "Error:", statusCode:0 };
+        this.setState({
+            distance: '',
+            errorMessage: <Alert className='bg-csu-canyon text-white font-weight-extrabold'>
+                              Error(0): Invalid input found. Please enter a valid input.
+                          </Alert>
+        });
+        return 0;
+    }
     const tipConfigRequest = {
       'type'        : 'distance',
       'version'     : 2,
@@ -120,6 +130,7 @@ export default class Calculator extends Component {
             )
           });
         }
+          console.log(response);
       });
   }
 

@@ -44,6 +44,7 @@ export default class Application extends Component {
 
     this.updateServerConfig();
     this.getUserLocation();
+    this.getUserLocation = this.getUserLocation.bind(this);
   }
 
   render() {
@@ -76,8 +77,6 @@ export default class Application extends Component {
       if(navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
               loc => {
-                  console.log(loc.coords.latitude);
-                  console.log(loc.coords.longitude);
                   this.setState({
                       currentLocation: {
                           lat: loc.coords.latitude,
@@ -130,7 +129,8 @@ export default class Application extends Component {
                           serverConfig={this.state.serverConfig}/>;
 
       default:
-        return <Home/>;
+        return <Home  currentLocation={this.state.currentLocation}
+                      getUserLocation={this.getUserLocation}/>;
     }
   }
 
