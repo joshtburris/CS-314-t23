@@ -22,6 +22,8 @@ export default class Itinerary extends Component {
         this.addLocation = this.addLocation.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
         this.getBounds = this.getBounds.bind(this);
+        this.renderTable = this.renderTable.bind(this);
+        this.getSingleLoc = this.getSingleLoc.bind(this);
     }
 
     addLocation(id, name, latitude, longitude){
@@ -39,16 +41,18 @@ export default class Itinerary extends Component {
                 <Col xs={12} sm={12} md={5} lg={4} xl={4}>
                     {this.renderItinerary()}
                 </Col> </Row>
+                <Row> <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                    {this.renderTable()}
+                </Col> </Row>
             </Container>
         );
     }
 
     renderItinerary(){
         return(
-            <Pane header={'Save Your Itinerary'}
+            <Pane header={'Save/Upload Your Itinerary'}
                   bodyJSX={
                       <Container>
-                          {this.generateItinerary()}
                           <Row>
                               <input type="file" name="" id="input" onChange={this.loadFile} />
                               <form>
@@ -91,18 +95,25 @@ export default class Itinerary extends Component {
         if(this.state.places.length == 0){
             return this.coloradoGeographicBoundaries();
         }
+        if(this.state.places.length == 1){
+            return this.getSingleLoc();
+        }
         let tLat = [];
         let tLon = [];
         for(let place in this.state.places) {
             tLat.push(this.state.places[place].latitude);
             tLon.push(this.state.places[place].longitude);
         }
-        let maxLat = Math.max.apply(null, tLat);
-        let maxLon = Math.max.apply(null, tLon);
-        let minLat = Math.min.apply(null, tLat);
-        let minLon = Math.min.apply(null, tLon);
+        let maxLat = Math.max.apply(null, tLat);let maxLon = Math.max.apply(null, tLon);
+        let minLat = Math.min.apply(null, tLat);let minLon = Math.min.apply(null, tLon);
 
         return L.latLngBounds(L.latLng(minLat, minLon), L.latLng(maxLat, maxLon));
+    }
+
+    getSingleLoc(){
+        let locLat = parseFloat(this.state.places[0].latitude);
+        let locLon = parseFloat(this.state.places[0].longitude);
+        return L.latLngBounds(L.latLng(locLat-0.05, locLon-0.05), L.latLng(locLat+0.05, locLon+0.05));
     }
 
     getLL(){
@@ -116,46 +127,79 @@ export default class Itinerary extends Component {
         return LL
     }
 
+    renderTable(){
+        return(
+            <Pane header={'Your Itinerary'}
+                  bodyJSX={
+                      <Container>
+                          {this.generateItinerary()}
+                      </Container>}/>
+        );
+    }
+
     generateItinerary(){
         let myItinerary = [];
-        let place = [];
         let dist = 0;
         let tempLoc = [];
         myItinerary.push(this.itineraryHeader());
-
-        for(place in this.state.places){
-            tempLoc.push(this.state.places[place].name);
+        if(this.state.places.length > 0){
             myItinerary.push(
-                <div key={"places_"+place}> <Row> <Col xs="6" sm="6" md="6" lg="6" xl="6">
-                    {this.state.places[place].name}
+                <div key={"places_first"}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
+                    {this.state.places[0].name}
                 </Col>
-                    <Col xs="5" sm="5" md="5" lg="5" xl="5">
+                    <Col xs="4" sm="4" md="4" lg="3" xl="4">
+                        {0}
+                    </Col>
+                    <Col xs="4" sm="4" md="4" lg="3" xl="4">
                         {dist}
                     </Col> </Row> </div>
             );
+            dist = dist + this.state.distances[0];
+        }
+        for(let place in this.state.places){
+            if (place == 0) continue;
+            myItinerary.push(
+                <div key={"places_"+place}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
+                    {this.state.places[place].name}
+                </Col>
+                <Col xs="4" sm="4" md="4" lg="3" xl="4">
+                    {this.state.distances[place]}
+                </Col>
+                <Col xs="4" sm="4" md="4" lg="3" xl="4">
+                    {dist}
+                </Col> </Row> </div>
+            );
             dist = dist + this.state.distances[place];
         }
-        if(this.state.places[0]){
+        if(this.state.places.length > 1){
             myItinerary.push(
-                <div key={"places_round_trip"}> <Row> <Col xs="6" sm="6" md="6" lg="6" xl="6">
-                    {tempLoc[0]}
+                <div key={"places_first"}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
+                    {this.state.places[0].name}
                 </Col>
-                    <Col xs="5" sm="5" md="5" lg="5" xl="5">
+                    <Col xs="4" sm="4" md="4" lg="3" xl="4">
+                        {this.state.distances[this.state.distances.length-1]}
+                    </Col>
+                    <Col xs="4" sm="4" md="4" lg="3" xl="4">
                         {dist}
                     </Col> </Row> </div>
-            );}
+            );
+            dist = dist + this.state.distances[0];
+        }
         return(myItinerary);
     }
 
     itineraryHeader(){
         let tempList = [];
         tempList.push(
-            <div key={"itinerary_header"}> <Row> <Col xs="6" sm="6" md="6" lg="6" xl="6">
+            <div key={"itinerary_header"}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
                 <b>Destinations</b>
             </Col>
-                <Col xs="6" sm="6" md="6" lg="5" xl="6">
-                    <b>Total Distance</b>
-                </Col> </Row> </div>);
+            <Col xs="4" sm="4" md="4" lg="3" xl="4">
+                <b>Leg Distance</b>
+            </Col>
+            <Col xs="4" sm="4" md="4" lg="3" xl="4">
+                <b>Total Distance</b>
+            </Col> </Row> </div>);
         return(tempList);
     }
 
