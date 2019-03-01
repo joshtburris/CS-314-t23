@@ -2,7 +2,7 @@ import './enzyme.config.js';
 import React from 'react';
 import {mount} from 'enzyme';
 import Calculator from '../src/components/Application/Calculator/Calculator';
-
+import { sendServerRequestWithBody } from '../src/api/restfulAPI';
 
 const startProperties = {
   'options': {
@@ -10,6 +10,7 @@ const startProperties = {
     'activeUnit': 'miles',
     'serverPort': 'black-bottle.cs.colostate.edu:31400'
   }
+
 };
 
 const startInput = {
@@ -18,6 +19,8 @@ const startInput = {
         'destination':''
     }
 };
+
+jest.mock('../src/api/restfulAPI');
 
 function testCreateInputFields() {
   const calculator = mount((
@@ -43,22 +46,24 @@ function testCreateInputFields() {
 test('Testing the createForm() function in Calculator', testCreateInputFields);
 
 function testInputsOnChange() {
+  sendServerRequestWithBody.mockResolvedValue({statuscode: 200, distance: [1,1]});
   const calculator = mount((
       <Calculator options={startProperties.options}
-                  calculatorInput={startInput.calculatorInput}/>
+                  calculatorInput={startInput.calculatorInput}
+                  settings={startProperties.options}/>
   ));
 
   for (let inputIndex = 0; inputIndex < 2; inputIndex++){
     simulateOnChangeEvent(inputIndex, calculator);
   }
-
-  expect(calculator.state().origin).toEqual(0);
-  expect(calculator.state().destination).toEqual(1);
+  expect(sendServerRequestWithBody.mock.calls.length).toBe(1);
+  expect(calculator.state().origin).toEqual("0, 0");
+  expect(calculator.state().destination).toEqual("1, 1");
 }
 
+
 function simulateOnChangeEvent(inputIndex, reactWrapper) {
-  let eventName = (inputIndex % 2 === 0) ? 'latitude' : 'longitude';
-  let event = {target: {name: eventName, value: inputIndex}};
+  let event = {target: {value: `${inputIndex}, ${inputIndex}`}};
   switch(inputIndex) {
     case 0:
       reactWrapper.find('#originOrigin').at(0).simulate('change', event);
