@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Container, Row, Col } from 'reactstrap'
+import { Form,  Input } from 'reactstrap'
 import { Alert } from 'reactstrap';
-import { Form, Label, Input } from 'reactstrap'
 import { sendServerRequestWithBody } from '../../../api/restfulAPI'
 import Pane from '../Pane';
 import coordinates from 'parse-coords'
@@ -134,16 +134,12 @@ export default class Calculator extends Component {
       });
   }
 
-  validateCoordinates(statevar){
-    try {
-        if(!coordinates(this.props.calculatorInput[statevar]) || !coordinates(this.props.calculatorInput[statevar]).lat || !coordinates(this.props.calculatorInput[statevar]).lng){
-            return false;
-        }
-        else return true;    
-    }  
-    catch (e) {
-        return false;
-    }
+  validateCoordinates(statevar) {
+      try {
+          return (coordinates(this.props.calculatorInput[statevar]) != null);
+      } catch (e) {
+          return false;
+      }
   }
 
   updateLocationOnChange(stateVar, value) {
