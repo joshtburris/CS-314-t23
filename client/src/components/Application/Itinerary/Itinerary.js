@@ -23,6 +23,7 @@ export default class Itinerary extends Component {
         this.calculateDistances = this.calculateDistances.bind(this);
         this.getBounds = this.getBounds.bind(this);
         this.renderTable = this.renderTable.bind(this);
+        this.getSingleLoc = this.getSingleLoc.bind(this);
     }
 
     addLocation(id, name, latitude, longitude){
@@ -94,18 +95,25 @@ export default class Itinerary extends Component {
         if(this.state.places.length == 0){
             return this.coloradoGeographicBoundaries();
         }
+        if(this.state.places.length == 1){
+            return this.getSingleLoc();
+        }
         let tLat = [];
         let tLon = [];
         for(let place in this.state.places) {
             tLat.push(this.state.places[place].latitude);
             tLon.push(this.state.places[place].longitude);
         }
-        let maxLat = Math.max.apply(null, tLat);
-        let maxLon = Math.max.apply(null, tLon);
-        let minLat = Math.min.apply(null, tLat);
-        let minLon = Math.min.apply(null, tLon);
+        let maxLat = Math.max.apply(null, tLat);let maxLon = Math.max.apply(null, tLon);
+        let minLat = Math.min.apply(null, tLat);let minLon = Math.min.apply(null, tLon);
 
         return L.latLngBounds(L.latLng(minLat, minLon), L.latLng(maxLat, maxLon));
+    }
+
+    getSingleLoc(){
+        let locLat = parseFloat(this.state.places[0].latitude);
+        let locLon = parseFloat(this.state.places[0].longitude);
+        return L.latLngBounds(L.latLng(locLat-0.05, locLon-0.05), L.latLng(locLat+0.05, locLon+0.05));
     }
 
     getLL(){
@@ -150,7 +158,7 @@ export default class Itinerary extends Component {
             );
             dist = dist + this.state.distances[place];
         }
-        if(this.state.places[0]){
+        if(this.state.places.length > 1){
             myItinerary.push(
                 <div key={"places_round_trip"}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
                     {tempLoc[0]}
