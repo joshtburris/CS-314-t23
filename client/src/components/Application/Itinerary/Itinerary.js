@@ -22,6 +22,7 @@ export default class Itinerary extends Component {
         this.addLocation = this.addLocation.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
         this.getBounds = this.getBounds.bind(this);
+        this.renderTable = this.renderTable.bind(this);
     }
 
     addLocation(id, name, latitude, longitude){
@@ -39,16 +40,18 @@ export default class Itinerary extends Component {
                 <Col xs={12} sm={12} md={5} lg={4} xl={4}>
                     {this.renderItinerary()}
                 </Col> </Row>
+                <Row> <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                    {this.renderTable()}
+                </Col> </Row>
             </Container>
         );
     }
 
     renderItinerary(){
         return(
-            <Pane header={'Save Your Itinerary'}
+            <Pane header={'Save/Upload Your Itinerary'}
                   bodyJSX={
                       <Container>
-                          {this.generateItinerary()}
                           <Row>
                               <input type="file" name="" id="input" onChange={this.loadFile} />
                               <form>
@@ -116,31 +119,46 @@ export default class Itinerary extends Component {
         return LL
     }
 
+    renderTable(){
+        return(
+            <Pane header={'Your Itinerary'}
+                  bodyJSX={
+                      <Container>
+                          {this.generateItinerary()}
+                      </Container>}/>
+        );
+    }
+
     generateItinerary(){
         let myItinerary = [];
-        let place = [];
         let dist = 0;
         let tempLoc = [];
         myItinerary.push(this.itineraryHeader());
 
-        for(place in this.state.places){
+        for(let place in this.state.places){
             tempLoc.push(this.state.places[place].name);
             myItinerary.push(
-                <div key={"places_"+place}> <Row> <Col xs="6" sm="6" md="6" lg="6" xl="6">
+                <div key={"places_"+place}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
                     {this.state.places[place].name}
                 </Col>
-                    <Col xs="5" sm="5" md="5" lg="5" xl="5">
-                        {dist}
-                    </Col> </Row> </div>
+                <Col xs="4" sm="4" md="4" lg="3" xl="4">
+                    {this.state.distances[place]}
+                </Col>
+                <Col xs="4" sm="4" md="4" lg="3" xl="4">
+                    {dist}
+                </Col> </Row> </div>
             );
             dist = dist + this.state.distances[place];
         }
         if(this.state.places[0]){
             myItinerary.push(
-                <div key={"places_round_trip"}> <Row> <Col xs="6" sm="6" md="6" lg="6" xl="6">
+                <div key={"places_round_trip"}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
                     {tempLoc[0]}
                 </Col>
-                    <Col xs="5" sm="5" md="5" lg="5" xl="5">
+                    <Col xs="4" sm="4" md="4" lg="3" xl="4">
+                        {this.state.distances[0]}
+                    </Col>
+                    <Col xs="4" sm="4" md="4" lg="3" xl="4">
                         {dist}
                     </Col> </Row> </div>
             );}
@@ -150,12 +168,15 @@ export default class Itinerary extends Component {
     itineraryHeader(){
         let tempList = [];
         tempList.push(
-            <div key={"itinerary_header"}> <Row> <Col xs="6" sm="6" md="6" lg="6" xl="6">
+            <div key={"itinerary_header"}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
                 <b>Destinations</b>
             </Col>
-                <Col xs="6" sm="6" md="6" lg="5" xl="6">
-                    <b>Total Distance</b>
-                </Col> </Row> </div>);
+            <Col xs="4" sm="4" md="4" lg="3" xl="4">
+                <b>Leg Distance</b>
+            </Col>
+            <Col xs="4" sm="4" md="4" lg="3" xl="4">
+                <b>Total Distance</b>
+            </Col> </Row> </div>);
         return(tempList);
     }
 
