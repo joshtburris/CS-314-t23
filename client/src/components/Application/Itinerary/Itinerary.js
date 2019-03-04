@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
 import { Alert } from 'reactstrap';
+import FileSaver from 'file-saver'; //
 import {Container, Row, Col} from 'reactstrap'
 import {Map, TileLayer, Polyline} from "react-leaflet";
 
@@ -163,7 +164,7 @@ export default class Itinerary extends Component {
                     {this.state.places[place].name}
                 </Col>
                 <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                    {this.state.distances[place]}
+                    {this.state.distances[place-1]}
                 </Col>
                 <Col xs="4" sm="4" md="4" lg="3" xl="4">
                     {dist}
