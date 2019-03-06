@@ -52,6 +52,7 @@ This sprint will complete the following Epics.
 We chose our epics this sprint by working top down from the TRIPCO repositories backlog. Primarily we hope to imporve our code quality and test coverage this sprint while also adding trip optimization functionality.
 
 ![optimizer_image](https://github.com/csucs314s19/t23/blob/master/team/images/optimization_diagram.png)
+![optimizer_image](https://github.com/csucs314s19/t23/blob/master/team/images/Client_Diagram.png)
 
 ## Metrics
 
