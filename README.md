@@ -9,4 +9,3 @@
 | Kurt Wimer | Kwimer | KurtWimer | kwimer@rams.colostate.edu |
 | Timothy Rooney | tprooney | tprooney | tprooney@rams.colostate.edu |
 | Caleb Tong | calebt | CalebET | calebt@rams.colostate.edu |
-| Kelyn Shaffner | kshaffne | kshaffner | kshaffne@rams.colostate.edu |
