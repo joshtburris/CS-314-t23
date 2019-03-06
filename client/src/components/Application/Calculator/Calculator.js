@@ -17,10 +17,10 @@ export default class Calculator extends Component {
     this.state = {
         origin: this.props.calculatorInput.origin,
         destination: this.props.calculatorInput.destination,
-        distance: this.calculateDistance(),
+        distance: NaN,
         errorMessage: null,
-
     };
+    this.calculateDistance()
   }
 
   render() {
@@ -96,13 +96,10 @@ export default class Calculator extends Component {
 
   calculateDistance() {
     if (!this.validateCoordinates("origin") || !this.validateCoordinates("destination")){
-        let response = {statusText: "Error:", statusCode:0 };
         this.setState({
-            distance: '',
-            errorMessage: <Alert className='bg-csu-canyon text-white font-weight-extrabold'>
-                              Error(0): Invalid input found. Please enter a valid input.
-                          </Alert>
+            distance: ''
         });
+
         return 0;
     }
     const tipConfigRequest = {
@@ -112,6 +109,8 @@ export default class Calculator extends Component {
       'destination' : {'latitude': coordinates(this.props.calculatorInput.destination).lat, 'longitude': coordinates(this.props.calculatorInput.destination).lng},
       'earthRadius' : this.props.options.units[this.props.options.activeUnit]
     };
+
+  console.log("CD state:",this.state);
 
     sendServerRequestWithBody('distance', tipConfigRequest, this.props.settings.serverPort)
       .then((response) => {
@@ -136,7 +135,8 @@ export default class Calculator extends Component {
 
   validateCoordinates(statevar) {
       try {
-          return (coordinates(this.props.calculatorInput[statevar]) != null);
+          let coords = coordinates(this.props.calculatorInput[statevar]);
+          return (coords != null && !isNaN(coords.lat) && !isNaN(coords.lng));
       } catch (e) {
           return false;
       }

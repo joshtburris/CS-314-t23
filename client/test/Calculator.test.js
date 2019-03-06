@@ -21,6 +21,13 @@ const startInput = {
 };
 
 jest.mock('../src/api/restfulAPI');
+sendServerRequestWithBody.mockResolvedValue({statuscode: 200, distance: [1,1]});
+
+afterEach(() => {
+  console.log("clearing mocks");
+  sendServerRequestWithBody.mockClear();
+});
+
 
 function testCreateInputFields() {
   const calculator = mount((
@@ -46,38 +53,44 @@ function testCreateInputFields() {
 test('Testing the createForm() function in Calculator', testCreateInputFields);
 
 function testInputsOnChange() {
-  sendServerRequestWithBody.mockResolvedValue({statuscode: 200, distance: [1,1]});
+
   const calculator = mount((
       <Calculator options={startProperties.options}
                   calculatorInput={startInput.calculatorInput}
                   settings={startProperties.options}/>
   ));
 
-  for (let inputIndex = 0; inputIndex < 2; inputIndex++){
-    simulateOnChangeEvent(inputIndex, calculator);
-  }
+  simulateOnChangeEvent("0, 0", calculator);
   expect(sendServerRequestWithBody.mock.calls.length).toBe(1);
   expect(calculator.state().origin).toEqual("0, 0");
-  expect(calculator.state().destination).toEqual("1, 1");
+  expect(calculator.state().destination).toEqual("0, 0");
+}
+
+function testInvalidInputs(){
+  //sendServerRequestWithBody.mockResolvedValue({statuscode: 200, distance: [1,1]});
+  const calculator2 = mount((
+      <Calculator options={startProperties.options}
+                  calculatorInput={startInput.calculatorInput}
+                  settings={startProperties.options}/>
+  ));
+
+  simulateOnChangeEvent("cat", calculator2);
+  simulateOnChangeEvent("cat", calculator2);
+
+  expect(calculator2.state().origin).toEqual("cat");
+  expect(calculator2.state().destination).toEqual("cat");
+  expect(sendServerRequestWithBody.mock.calls.length).toBe(0);
 }
 
 
-function simulateOnChangeEvent(inputIndex, reactWrapper) {
-  let event = {target: {value: `${inputIndex}, ${inputIndex}`}};
-  switch(inputIndex) {
-    case 0:
-      reactWrapper.find('#originOrigin').at(0).simulate('change', event);
-      break;
-    case 1:
-      reactWrapper.find('#destinationDestination').at(0).simulate('change', event);
-      break;
-    default:
-  }
+function simulateOnChangeEvent(input, reactWrapper) {
+  let event = {target: {value: `${input}`}};
+  reactWrapper.find('#originOrigin').at(0).simulate('change', event);
+  reactWrapper.find('#destinationDestination').at(0).simulate('change', event);
   reactWrapper.update();
 }
 
-/* Loop through the Input indexes and simulate an onChange event with the index
- * as the input. To simulate the change, an event object needs to be created
+/* To simulate the change, an event object needs to be created
  * with the name corresponding to its Input 'name' prop. Based on the index,
  * find the corresponding Input by its 'id' prop and simulate the change.
  *
@@ -91,4 +104,5 @@ function simulateOnChangeEvent(inputIndex, reactWrapper) {
  * https://airbnb.io/enzyme/docs/api/ReactWrapper/props.html
  * https://airbnb.io/enzyme/docs/api/ReactWrapper/find.html
  */
-test('Testing the onChange event of longitude Input in Calculator', testInputsOnChange);
+test('Testing the onChange event of Origin/Destination in Calculator with valid numbers', testInputsOnChange);
+test('Testing the onChange event of Origin/Destination in Calculator with invalid numbers', testInvalidInputs);
