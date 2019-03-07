@@ -21,11 +21,8 @@ const startInput = {
 };
 
 jest.mock('../src/api/restfulAPI');
-sendServerRequestWithBody.mockResolvedValue({statuscode: 200, distance: [1,1]});
-
 afterEach(() => {
-  console.log("clearing mocks");
-  sendServerRequestWithBody.mockClear();
+    sendServerRequestWithBody.mockClear();
 });
 
 
@@ -56,7 +53,6 @@ test('Testing the createForm() function in Calculator', testCreateInputFields);
 
 function testInputsOnChange() {
   let updateCalc = jest.fn();
-  sendServerRequestWithBody.mockResolvedValue({statuscode: 200, distance: [1,1]});
   const calculator = mount((
       <Calculator options={startProperties.options}
                   calculatorInput={startInput.calculatorInput}
@@ -64,30 +60,14 @@ function testInputsOnChange() {
                   updateCalculatorInput={updateCalc}/>
   ));
 
-    simulateOnChangeEvent("0, 0", calculator);
+  simulateOnChangeEvent("0, 0", calculator);
 
-    expect(sendServerRequestWithBody.mock.calls.length).toBe(1);
   expect(updateCalc.mock.calls.length).toBe(2);
   expect(updateCalc.mock.calls[0][0]).toBe("origin");
   expect(updateCalc.mock.calls[0][1]).toBe("0, 0");
   expect(updateCalc.mock.calls[1][0]).toBe("destination");
-  expect(updateCalc.mock.calls[1][1]).toBe("1, 1");
+  expect(updateCalc.mock.calls[1][1]).toBe("0, 0");
 
-}
-function testInvalidInputs(){
-    //sendServerRequestWithBody.mockResolvedValue({statuscode: 200, distance: [1,1]});
-    const calculator2 = mount((
-        <Calculator options={startProperties.options}
-                    calculatorInput={startInput.calculatorInput}
-                    settings={startProperties.options}/>
-    ));
-
-    simulateOnChangeEvent("cat", calculator2);
-    simulateOnChangeEvent("cat", calculator2);
-
-    expect(calculator2.state().origin).toEqual("cat");
-    expect(calculator2.state().destination).toEqual("cat");
-    expect(sendServerRequestWithBody.mock.calls.length).toBe(0);
 }
 
 function simulateOnChangeEvent(input, reactWrapper) {
@@ -112,4 +92,28 @@ function simulateOnChangeEvent(input, reactWrapper) {
  * https://airbnb.io/enzyme/docs/api/ReactWrapper/find.html
  */
 test('Testing the onChange event of Origin/Destination in Calculator with valid numbers', testInputsOnChange);
-test('Testing the onChange event of Origin/Destination in Calculator with invalid numbers', testInvalidInputs);
+
+function testServerCalledTrue(){
+    sendServerRequestWithBody.mockResolvedValue({statuscode: 200, distance: [1,1]});
+
+    const calculator = mount((
+        <Calculator options={startProperties.options}
+                    calculatorInput={{origin: "0,0", destination: "1,1"}}
+                    settings={startProperties.options}/>
+    ));
+
+    expect(sendServerRequestWithBody.mock.calls.length).toBe(1);
+}
+
+test("Testing that server is called when valid coordinates are passed in", testServerCalledTrue);
+
+function testServerCallFalse(){
+    const calculator = mount((
+        <Calculator options={startProperties.options}
+                    calculatorInput={{origin: "cat", destination: "cat"}}
+                    settings={startProperties.options}/>
+    ));
+
+    expect(sendServerRequestWithBody.mock.calls.length).toBe(0);
+}
+test("Testing that server is NOT called when invalid coordinates are passed in", testServerCallFalse);
