@@ -53,3 +53,15 @@ function testUpdateOption() {
 }
 
 test("Testing Application's updatePlanOption function", testUpdateOption);
+
+function testUpdateCalculator(){
+    const app = shallow(<Application/>);
+
+    app.instance().updateCalculatorInput("origin", "0, 0");
+
+    let actualVal = app.state().calculatorInput.origin;
+    let expectedVal = "0, 0";
+    expect(actualVal).toEqual(expectedVal);
+}
+
+test("Testing Application's updateCalculatorInput function", testUpdateCalculator);
