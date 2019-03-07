@@ -10,17 +10,20 @@ export default class Calculator extends Component {
   constructor(props) {
     super(props);
 
-    this.updateLocationOnChange = this.updateLocationOnChange.bind(this);
     this.calculateDistance = this.calculateDistance.bind(this);
     this.createInputField = this.createInputField.bind(this);
 
     this.state = {
-        origin: this.props.calculatorInput.origin,
-        destination: this.props.calculatorInput.destination,
-        distance: NaN,
+        distance: '',
         errorMessage: null,
     };
     this.calculateDistance()
+  }
+
+  componentDidUpdate(prevProps) {
+      if (prevProps.calculatorInput !== this.props.calculatorInput){
+          this.calculateDistance();
+      }
   }
 
   render() {
@@ -58,15 +61,13 @@ export default class Calculator extends Component {
   }
 
   createInputField(stateVar) {
-    let updateStateVarOnChange = (event) => {
-      this.updateLocationOnChange(stateVar, event.target.value)};
     let capitalizedCoordinate = stateVar.charAt(0).toUpperCase() + stateVar.slice(1);
     let color = this.validateCoordinates(stateVar) ? "black": "red";
     return (
       <Input name={stateVar} placeholder={capitalizedCoordinate}
              id={`${stateVar}${capitalizedCoordinate}`}
-             value={this.state[stateVar]}
-             onChange={updateStateVarOnChange}
+             value={this.props.calculatorInput[stateVar]}
+             onChange={(e) => this.updateCalculatorInput(stateVar,e.target.value)}
              style={{width: "100%", borderColor: color}} />
     );
 
@@ -99,7 +100,6 @@ export default class Calculator extends Component {
         this.setState({
             distance: ''
         });
-
         return 0;
     }
     const tipConfigRequest = {
@@ -109,8 +109,6 @@ export default class Calculator extends Component {
       'destination' : {'latitude': coordinates(this.props.calculatorInput.destination).lat, 'longitude': coordinates(this.props.calculatorInput.destination).lng},
       'earthRadius' : this.props.options.units[this.props.options.activeUnit]
     };
-
-  console.log("CD state:",this.state);
 
     sendServerRequestWithBody('distance', tipConfigRequest, this.props.settings.serverPort)
       .then((response) => {
@@ -129,7 +127,6 @@ export default class Calculator extends Component {
             )
           });
         }
-          console.log(response);
       });
   }
 
@@ -142,13 +139,9 @@ export default class Calculator extends Component {
       }
   }
 
-  updateLocationOnChange(stateVar, value) {
-      this.setState({[stateVar]: value}, () => {this.calculateDistance()});
-      this.updateCalculatorInput(stateVar, value);
-  }
 
   updateCalculatorInput(stateVar, value) {
-    this.props.calculatorInput[stateVar] = value;
+      this.props.updateCalculatorInput(stateVar, value);
   }
 
 }

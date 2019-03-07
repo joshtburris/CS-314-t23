@@ -18,10 +18,6 @@ export default class Application extends Component {
   constructor(props){
     super(props);
 
-    this.updatePlanOption = this.updatePlanOption.bind(this);
-    this.updateClientSetting = this.updateClientSetting.bind(this);
-    this.createApplicationPage = this.createApplicationPage.bind(this);
-
     this.state = {
       serverConfig: null,
       planOptions: {
@@ -42,6 +38,10 @@ export default class Application extends Component {
       }
     };
 
+    this.updateCalculatorInput = this.updateCalculatorInput.bind(this);
+    this.updatePlanOption = this.updatePlanOption.bind(this);
+    this.updateClientSetting = this.updateClientSetting.bind(this);
+    this.createApplicationPage = this.createApplicationPage.bind(this);
     this.updateServerConfig();
     this.getUserLocation();
     this.getUserLocation = this.getUserLocation.bind(this);
@@ -71,6 +71,12 @@ export default class Application extends Component {
     let optionsCopy = Object.assign({}, this.state.planOptions);
     optionsCopy[option] = value;
     this.setState({'planOptions': optionsCopy});
+  }
+
+  updateCalculatorInput(option, value){
+    let inputCopy = Object.assign({}, this.state.calculatorInput);
+    inputCopy[option] = value;
+    this.setState({'calculatorInput': inputCopy});
   }
 
   getUserLocation(){
@@ -109,7 +115,8 @@ export default class Application extends Component {
         return <Calculator options={this.state.planOptions}
                            settings={this.state.clientSettings}
                            createErrorBanner={this.createErrorBanner}
-                           calculatorInput={this.state.calculatorInput}/>;
+                           calculatorInput={this.state.calculatorInput}
+                           updateCalculatorInput={this.updateCalculatorInput}/>;
       case 'options':
         return <Options options={this.state.planOptions}
                         config={this.state.serverConfig}
