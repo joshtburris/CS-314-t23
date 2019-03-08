@@ -23,6 +23,7 @@ public class TestTipItinerary {
         options = new HashMap<>();
         options.put("title", "itinerary");
         options.put("earthRadius", "3958");
+        options.put("optimization", "none");
     }
 
 
@@ -56,6 +57,7 @@ public class TestTipItinerary {
         Map<String, Object> options = new HashMap<>();
         options.put("title", "My Trip");
         options.put("earthRadius", "3958.761316");
+        options.put("optimization", "none");
 
         TIPItinerary trip = new TIPItinerary(version, options, new Map[]{dnvr, bldr, foco});
         trip.buildResponse();
