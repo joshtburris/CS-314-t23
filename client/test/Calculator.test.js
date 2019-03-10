@@ -22,10 +22,13 @@ const startInput = {
 
 jest.mock('../src/api/restfulAPI');
 
+
 function testCreateInputFields() {
+  let updateCalc = jest.fn();
   const calculator = mount((
       <Calculator options={startProperties.options}
-                  calculatorInput={startInput.calculatorInput}/>
+                  calculatorInput={startInput.calculatorInput}
+                  updateCalculatorInput={updateCalc}/>
   ));
 
   let numberOfInputs = calculator.find('Input').length;
@@ -46,19 +49,25 @@ function testCreateInputFields() {
 test('Testing the createForm() function in Calculator', testCreateInputFields);
 
 function testInputsOnChange() {
+  let updateCalc = jest.fn();
   sendServerRequestWithBody.mockResolvedValue({statuscode: 200, distance: [1,1]});
   const calculator = mount((
       <Calculator options={startProperties.options}
                   calculatorInput={startInput.calculatorInput}
-                  settings={startProperties.options}/>
+                  settings={startProperties.options}
+                  updateCalculatorInput={updateCalc}/>
   ));
 
   for (let inputIndex = 0; inputIndex < 2; inputIndex++){
     simulateOnChangeEvent(inputIndex, calculator);
   }
-  expect(sendServerRequestWithBody.mock.calls.length).toBe(1);
-  expect(calculator.state().origin).toEqual("0, 0");
-  expect(calculator.state().destination).toEqual("1, 1");
+  console.log("calc state", calculator.state());
+  expect(updateCalc.mock.calls.length).toBe(2);
+  expect(updateCalc.mock.calls[0][0]).toBe("origin");
+  expect(updateCalc.mock.calls[0][1]).toBe("0, 0");
+  expect(updateCalc.mock.calls[1][0]).toBe("destination");
+  expect(updateCalc.mock.calls[1][1]).toBe("1, 1");
+
 }
 
 
