@@ -26,7 +26,7 @@ export default class Calculator extends Component {
       }
   }
 
-    render() {
+  render() {
     return (
       <Container>
         { this.state.errorMessage }
@@ -97,12 +97,8 @@ export default class Calculator extends Component {
 
   calculateDistance() {
     if (!this.validateCoordinates("origin") || !this.validateCoordinates("destination")){
-        let response = {statusText: "Error:", statusCode:0 };
         this.setState({
-            distance: '',
-            errorMessage: <Alert className='bg-csu-canyon text-white font-weight-extrabold'>
-                              Error(0): Invalid input found. Please enter a valid input.
-                          </Alert>
+            distance: ''
         });
         return 0;
     }
@@ -136,7 +132,8 @@ export default class Calculator extends Component {
 
   validateCoordinates(statevar) {
       try {
-          return (coordinates(this.props.calculatorInput[statevar]) != null);
+          let coords = coordinates(this.props.calculatorInput[statevar]);
+          return (coords != null && !isNaN(coords.lat) && !isNaN(coords.lng));
       } catch (e) {
           return false;
       }

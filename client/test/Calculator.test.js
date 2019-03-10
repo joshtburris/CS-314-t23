@@ -21,6 +21,9 @@ const startInput = {
 };
 
 jest.mock('../src/api/restfulAPI');
+afterEach(() => {
+    sendServerRequestWithBody.mockClear();
+});
 
 
 function testCreateInputFields() {
@@ -50,7 +53,6 @@ test('Testing the createForm() function in Calculator', testCreateInputFields);
 
 function testInputsOnChange() {
   let updateCalc = jest.fn();
-  sendServerRequestWithBody.mockResolvedValue({statuscode: 200, distance: [1,1]});
   const calculator = mount((
       <Calculator options={startProperties.options}
                   calculatorInput={startInput.calculatorInput}
@@ -58,35 +60,24 @@ function testInputsOnChange() {
                   updateCalculatorInput={updateCalc}/>
   ));
 
-  for (let inputIndex = 0; inputIndex < 2; inputIndex++){
-    simulateOnChangeEvent(inputIndex, calculator);
-  }
-  console.log("calc state", calculator.state());
+  simulateOnChangeEvent("0, 0", calculator);
+
   expect(updateCalc.mock.calls.length).toBe(2);
   expect(updateCalc.mock.calls[0][0]).toBe("origin");
   expect(updateCalc.mock.calls[0][1]).toBe("0, 0");
   expect(updateCalc.mock.calls[1][0]).toBe("destination");
-  expect(updateCalc.mock.calls[1][1]).toBe("1, 1");
+  expect(updateCalc.mock.calls[1][1]).toBe("0, 0");
 
 }
 
-
-function simulateOnChangeEvent(inputIndex, reactWrapper) {
-  let event = {target: {value: `${inputIndex}, ${inputIndex}`}};
-  switch(inputIndex) {
-    case 0:
-      reactWrapper.find('#originOrigin').at(0).simulate('change', event);
-      break;
-    case 1:
-      reactWrapper.find('#destinationDestination').at(0).simulate('change', event);
-      break;
-    default:
-  }
+function simulateOnChangeEvent(input, reactWrapper) {
+  let event = {target: {value: `${input}`}};
+  reactWrapper.find('#originOrigin').at(0).simulate('change', event);
+  reactWrapper.find('#destinationDestination').at(0).simulate('change', event);
   reactWrapper.update();
 }
 
-/* Loop through the Input indexes and simulate an onChange event with the index
- * as the input. To simulate the change, an event object needs to be created
+/* To simulate the change, an event object needs to be created
  * with the name corresponding to its Input 'name' prop. Based on the index,
  * find the corresponding Input by its 'id' prop and simulate the change.
  *
@@ -100,4 +91,29 @@ function simulateOnChangeEvent(inputIndex, reactWrapper) {
  * https://airbnb.io/enzyme/docs/api/ReactWrapper/props.html
  * https://airbnb.io/enzyme/docs/api/ReactWrapper/find.html
  */
-test('Testing the onChange event of longitude Input in Calculator', testInputsOnChange);
+test('Testing the onChange event of Origin/Destination in Calculator with valid numbers', testInputsOnChange);
+
+function testServerCalledTrue(){
+    sendServerRequestWithBody.mockResolvedValue({statuscode: 200, distance: [1,1]});
+
+    const calculator = mount((
+        <Calculator options={startProperties.options}
+                    calculatorInput={{origin: "0,0", destination: "1,1"}}
+                    settings={startProperties.options}/>
+    ));
+
+    expect(sendServerRequestWithBody.mock.calls.length).toBe(1);
+}
+
+test("Testing that server is called when valid coordinates are passed in", testServerCalledTrue);
+
+function testServerCallFalse(){
+    const calculator = mount((
+        <Calculator options={startProperties.options}
+                    calculatorInput={{origin: "cat", destination: "cat"}}
+                    settings={startProperties.options}/>
+    ));
+
+    expect(sendServerRequestWithBody.mock.calls.length).toBe(0);
+}
+test("Testing that server is NOT called when invalid coordinates are passed in", testServerCallFalse);
