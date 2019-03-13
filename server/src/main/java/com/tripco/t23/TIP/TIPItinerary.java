@@ -1,5 +1,6 @@
 package com.tripco.t23.TIP;
 
+import com.tripco.t23.misc.NearestNeighbor;
 import com.tripco.t23.misc.Optimizer;
 import com.tripco.t23.misc.OptimizerNone;
 import org.slf4j.Logger;
@@ -35,7 +36,9 @@ public class TIPItinerary extends TIPHeader{
         double earthRadius = Double.parseDouble(options.get("earthRadius").toString());
         Optimizer optimizer;
         switch (this.options.get("optimization").toString()){
-            default:    optimizer = new OptimizerNone(this.places, earthRadius);
+            case "short":   optimizer = new NearestNeighbor(this.places, earthRadius);
+                            break;
+            default:        optimizer = new OptimizerNone(this.places, earthRadius);
         }
 
         this.distances = optimizer.getDistances();

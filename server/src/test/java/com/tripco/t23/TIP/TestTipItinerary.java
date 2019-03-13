@@ -12,7 +12,7 @@ public class TestTipItinerary {
     /* Radius and location values shared by test cases */
     private Map<String, Object> csu;
     private Map<String, Object> options;
-    private final int version = 2;
+    private final int version = 3;
 
     @Before
     public void createDataForTestCases() {
