@@ -20,4 +20,26 @@ function testAddLocation(){
     expect(itinerary.state().places[0].id).toEqual("id");
 }
 
-test("Testing addLocation function of itinerary",testAddLocation)
+test("Testing addLocation function of itinerary",testAddLocation);
+
+const startDetails = {
+    'details' : {
+        'Destination' : true,
+        'Leg Distance' : true,
+        'Total Distance' : true,
+        'Latitude' : false,
+        'Longitude' : false
+    }
+}
+
+function testDetailOptions() {
+    const itinerary = shallow((<Itinerary details={startDetails.details}
+                                            options={startProperties.options}/>));
+    itinerary.instance().toggleCheckbox('Destination', (!startDetails.details.Destination));
+    expect(itinerary.state().details.Destination).toEqual(false);
+
+    itinerary.instance().toggleCheckbox('Latitude', (!startDetails.details.Latitude));
+    expect(itinerary.state().details.Latitude).toEqual(true);
+}
+
+test("Testing toggleCheckbox function of itinerary",testDetailOptions);

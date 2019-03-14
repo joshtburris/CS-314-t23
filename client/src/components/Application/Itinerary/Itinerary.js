@@ -15,7 +15,7 @@ export default class Itinerary extends Component {
             'distances': [],
             errorMessage: null,
             boundaries: null,
-            details: {Name:true, Distance:true, T_Distance:true, Lat: false, Lng: false}
+            details: {'Destination':true, 'Leg Distance':true, 'Total Distance':true, 'Latitude': false, 'Longitude': false}
         };
         this.loadFile = this.loadFile.bind(this);
         this.saveFile = this.saveFile.bind(this);
@@ -52,22 +52,26 @@ export default class Itinerary extends Component {
         return(
             <Pane header={'Detail Options'}
                   bodyJSX={
-                      <Container>
-                          <div>
-                              <CustomInput type="checkbox" id="Name" defaultChecked="true" label="Destination" onClick={()=>{this.toggleCheckbox('Name', (!this.state.details['Name']))}}/>
-                              <CustomInput type="checkbox" id="Distance" defaultChecked="true" label="Leg Distance" onClick={()=>{this.toggleCheckbox('Distance', (!this.state.details['Distance']))}}/>
-                              <CustomInput type="checkbox" id="T_Distance" defaultChecked="true" label="Total Distance" onClick={()=>{this.toggleCheckbox('T_Distance', (!this.state.details['T_Distance']))}}/>
-                              <CustomInput type="checkbox" id="Lat" label="Latitude" onClick={()=>{this.toggleCheckbox('Lat', (!this.state.details['Lat']))}}/>
-                              <CustomInput type="checkbox" id="Lng" label="Longitude" onClick={()=>{this.toggleCheckbox('Lng', (!this.state.details['Lng']))}}/>
-                          </div>
-                      </Container>}/>
+                      <Container>{this.getCheckbox()}</Container>}/>
         );
     }
 
-    toggleCheckbox(option, value){
-        let inputCopy = Object.assign({}, this.state.details);
-        inputCopy[option] = value;
-        this.setState({'details': inputCopy});
+    getCheckbox(){
+        let checkboxNameList = this.itineraryHeader();
+        let list =[];
+        for(let detail in this.state.details){
+            if(this.state.details[detail])
+                list.push(<CustomInput type="checkbox" id={detail} defaultChecked="true" label={detail} onClick={()=>{this.toggleCheckbox(detail, (!this.state.details[detail]))}}/>);
+            else
+                list.push(<CustomInput type="checkbox" id={detail} label={detail} onClick={()=>{this.toggleCheckbox(detail, (!this.state.details[detail]))}}/>);
+        }
+        return(list);
+    }
+
+    toggleCheckbox(opt, val){
+        let tempCopy = Object.assign({}, this.state.details);
+        tempCopy[opt] = val;
+        this.setState({details: tempCopy});
     }
 
     renderItinerary(){
@@ -190,11 +194,11 @@ export default class Itinerary extends Component {
         let markup=[];
         for(let detail in this.state.details) {
             if(this.state.details[detail] === true) {
-                if (detail === 'Name') markup.push(<td>{this.state.places[index].name}</td>);
-                if (detail === 'Distance') markup.push(<td>{legDist}</td>);
-                if (detail === 'T_Distance') markup.push(<td>{dist}</td>);
-                if (detail === 'Lat') markup.push(<td>{this.state.places[index].latitude}</td>);
-                if (detail === 'Lng') markup.push(<td>{this.state.places[index].longitude}</td>);
+                if (detail === 'Destination') markup.push(<td>{this.state.places[index].name}</td>);
+                if (detail === 'Leg Distance') markup.push(<td>{legDist}</td>);
+                if (detail === 'Total Distance') markup.push(<td>{dist}</td>);
+                if (detail === 'Latitude') markup.push(<td>{this.state.places[index].latitude}</td>);
+                if (detail === 'Longitude') markup.push(<td>{this.state.places[index].longitude}</td>);
             }
         }
         return(markup);
@@ -204,11 +208,11 @@ export default class Itinerary extends Component {
         let markup=[];
         for(let detail in this.state.details) {
             if(this.state.details[detail] === true) {
-                if (detail === 'Name') markup.push(<th><b>Destination</b></th>);
-                if (detail === 'Distance') markup.push(<th><b>Leg Distance</b></th>);
-                if (detail === 'T_Distance') markup.push(<th><b>Total Distance</b></th>);
-                if (detail === 'Lat') markup.push(<th><b>Latitude</b></th>);
-                if (detail === 'Lng') markup.push(<th><b>Longitude</b></th>);
+                if (detail === 'Destination') markup.push(<th><b>Destination</b></th>);
+                if (detail === 'Leg Distance') markup.push(<th><b>Leg Distance</b></th>);
+                if (detail === 'Total Distance') markup.push(<th><b>Total Distance</b></th>);
+                if (detail === 'Latitude') markup.push(<th><b>Latitude</b></th>);
+                if (detail === 'Longitude') markup.push(<th><b>Longitude</b></th>);
             }
         }
         return(markup);
