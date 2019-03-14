@@ -51,8 +51,7 @@ export default class Itinerary extends Component {
     checkList(){
         return(
             <Pane header={'Detail Options'}
-                  bodyJSX={
-                      <Container>{this.getCheckbox()}</Container>}/>
+                  bodyJSX={<Container>{this.getCheckbox()}</Container>}/>
         );
     }
 
@@ -207,13 +206,9 @@ export default class Itinerary extends Component {
     itineraryHeader(){
         let markup=[];
         for(let detail in this.state.details) {
-            if(this.state.details[detail] === true) {
-                if (detail === 'Destination') markup.push(<th><b>Destination</b></th>);
-                if (detail === 'Leg Distance') markup.push(<th><b>Leg Distance</b></th>);
-                if (detail === 'Total Distance') markup.push(<th><b>Total Distance</b></th>);
-                if (detail === 'Latitude') markup.push(<th><b>Latitude</b></th>);
-                if (detail === 'Longitude') markup.push(<th><b>Longitude</b></th>);
-            }
+            if(this.state.details[detail] === true)
+                markup.push(<th><b>{detail}</b></th>);
+
         }
         return(markup);
     }
