@@ -3,7 +3,7 @@ import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
 import { Alert } from 'reactstrap';
 import FileSaver from 'file-saver'; //
-import {Container, Row, Col} from 'reactstrap'
+import {Container, Row, Col, CustomInput} from 'reactstrap'
 import {Map, TileLayer, Polyline} from "react-leaflet";
 
 export default class Itinerary extends Component {
@@ -14,17 +14,14 @@ export default class Itinerary extends Component {
             'places': [],
             'distances': [],
             errorMessage: null,
-            boundaries: null
+            boundaries: null,
+            details: {Name:true, Distance:true, T_Distance:true, Lat: false, Lng: false}
         };
         this.loadFile = this.loadFile.bind(this);
         this.saveFile = this.saveFile.bind(this);
         this.generateItinerary = this.generateItinerary.bind(this);
-        this.itineraryHeader = this.itineraryHeader.bind(this);
         this.addLocation = this.addLocation.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
-        this.getBounds = this.getBounds.bind(this);
-        this.renderTable = this.renderTable.bind(this);
-        this.getSingleLoc = this.getSingleLoc.bind(this);
     }
 
     addLocation(id, name, latitude, longitude){
@@ -41,12 +38,36 @@ export default class Itinerary extends Component {
                 </Col>
                 <Col xs={12} sm={12} md={5} lg={4} xl={4}>
                     {this.renderItinerary()}
-                </Col> </Row>
+                    {this.checkList()}
+                </Col>
+                </Row>
                 <Row> <Col xs={12} sm={12} md={12} lg={12} xl={12}>
                     {this.renderTable()}
                 </Col> </Row>
             </Container>
         );
+    }
+
+    checkList(){
+        return(
+            <Pane header={'Detail Options'}
+                  bodyJSX={
+                      <Container>
+                          <div>
+                              <CustomInput type="checkbox" id="Name" defaultChecked="true" label="Destination" onClick={()=>{this.toggleCheckbox('Name', (!this.state.details['Name']))}}/>
+                              <CustomInput type="checkbox" id="Distance" defaultChecked="true" label="Leg Distance" onClick={()=>{this.toggleCheckbox('Distance', (!this.state.details['Distance']))}}/>
+                              <CustomInput type="checkbox" id="T_Distance" defaultChecked="true" label="Total Distance" onClick={()=>{this.toggleCheckbox('T_Distance', (!this.state.details['T_Distance']))}}/>
+                              <CustomInput type="checkbox" id="Lat" label="Latitude" onClick={()=>{this.toggleCheckbox('Lat', (!this.state.details['Lat']))}}/>
+                              <CustomInput type="checkbox" id="Lng" label="Longitude" onClick={()=>{this.toggleCheckbox('Lng', (!this.state.details['Lng']))}}/>
+                          </div>
+                      </Container>}/>
+        );
+    }
+
+    toggleCheckbox(option, value){
+        let inputCopy = Object.assign({}, this.state.details);
+        inputCopy[option] = value;
+        this.setState({'details': inputCopy});
     }
 
     renderItinerary(){
@@ -132,9 +153,9 @@ export default class Itinerary extends Component {
     renderTable(){
         return(
             <Pane header={'Your Itinerary'}>
-                      <Container>
-                          {this.generateItinerary()}
-                      </Container>
+                <Table hover>
+                    {this.generateItinerary()}
+                </Table>
             </Pane>
         );
     }
@@ -143,66 +164,54 @@ export default class Itinerary extends Component {
         let myItinerary = [];
         let dist = 0;
         let tempLoc = [];
-        myItinerary.push(this.itineraryHeader());
+        myItinerary.push(<thead><tr>{this.itineraryHeader()}</tr></thead>);
         if(this.state.places.length > 0){
-            myItinerary.push(
-                <div key={"places_first"}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                    {this.state.places[0].name}
-                </Col>
-                    <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                        {0}
-                    </Col>
-                    <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                        {dist}
-                    </Col> </Row> </div>
-            );
-            dist = dist + this.state.distances[0];
-        }
-        for(let place in this.state.places){
-            if (place == 0) continue;
-            myItinerary.push(
-                <div key={"places_"+place}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                    {this.state.places[place].name}
-                </Col>
-                <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                    {this.state.distances[place-1]}
-                </Col>
-                <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                    {dist}
-                </Col> </Row> </div>
-            );
-            dist = dist + this.state.distances[place];
-        }
-        if(this.state.places.length > 1){
-            myItinerary.push(
-                <div key={"places_first"}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                    {this.state.places[0].name}
-                </Col>
-                    <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                        {this.state.distances[this.state.distances.length-1]}
-                    </Col>
-                    <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                        {dist}
-                    </Col> </Row> </div>
-            );
-            dist = dist + this.state.distances[0];
+            myItinerary.push(<tbody>{this.getItineraryRows()}</tbody>);
         }
         return(myItinerary);
     }
 
-    itineraryHeader(){
-        let tempList = [];
-        tempList.push(
-            <div key={"itinerary_header"}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                <b>Destinations</b>
-            </Col>
-            <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                <b>Leg Distance</b>
-            </Col>
-            <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                <b>Total Distance</b>
-            </Col> </Row> </div>);
+    getItineraryRows(){
+        let tempList = [], dist = 0;
+        tempList.push(<tr>{this.getLine(0, 0, 0)}</tr>);
+        dist = dist + this.state.distances[0];
+        for(let place in this.state.places){
+            if (place == 0) continue;
+            tempList.push(<tr>{this.getLine(place, this.state.distances[place-1], dist)}</tr>);
+            dist = dist + this.state.distances[place];
+        }
+        if(this.state.places.length > 1){
+            tempList.push(<tr>{this.getLine(0, this.state.distances[this.state.distances.length-1], dist)}</tr>);
+        }
         return(tempList);
+    }
+
+    getLine(index, legDist, dist){
+        let markup=[];
+        for(let detail in this.state.details) {
+            if(this.state.details[detail] === true) {
+                if (detail === 'Name') markup.push(<td>{this.state.places[index].name}</td>);
+                if (detail === 'Distance') markup.push(<td>{legDist}</td>);
+                if (detail === 'T_Distance') markup.push(<td>{dist}</td>);
+                if (detail === 'Lat') markup.push(<td>{this.state.places[index].latitude}</td>);
+                if (detail === 'Lng') markup.push(<td>{this.state.places[index].longitude}</td>);
+            }
+        }
+        return(markup);
+    }
+
+    itineraryHeader(){
+        let markup=[];
+        for(let detail in this.state.details) {
+            if(this.state.details[detail] === true) {
+                if (detail === 'Name') markup.push(<th><b>Destination</b></th>);
+                if (detail === 'Distance') markup.push(<th><b>Leg Distance</b></th>);
+                if (detail === 'T_Distance') markup.push(<th><b>Total Distance</b></th>);
+                if (detail === 'Lat') markup.push(<th><b>Latitude</b></th>);
+                if (detail === 'Lng') markup.push(<th><b>Longitude</b></th>);
+            }
+        }
+        return(markup);
     }
 
     saveFile(event){
