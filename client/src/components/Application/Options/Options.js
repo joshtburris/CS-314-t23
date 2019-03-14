@@ -35,8 +35,9 @@ export default class Options extends Component{
 
   heading() {
     return (
-        <Pane header={'Options'}
-              bodyJSX={'Select ...'}/>
+        <Pane header={'Options'}>
+            {'Select ...'}
+        </Pane>
     );
   }
 

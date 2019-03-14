@@ -23,8 +23,7 @@ export default class CustomUnit extends Component{
         myArray.push(<Row> <Col> </Col> </Row>)
         myArray.push(<Row> <Col> </Col> </Row>)*/
         return(
-            <Pane header={'Units'}
-                  bodyJSX={
+            <Pane header={'Units'}>
                       <Container>
                           <Row>
                               {this.header()}
@@ -37,7 +36,7 @@ export default class CustomUnit extends Component{
                               {this.addUnits()}
                           </Row>
                       </Container>
-                  }/>
+            </Pane>
         );
     }
 

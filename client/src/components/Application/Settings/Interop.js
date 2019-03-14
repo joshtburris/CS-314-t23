@@ -19,8 +19,7 @@ export default class Interop extends Component {
       var currentServerName = this.props.serverConfig.serverName;
     }
     return (
-        <Pane header={'Server'}
-              bodyJSX={
+        <Pane header={'Server'}>
                 <div>
                   <p>Current server name:</p>
                     <Input value={currentServerName} disabled='disabled' className='font-weight-semibold'/>
@@ -33,7 +32,7 @@ export default class Interop extends Component {
                     <Button type='submit' className='btn-csu w-100'>Configure</Button>
                   </form>
                 </div>
-              }/>
+        </Pane>
     );
   }
 

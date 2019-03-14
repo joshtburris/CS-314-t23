@@ -36,8 +36,7 @@ export default class About extends Component {
 //gSize={3} smSize={12} mdSize={12}
     renderCaleb(){
         return(
-            <Pane header={'Caleb Tong'}
-                  bodyJSX={
+            <Pane header={'Caleb Tong'}>
                       <Row>
                         <Col style={{flex: 1}}>
                             <Media style={{maxHeight: 300, maxWidth: 300, flex: 1}} src={CalebImg}/>
@@ -50,16 +49,14 @@ export default class About extends Component {
                               bear with me and/or tell me directly what I can do about it.
                         </Col>
                       </Row>
-                  }
-            />
+            </Pane>
         );
     }
 
 
     renderTim(){
         return(
-            <Pane header={'Timothy Rooney'}
-                  bodyJSX={
+            <Pane header={'Timothy Rooney'}>
                       <Row>
                           <Col style={{flex: 1}}>
                              <Media style={{maxHeight: 300, maxWidth: 300, flex: 1}} src={TimImg}/>
@@ -69,15 +66,13 @@ export default class About extends Component {
                               In my free time, I enjoy playing video games, chatting with friends, and generally relaxing.
                           </Col>
                       </Row>
-                  }
-            />
+            </Pane>
         );
     }
 
     renderKurt() {
         return (
-            <Pane header={'Kurt Wimer'}
-                  bodyJSX={
+            <Pane header={'Kurt Wimer'}>
                       <Row>
                           <Col style={{flex: 1}}>
                             <Media style={{maxHeight: 300, maxWidth: 300, flex: 1}} src={KurtImage}/>
@@ -90,16 +85,14 @@ export default class About extends Component {
                               I am partial to EDM and Rock but enjoy just about every genre from Jazz to Jam Bands.
                           </Col>
                       </Row>
-                  }
-            />
+            </Pane>
         );
     }
 
 
     renderJosh(){
         return(
-            <Pane header={'Joshua Burris'}
-                  bodyJSX={
+            <Pane header={'Joshua Burris'}>
                       <Row>
                         <Col style={{flex: 1}}>
                           <Media style={{maxHeight: 300, maxWidth: 300, flex: 1}} src={JoshImg}/>
@@ -111,8 +104,7 @@ export default class About extends Component {
                           Pokemon Go.
                          </Col>
                       </Row>
-                  }
-            />
+            </Pane>
         );
     }
 

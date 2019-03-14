@@ -41,8 +41,9 @@ export default class Settings extends Component {
 
   heading() {
     return (
-        <Pane header={'Settings'}
-              bodyJSX={'Change global client settings...'}/>
+        <Pane header={'Settings'}>
+            {'Change global client settings...'}
+        </Pane>
     );
   }
 

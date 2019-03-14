@@ -49,14 +49,15 @@ export default class Calculator extends Component {
 
   createHeader() {
     return (
-        <Pane header={'Calculator'}
-              bodyJSX={<div>Determine the distance between the origin and destination.
+        <Pane header={'Calculator'}>
+              <div>Determine the distance between the origin and destination.
                 Change the units on the <b>Options</b> page.
-              Valid formats are as follows with examplesl, note that only DMS accepts N/S/E/W and it may NOT be comma seperated.
+              Valid formats are as follows with examples, note that only DMS accepts N/S/E/W and it may NOT be comma seperated.
                   <table><tbody><tr><td>Decimal Degree</td><td><p>41.40338, 2.17403</p></td></tr>
                       <tr><td>Degrees Decimal Minutes</td><td><p>47°38.938 122° 20.887</p></td></tr>
                   <tr><td>Degrees Minutes Decimal Seconds</td><td><p>41°24'12.2"N 2°10'26.5"E</p></td></tr></tbody></table>
-              </div>}/>
+              </div>
+        </Pane>
     );
   }
 
@@ -75,23 +76,21 @@ export default class Calculator extends Component {
 
   createForm(stateVar) {
     return (
-      <Pane header={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
-            bodyJSX={
-              <Form >
-                {this.createInputField(stateVar)}
-              </Form>
-            }
-      />);
+      <Pane header={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}>
+          <Form>
+            {this.createInputField(stateVar)}
+          </Form>
+      </Pane>
+      );
   }
 
   createDistance() {
     return(
-      <Pane header={'Distance'}
-            bodyJSX={
-              <div>
+      <Pane header={'Distance'}>
+          <div>
               <h5>{this.state.distance} {this.props.options.activeUnit}</h5>
-            </div>}
-      />
+          </div>
+      </Pane>
     );
   }
 

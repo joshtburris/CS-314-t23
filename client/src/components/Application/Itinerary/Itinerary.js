@@ -51,8 +51,7 @@ export default class Itinerary extends Component {
 
     renderItinerary(){
         return(
-            <Pane header={'Save/Upload Your Itinerary'}
-                  bodyJSX={
+            <Pane header={'Save/Upload Your Itinerary'}>
                       <Container>
                           <Row>
                               <input type="file" name="" id="input" onChange={this.loadFile} />
@@ -60,14 +59,16 @@ export default class Itinerary extends Component {
                                   <input type="submit" value="Save..." id="saveButton" color="link" onClick={(e) => this.saveFile(e)} />
                               </form>
                           </Row>
-                      </Container>}/>
+                      </Container>
+            </Pane>
         );
     }
 
     renderMap() {
         return (
-            <Pane header={'Itinerary'}
-                  bodyJSX={this.renderLeafletMap()}/>
+            <Pane header={'Itinerary'}>
+                {this.renderLeafletMap()}
+            </Pane>
         );
     }
 
@@ -130,11 +131,11 @@ export default class Itinerary extends Component {
 
     renderTable(){
         return(
-            <Pane header={'Your Itinerary'}
-                  bodyJSX={
+            <Pane header={'Your Itinerary'}>
                       <Container>
                           {this.generateItinerary()}
-                      </Container>}/>
+                      </Container>
+            </Pane>
         );
     }
 

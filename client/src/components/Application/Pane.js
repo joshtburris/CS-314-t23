@@ -16,7 +16,7 @@ export default class Pane extends Component {
                     {this.props.header}
                 </CardHeader>
                 <CardBody>
-                    {this.props.bodyJSX}
+                    {this.props.children}
                 </CardBody>
             </Card>
         );
