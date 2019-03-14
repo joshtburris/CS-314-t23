@@ -14,7 +14,7 @@ public class TIPItinerary extends TIPHeader{
 
     private final transient Logger log = LoggerFactory.getLogger(TIPItinerary.class);
 
-    TIPItinerary(int version, Map options, Map[] places) {
+    TIPItinerary(Integer version, Map options, Map[] places) {
             this();
             this.requestVersion = version;
             this.options = options;
@@ -35,12 +35,20 @@ public class TIPItinerary extends TIPHeader{
     public void buildResponse() {
         double earthRadius = Double.parseDouble(options.get("earthRadius").toString());
         Optimizer optimizer;
-        switch (this.options.get("optimization").toString()){
-            case "short":   optimizer = new NearestNeighbor(this.places, earthRadius);
-                            break;
-            default:        optimizer = new OptimizerNone(this.places, earthRadius);
+        //if (this.requestVersion >=3) { TODO should check version ask TA's why this is null
+         try{
+            switch (this.options.get("optimization").toString()) {
+                case "short":
+                    optimizer = new NearestNeighbor(this.places, earthRadius);
+                    break;
+                default:
+                    optimizer = new OptimizerNone(this.places, earthRadius);
+            }
         }
-
+        //else{
+        catch (Exception e){
+            optimizer = new OptimizerNone(this.places, earthRadius);
+        }
         this.distances = optimizer.getDistances();
         this.places = optimizer.getPlaces();
 
