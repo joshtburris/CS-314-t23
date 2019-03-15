@@ -48,7 +48,8 @@ const startDetails = {
 }
 
 function testDetailOptions() {
-    const itinerary = shallow((<Itinerary details={startDetails.details}
+    const itinerary = shallow((<Itinerary   details={startDetails.details}
+                                            itineraryPlan={startProperties.itineraryPlan}
                                             options={startProperties.options}/>));
     itinerary.instance().toggleCheckbox('Destination', (!startDetails.details.Destination));
     expect(itinerary.state().details.Destination).toEqual(false);

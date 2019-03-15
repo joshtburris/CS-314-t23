@@ -12,7 +12,6 @@ export default class Itinerary extends Component {
         this.state={
             'options': {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit], optimization: "none"},
             errorMessage: null,
-            boundaries: null,
             details: {'Name':true, 'Leg Distance':true, 'Total Distance':true,
                         'Latitude': false, 'Longitude': false, }
         };
@@ -42,8 +41,8 @@ export default class Itinerary extends Component {
                     {this.checkList()}
                 </Col> </Row>
                 <Row> <Col xs={12} sm={12} md={12} lg={12} xl={12}>
-                    <ItineraryTable     places={this.state.places}
-                                        distances={this.state.distances}
+                    <ItineraryTable     places={this.props.itineraryPlan.places}
+                                        distances={this.props.itineraryPlan.distances}
                                         details={this.state.details}/>
                 </Col> </Row>
             </Container>
