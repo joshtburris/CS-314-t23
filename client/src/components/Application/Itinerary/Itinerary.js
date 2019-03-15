@@ -10,9 +10,7 @@ export default class Itinerary extends Component {
     constructor(props) {
         super(props);
         this.state={
-            'options': {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit]},
-            'places': [],
-            'distances': [],
+            'options': {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit], optimization: "none"},
             errorMessage: null,
             boundaries: null,
             details: {'Name':true, 'Leg Distance':true, 'Total Distance':true,
@@ -22,12 +20,16 @@ export default class Itinerary extends Component {
         this.saveFile = this.saveFile.bind(this);
         this.addLocation = this.addLocation.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
+        this.updateItineraryInfo = this.updateItineraryInfo.bind(this);
     }
 
-    addLocation(id, name, latitude, longitude){
-        this.state.places.push({id: id, name: name, latitude: latitude, longitude: longitude})
+    addLocation(id, name, latitude, longitude) {
+        let placesCopy = [];
+        Object.assign(placesCopy, this.props.itineraryPlan.places);
+        placesCopy.push({id: id, name: name, latitude: latitude, longitude: longitude});
+        this.updateItineraryInfo('places', placesCopy);
+        console.log(this.props.itineraryPlan);
     }
-
 
     render(){
         return(
@@ -35,12 +37,10 @@ export default class Itinerary extends Component {
                 { this.state.errorMessage }
                 <Row> <Col xs={12} sm={12} md={7} lg={8} xl={8}>
                     {this.renderMap()}
-                </Col>
-                <Col xs={12} sm={12} md={5} lg={4} xl={4}>
+                </Col> <Col xs={12} sm={12} md={5} lg={4} xl={4}>
                     {this.renderItinerary()}
                     {this.checkList()}
-                </Col>
-                </Row>
+                </Col> </Row>
                 <Row> <Col xs={12} sm={12} md={12} lg={12} xl={12}>
                     <ItineraryTable     places={this.state.places}
                                         distances={this.state.distances}
@@ -81,14 +81,14 @@ export default class Itinerary extends Component {
     renderItinerary(){
         return(
             <Pane header={'Save/Upload Your Itinerary'}>
-                      <Container>
-                          <Row>
-                              <input type="file" name="" id="input" onChange={this.loadFile} />
-                              <form>
-                                  <input type="submit" value="Save..." id="saveButton" color="link" onClick={(e) => this.saveFile(e)} />
-                              </form>
-                          </Row>
-                      </Container>
+                <Container>
+                    <Row>
+                        <input type="file" name="" id="input" onChange={this.loadFile} />
+                        <form>
+                            <input type="submit" value="Save..." id="saveButton" color="link" onClick={(e) => this.saveFile(e)} />
+                        </form>
+                    </Row>
+                </Container>
             </Pane>
         );
     }
@@ -123,17 +123,17 @@ export default class Itinerary extends Component {
     }
 
     getBounds(){
-        if(this.state.places.length == 0){
+        if(this.props.itineraryPlan.places.length == 0){
             return this.coloradoGeographicBoundaries();
         }
-        if(this.state.places.length == 1){
+        if(this.props.itineraryPlan.places.length == 1){
             return this.getSingleLoc();
         }
         let tLat = [];
         let tLon = [];
-        for(let place in this.state.places) {
-            tLat.push(this.state.places[place].latitude);
-            tLon.push(this.state.places[place].longitude);
+        for(let place in this.props.itineraryPlan.places) {
+            tLat.push(this.props.itineraryPlan.places[place].latitude);
+            tLon.push(this.props.itineraryPlan.places[place].longitude);
         }
         let maxLat = Math.max.apply(null, tLat);let maxLon = Math.max.apply(null, tLon);
         let minLat = Math.min.apply(null, tLat);let minLon = Math.min.apply(null, tLon);
@@ -142,25 +142,25 @@ export default class Itinerary extends Component {
     }
 
     getSingleLoc(){
-        let locLat = parseFloat(this.state.places[0].latitude);
-        let locLon = parseFloat(this.state.places[0].longitude);
+        let locLat = parseFloat(this.props.itineraryPlan.places[0].latitude);
+        let locLon = parseFloat(this.props.itineraryPlan.places[0].longitude);
         return L.latLngBounds(L.latLng(locLat-0.05, locLon-0.05), L.latLng(locLat+0.05, locLon+0.05));
     }
 
     getLL(){
         let LL = [];
-        for (let i in this.state.places) {
-            LL.push(L.latLng(parseFloat(this.state.places[i].latitude), parseFloat(this.state.places[i].longitude)))
+        for (let i in this.props.itineraryPlan.places) {
+            LL.push(L.latLng(parseFloat(this.props.itineraryPlan.places[i].latitude), parseFloat(this.props.itineraryPlan.places[i].longitude)))
         }
-        if (this.state.places[0] != null) {
-            LL.push(L.latLng(parseFloat(this.state.places[0].latitude), parseFloat(this.state.places[0].longitude)));
+        if (this.props.itineraryPlan.places[0] != null) {
+            LL.push(L.latLng(parseFloat(this.props.itineraryPlan.places[0].latitude), parseFloat(this.props.itineraryPlan.places[0].longitude)));
         }
         return LL
     }
 
     saveFile(event){
         event.preventDefault();
-        var file = new Blob([JSON.stringify(this.state)], {type: "text/plain;charset=utf-8"});  // Source="https://www.npmjs.com/package/file-saver/v/1.3.2"
+        var file = new Blob([JSON.stringify(this.props.itineraryPlan)], {type: "text/plain;charset=utf-8"});  // Source="https://www.npmjs.com/package/file-saver/v/1.3.2"
         saveAs(file, "MyItinerary.txt");
     }
 
@@ -172,43 +172,44 @@ export default class Itinerary extends Component {
             //parse the string into a JSON file
             try{let fileInfo = JSON.parse(content);
                 //set places and distances equal to the JSON file's places and distances
-                this.setState({'places': fileInfo.places}, () => this.calculateDistances());}
-            catch (err){
+                this.updateItineraryInfo('places', fileInfo.places);
+                this.setState(() => this.calculateDistances());
+            } catch (err) {
                 this.setState({
-                    'places': [],
-                    'distances': [],
                     errorMessage: <Alert className='bg-csu-canyon text-white font-weight-extrabold'>
-                                      Error(0): Invalid file found. Please select a valid itinerary file.</Alert>
-                });}};
+                        Error(0): Invalid file found. Please select a valid itinerary file.</Alert>
+                });
+                this.updateItineraryInfo('places', []);
+                this.updateItineraryInfo('distances', []);
+            }
+        };
         try {e.preventDefault();
             fileReader = new FileReader();
             fileReader.onloadend = handleFileRead;
             //read the first file in
             //NOTE: File must be formatted in double quotations (")
             fileReader.readAsText(event.target.files[0]);
-        }catch (error){
-            this.setState({
-                'places': [],
-                'distances': []
-            });
+        } catch (error){
+            this.updateItineraryInfo('places', []);
+            this.updateItineraryInfo('distances', []);
         }
     }
 
-    calculateDistances(){
+    calculateDistances() {
         const tipConfigRequest = {
             'type'        : 'itinerary',
-            'version'     : 2,
+            'version'     : 3,
             'options'     : this.state.options,
-            'places'      : this.state.places,
+            'places'      : this.props.itineraryPlan.places,
         };
 
         sendServerRequestWithBody('itinerary', tipConfigRequest, this.props.settings.serverPort)
             .then((response) => {
                 if(response.statusCode >= 200 && response.statusCode <= 299) {
                     this.setState({
-                        distances: response.body.distances,
                         errorMessage: null
                     });
+                    this.updateItineraryInfo('distances', response.body.distances);
                 }
                 else {
                     this.setState({
@@ -220,5 +221,9 @@ export default class Itinerary extends Component {
                     });
                 }
             });
+    }
+
+    updateItineraryInfo(stateVar, value) {
+        this.props.updateItineraryPlan(stateVar, value);
     }
 }
