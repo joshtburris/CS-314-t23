@@ -10,14 +10,29 @@ const startProperties = {
         'units': {'miles': 3959, 'kilometers': 6371},
         'activeUnit': 'miles',
         'serverPort': 'black-bottle.cs.colostate.edu:31400'
+    },
+    'itineraryPlan': {
+        'places':[],
+        'distances':[],
+        'boundaries':null
     }
 
 };
 
 function testAddLocation(){
-    const itinerary = shallow((<Itinerary options={startProperties.options}/>));
+    let updatedItin = jest.fn();
+    const itinerary = shallow((<Itinerary
+        options={startProperties.options}
+        itineraryPlan={startProperties.itineraryPlan}
+        updateItineraryPlan={updatedItin}/>));
+
+    let place = [];
+    place.push({id: "id", name: "name", latitude: 50.0, longitude: 100.0});
     itinerary.instance().addLocation("id", "name", 50.0, 100.0);
-    expect(itinerary.state().places[0].id).toEqual("id");
+    expect(updatedItin.mock.calls.length).toBe(1);
+    expect(updatedItin.mock.calls[0][0]).toEqual("places");
+    expect(updatedItin.mock.calls[0][1]).toEqual(place);
+
 }
 
-test("Testing addLocation function of itinerary",testAddLocation)
+test("Testing addLocation function of itinerary", testAddLocation);
