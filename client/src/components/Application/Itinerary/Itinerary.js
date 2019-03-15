@@ -1,30 +1,24 @@
 import React, { Component } from 'react'
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
-import { Alert } from 'reactstrap';
-import FileSaver from 'file-saver'; // DON'T DELETE
-import {Container, Row, Col} from 'reactstrap'
+import FileSaver from 'file-saver'; //
+import {Alert, Container, Row, Col, CustomInput} from 'reactstrap'
 import {Map, TileLayer, Polyline} from "react-leaflet";
+import ItineraryTable from "./ItineraryTable";
 
 export default class Itinerary extends Component {
     constructor(props) {
         super(props);
         this.state={
-            'options': {
-                title: "null",
-                earthRadius: this.props.options.units[this.props.options.activeUnit],
-                optimization: "none"},
+            'options': {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit], optimization: "none"},
             errorMessage: null,
+            details: {'Name':true, 'Leg Distance':true, 'Total Distance':true,
+                        'Latitude': false, 'Longitude': false, }
         };
         this.loadFile = this.loadFile.bind(this);
         this.saveFile = this.saveFile.bind(this);
-        this.generateItinerary = this.generateItinerary.bind(this);
-        this.itineraryHeader = this.itineraryHeader.bind(this);
         this.addLocation = this.addLocation.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
-        this.getBounds = this.getBounds.bind(this);
-        this.renderTable = this.renderTable.bind(this);
-        this.getSingleLoc = this.getSingleLoc.bind(this);
         this.updateItineraryInfo = this.updateItineraryInfo.bind(this);
     }
 
@@ -42,15 +36,45 @@ export default class Itinerary extends Component {
                 { this.state.errorMessage }
                 <Row> <Col xs={12} sm={12} md={7} lg={8} xl={8}>
                     {this.renderMap()}
-                </Col>
-                    <Col xs={12} sm={12} md={5} lg={4} xl={4}>
-                        {this.renderItinerary()}
-                    </Col> </Row>
+                </Col> <Col xs={12} sm={12} md={5} lg={4} xl={4}>
+                    {this.renderItinerary()}
+                    {this.checkList()}
+                </Col> </Row>
                 <Row> <Col xs={12} sm={12} md={12} lg={12} xl={12}>
-                    {this.renderTable()}
+                    <ItineraryTable     places={this.props.itineraryPlan.places}
+                                        distances={this.props.itineraryPlan.distances}
+                                        details={this.state.details}/>
                 </Col> </Row>
             </Container>
         );
+    }
+
+    checkList(){
+        return(
+            <Pane header={'Detail Options'}>
+                {<Container>{this.getCheckbox()}</Container>}
+            </Pane>
+        );
+    }
+
+    getCheckbox(){
+        let list =[];
+        let i = 0;
+        for(let detail in this.state.details){
+            if(this.state.details[detail]) {
+                list.push(<CustomInput type="checkbox" id={detail+i} defaultChecked="true" label={detail} onClick={() => {this.toggleCheckbox(detail, (!this.state.details[detail]))}}/>);
+            }
+            else
+                list.push(<CustomInput type="checkbox" id={detail+i} label={detail} onClick={()=>{this.toggleCheckbox(detail, (!this.state.details[detail]))}}/>);
+            i++;
+        }
+        return(list);
+    }
+
+    toggleCheckbox(opt, val){
+        let tempCopy = Object.assign({}, this.state.details);
+        tempCopy[opt] = val;
+        this.setState({details: tempCopy});
     }
 
     renderItinerary(){
@@ -133,82 +157,6 @@ export default class Itinerary extends Component {
         return LL
     }
 
-    renderTable(){
-        return(
-            <Pane header={'Your Itinerary'}>
-                <Container>
-                    {this.generateItinerary()}
-                </Container>
-            </Pane>
-        );
-    }
-
-    generateItinerary() {
-        let myItinerary = [];
-        let dist = 0;
-        let tempLoc = [];
-        myItinerary.push(this.itineraryHeader());
-        if (this.props.itineraryPlan.places.length > 0) {
-            myItinerary.push(
-                <div key={"places_first"}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                    {this.props.itineraryPlan.places[0].name}
-                </Col>
-                    <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                        {0}
-                    </Col>
-                    <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                        {dist}
-                    </Col> </Row> </div>
-            );
-            dist = dist + this.props.itineraryPlan.distances[0];
-        }
-        for (let place in this.props.itineraryPlan.places) {
-            if (place == 0) continue;
-            myItinerary.push(
-                <div key={"places_"+place}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                    {this.props.itineraryPlan.places[place].name}
-                </Col>
-                    <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                        {this.props.itineraryPlan.distances[place-1]}
-                    </Col>
-                    <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                        {dist}
-                    </Col> </Row> </div>
-            );
-            dist = dist + this.props.itineraryPlan.distances[place];
-        }
-        if (this.props.itineraryPlan.places.length > 1) {
-            myItinerary.push(
-                <div key={"places_first"}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                    {this.props.itineraryPlan.places[0].name}
-                </Col>
-                    <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                        {this.props.itineraryPlan.distances[this.props.itineraryPlan.distances.length-1]}
-                    </Col>
-                    <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                        {dist}
-                    </Col> </Row> </div>
-            );
-            dist = dist + this.props.itineraryPlan.distances[0];
-        }
-        return(myItinerary);
-    }
-
-    itineraryHeader(){
-        let tempList = [];
-        tempList.push(
-            <div key={"itinerary_header"}> <Row> <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                <b>Destinations</b>
-            </Col>
-                <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                    <b>Leg Distance</b>
-                </Col>
-                <Col xs="4" sm="4" md="4" lg="3" xl="4">
-                    <b>Total Distance</b>
-                </Col> </Row> </div>);
-        return(tempList);
-    }
-
     saveFile(event){
         event.preventDefault();
         var file = new Blob([JSON.stringify(this.props.itineraryPlan)], {type: "text/plain;charset=utf-8"});  // Source="https://www.npmjs.com/package/file-saver/v/1.3.2"
@@ -221,8 +169,7 @@ export default class Itinerary extends Component {
             //read the text-format file to a string
             const content = fileReader.result;
             //parse the string into a JSON file
-            try {
-                let fileInfo = JSON.parse(content);
+            try{let fileInfo = JSON.parse(content);
                 //set places and distances equal to the JSON file's places and distances
                 this.updateItineraryInfo('places', fileInfo.places);
                 this.setState(() => this.calculateDistances());
