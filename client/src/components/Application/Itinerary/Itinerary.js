@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
-import { Alert } from 'reactstrap';
 import FileSaver from 'file-saver'; //
-import {Container, Row, Col, CustomInput} from 'reactstrap'
+import {Alert, Container, Row, Col, CustomInput} from 'reactstrap'
 import {Map, TileLayer, Polyline} from "react-leaflet";
+import ItineraryTable from "./ItineraryTable";
 
 export default class Itinerary extends Component {
     constructor(props) {
@@ -15,11 +15,11 @@ export default class Itinerary extends Component {
             'distances': [],
             errorMessage: null,
             boundaries: null,
-            details: {'Destination':true, 'Leg Distance':true, 'Total Distance':true, 'Latitude': false, 'Longitude': false}
+            details: {'Name':true, 'Leg Distance':true, 'Total Distance':true,
+                        'Latitude': false, 'Longitude': false, }
         };
         this.loadFile = this.loadFile.bind(this);
         this.saveFile = this.saveFile.bind(this);
-        this.generateItinerary = this.generateItinerary.bind(this);
         this.addLocation = this.addLocation.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
     }
@@ -42,7 +42,9 @@ export default class Itinerary extends Component {
                 </Col>
                 </Row>
                 <Row> <Col xs={12} sm={12} md={12} lg={12} xl={12}>
-                    {this.renderTable()}
+                    <ItineraryTable     places={this.state.places}
+                                        distances={this.state.distances}
+                                        details={this.state.details}/>
                 </Col> </Row>
             </Container>
         );
@@ -50,19 +52,22 @@ export default class Itinerary extends Component {
 
     checkList(){
         return(
-            <Pane header={'Detail Options'}
-                  bodyJSX={<Container>{this.getCheckbox()}</Container>}/>
+            <Pane header={'Detail Options'}>
+                {<Container>{this.getCheckbox()}</Container>}
+            </Pane>
         );
     }
 
     getCheckbox(){
-        let checkboxNameList = this.itineraryHeader();
         let list =[];
+        let i = 0;
         for(let detail in this.state.details){
-            if(this.state.details[detail])
-                list.push(<CustomInput type="checkbox" id={detail} defaultChecked="true" label={detail} onClick={()=>{this.toggleCheckbox(detail, (!this.state.details[detail]))}}/>);
+            if(this.state.details[detail]) {
+                list.push(<CustomInput type="checkbox" id={detail+i} defaultChecked="true" label={detail} onClick={() => {this.toggleCheckbox(detail, (!this.state.details[detail]))}}/>);
+            }
             else
-                list.push(<CustomInput type="checkbox" id={detail} label={detail} onClick={()=>{this.toggleCheckbox(detail, (!this.state.details[detail]))}}/>);
+                list.push(<CustomInput type="checkbox" id={detail+i} label={detail} onClick={()=>{this.toggleCheckbox(detail, (!this.state.details[detail]))}}/>);
+            i++;
         }
         return(list);
     }
@@ -151,66 +156,6 @@ export default class Itinerary extends Component {
             LL.push(L.latLng(parseFloat(this.state.places[0].latitude), parseFloat(this.state.places[0].longitude)));
         }
         return LL
-    }
-
-    renderTable(){
-        return(
-            <Pane header={'Your Itinerary'}>
-                <Table hover>
-                    {this.generateItinerary()}
-                </Table>
-            </Pane>
-        );
-    }
-
-    generateItinerary(){
-        let myItinerary = [];
-        let dist = 0;
-        let tempLoc = [];
-        myItinerary.push(<thead><tr>{this.itineraryHeader()}</tr></thead>);
-        if(this.state.places.length > 0){
-            myItinerary.push(<tbody>{this.getItineraryRows()}</tbody>);
-        }
-        return(myItinerary);
-    }
-
-    getItineraryRows(){
-        let tempList = [], dist = 0;
-        tempList.push(<tr>{this.getLine(0, 0, 0)}</tr>);
-        dist = dist + this.state.distances[0];
-        for(let place in this.state.places){
-            if (place == 0) continue;
-            tempList.push(<tr>{this.getLine(place, this.state.distances[place-1], dist)}</tr>);
-            dist = dist + this.state.distances[place];
-        }
-        if(this.state.places.length > 1){
-            tempList.push(<tr>{this.getLine(0, this.state.distances[this.state.distances.length-1], dist)}</tr>);
-        }
-        return(tempList);
-    }
-
-    getLine(index, legDist, dist){
-        let markup=[];
-        for(let detail in this.state.details) {
-            if(this.state.details[detail] === true) {
-                if (detail === 'Destination') markup.push(<td>{this.state.places[index].name}</td>);
-                if (detail === 'Leg Distance') markup.push(<td>{legDist}</td>);
-                if (detail === 'Total Distance') markup.push(<td>{dist}</td>);
-                if (detail === 'Latitude') markup.push(<td>{this.state.places[index].latitude}</td>);
-                if (detail === 'Longitude') markup.push(<td>{this.state.places[index].longitude}</td>);
-            }
-        }
-        return(markup);
-    }
-
-    itineraryHeader(){
-        let markup=[];
-        for(let detail in this.state.details) {
-            if(this.state.details[detail] === true)
-                markup.push(<th><b>{detail}</b></th>);
-
-        }
-        return(markup);
     }
 
     saveFile(event){
