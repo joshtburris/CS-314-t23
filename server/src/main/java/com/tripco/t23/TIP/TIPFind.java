@@ -1,14 +1,17 @@
 package com.tripco.t23.TIP;
 
+import com.tripco.t23.database.database;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 public class TIPFind extends TIPHeader {
     private String match;
     private int limit;
     private int found;
-    private Map[] places;
+    private ArrayList<Map> places = new ArrayList<>();
 
     private final transient Logger log = LoggerFactory.getLogger(TIPFind.class);
 
@@ -16,7 +19,15 @@ public class TIPFind extends TIPHeader {
         this();
         this.requestVersion = 3;
         this.match = match;
-        this.limit = 3;
+        this.limit = 0;
+        this.found  = 0;
+    }
+
+    TIPFind(String match, int limit) {
+        this();
+        this.requestVersion = 3;
+        this.match = match;
+        this.limit = limit;
         this.found  = 0;
     }
 
@@ -25,18 +36,16 @@ public class TIPFind extends TIPHeader {
     }
 
 
-    //TODO: finish build response
     @Override
     public void buildResponse() {
         int lim = this.limit;
-        for (Map location : places){ //TODO: Replace 'places' in this line with the appropriate list of items
-            if(location.containsValue(this.match)){
-                if(lim > 0) {
-                    this.places[this.limit - lim] = location;
-                    lim--;
-                }
-                this.found++;
+        for (Map location : database.callLoginAll(this.match)){
+            //Already sorted in database, so we only need to count
+            if(lim > 0 || this.limit == 0) {
+                this.places.add(location);
+                lim--;
             }
+            this.found++;
         }
         log.trace("buildResponse -> {}", this);
     }
@@ -54,7 +63,7 @@ public class TIPFind extends TIPHeader {
         return this.found;
     }
 
-    public Map[] getPlaces(){
+    public ArrayList<Map> getPlaces(){
         return this.places;
     }
 
