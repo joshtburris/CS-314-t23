@@ -12,13 +12,12 @@ public class TIPFind extends TIPHeader {
 
     private final transient Logger log = LoggerFactory.getLogger(TIPFind.class);
 
-    TIPFind(String match, int limit, int found, Map[] places) {
+    TIPFind(String match) {
         this();
-        this.requestVersion = 2;
+        this.requestVersion = 3;
         this.match = match;
-        this.limit = limit;
-        this.found  = found;
-        this.places = places;
+        this.limit = 3;
+        this.found  = 0;
     }
 
     private TIPFind() {
@@ -29,6 +28,16 @@ public class TIPFind extends TIPHeader {
     //TODO: finish build response
     @Override
     public void buildResponse() {
+        int lim = this.limit;
+        for (Map location : places){ //TODO: Replace 'places' in this line with the appropriate list of items
+            if(location.containsValue(this.match)){
+                if(lim > 0) {
+                    this.places[this.limit - lim] = location;
+                    lim--;
+                }
+                this.found++;
+            }
+        }
         log.trace("buildResponse -> {}", this);
     }
 
