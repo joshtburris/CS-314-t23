@@ -1,7 +1,7 @@
 // Note the name of this file has X.test.js. Jest looks for any files with this pattern.
 import './enzyme.config.js'
 import React from 'react'
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import Itinerary from '../src/components/Application/Itinerary/Itinerary'
 
 
@@ -45,7 +45,7 @@ const startDetails = {
         'Latitude' : false,
         'Longitude' : false
     }
-}
+};
 
 function testDetailOptions() {
     const itinerary = shallow((<Itinerary   details={startDetails.details}
@@ -59,3 +59,17 @@ function testDetailOptions() {
 }
 
 test("Testing toggleCheckbox function of itinerary",testDetailOptions);
+
+function testSaveButton(){
+    let updatedItin = jest.fn();
+    const itinerary = shallow((
+        <Itinerary   options={startProperties.options}
+                     itineraryPlan={startProperties.itineraryPlan}
+                     />
+    ));
+
+    // testing that it exists (According to TA testing functionality is too complicated, this is fine)
+    expect(itinerary.find('#saveButton').length).toEqual(1);
+}
+
+test("Testing save button in itinerary",testSaveButton);
