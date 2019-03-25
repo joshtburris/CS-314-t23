@@ -197,7 +197,7 @@ export default class Itinerary extends Component {
     calculateDistances() {
         const tipConfigRequest = {
             'type'        : 'itinerary',
-            'version'     : 3,
+            'requestVersion'     : 3,
             'options'     : this.state.options,
             'places'      : this.props.itineraryPlan.places,
         };
