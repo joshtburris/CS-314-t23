@@ -35,8 +35,7 @@ public class TIPItinerary extends TIPHeader{
     public void buildResponse() {
         double earthRadius = Double.parseDouble(options.get("earthRadius").toString());
         Optimizer optimizer;
-        //if (this.requestVersion >=3) { TODO should check version ask TA's why this is null
-         try{
+        if (this.requestVersion >=3) {
             switch (this.options.get("optimization").toString()) {
                 case "short":
                     optimizer = new NearestNeighbor(this.places, earthRadius);
@@ -45,8 +44,7 @@ public class TIPItinerary extends TIPHeader{
                     optimizer = new OptimizerNone(this.places, earthRadius);
             }
         }
-        //else{
-        catch (Exception e){
+        else{
             optimizer = new OptimizerNone(this.places, earthRadius);
         }
         this.distances = optimizer.getDistances();
