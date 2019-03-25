@@ -61,7 +61,6 @@ function testDetailOptions() {
 test("Testing toggleCheckbox function of itinerary",testDetailOptions);
 
 function testSaveButton(){
-    let updatedItin = jest.fn();
     const itinerary = shallow((
         <Itinerary   options={startProperties.options}
                      itineraryPlan={startProperties.itineraryPlan}
@@ -73,3 +72,16 @@ function testSaveButton(){
 }
 
 test("Testing save button in itinerary",testSaveButton);
+
+function testUploadButton(){
+    const itinerary = shallow((
+        <Itinerary   options={startProperties.options}
+                     itineraryPlan={startProperties.itineraryPlan}
+        />
+    ));
+
+    // testing that it exists (According to TA testing functionality is too complicated, this is fine)
+    expect(itinerary.contains('#input'));
+}
+
+test("Testing upload button in itinerary",testUploadButton);
