@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import {Card, CardBody, CardHeader, Container} from 'reactstrap';
-
+import {getOriginalServerPort, sendServerRequest} from '../../api/restfulAPI';
 import Home from './Home';
 import Options from './Options/Options';
 import About from './About/About'
 import Calculator from './Calculator/Calculator';
 import Settings from './Settings/Settings';
-import {getOriginalServerPort, sendServerRequest} from '../../api/restfulAPI';
 import ErrorBanner from './ErrorBanner';
 import Itinerary from "./Itinerary/Itinerary";
 
@@ -30,8 +29,7 @@ export default class Application extends Component {
             },
             itineraryPlan: {
                 places:[],
-                distances:[],
-                boundaries:null
+                distances:[]
             },
             clientSettings: {
                 serverPort: getOriginalServerPort()
