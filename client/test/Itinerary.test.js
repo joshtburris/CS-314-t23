@@ -73,3 +73,29 @@ function testSaveButton(){
 }
 
 test("Testing save button in itinerary",testSaveButton);
+
+function testSaveButton(){
+    const itinerary = shallow((
+        <Itinerary   options={startProperties.options}
+                     itineraryPlan={startProperties.itineraryPlan}
+                     />
+    ));
+
+    // testing that it exists (According to TA testing functionality is too complicated, this is fine)
+    expect(itinerary.find('#saveButton').length).toEqual(1);
+}
+
+test("Testing save button in itinerary",testSaveButton);
+
+function testUploadButton(){
+    const itinerary = shallow((
+        <Itinerary   options={startProperties.options}
+                     itineraryPlan={startProperties.itineraryPlan}
+        />
+    ));
+
+    // testing that it exists (According to TA testing functionality is too complicated, this is fine)
+    expect(itinerary.contains('#input'));
+}
+
+test("Testing upload button in itinerary",testUploadButton);
