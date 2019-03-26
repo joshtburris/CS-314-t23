@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 public class TestTIPFind {
     private TIPFind finder;
@@ -21,19 +20,6 @@ public class TestTIPFind {
         long actual = findOne.getFound();
         assertEquals("one object is found", expect, actual);
     }
-
-    //Travis test uses different database?
-    /*@Test
-    public void testFindMulti(){
-        TIPFind findMulti = new TIPFind("airport", 3);
-        findMulti.buildResponse();
-        long expectFind = 297;
-        long expectMatch = 3;
-        long actualFound = findMulti.getFound();
-        long actualMatch = findMulti.getPlaces().size();
-        assertEquals("many objects are found", expectFind, actualFound);
-        assertEquals("only three objects are saved", expectMatch, actualMatch);
-    }*/
 
     @Test
     public void findDtc(){

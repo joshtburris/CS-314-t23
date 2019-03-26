@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Pane from "../Pane";
-import {Container, Row, Col, CustomInput} from 'reactstrap'
+import {Button} from 'reactstrap'
 import { Table } from 'reactstrap';
 
 export default class ItineraryTable extends Component {
@@ -56,6 +56,8 @@ export default class ItineraryTable extends Component {
                 else markup.push(<td>{this.props.places[index][temp]}</td>);
             }
         }
+        let tag = 'remove'+index;
+        markup.push(<td><Button id={tag} type='submit' color="link" onClick={()=>{this.removeLocation(index);}} > <b>X</b> </Button></td>);
         return(markup);
     }
 
@@ -64,7 +66,15 @@ export default class ItineraryTable extends Component {
         for(let detail in this.props.details)
             if(this.props.details[detail] === true)
                 markup.push(<th><b>{detail}</b></th>);
+        markup.push(<th><b>Remove</b></th>)
         return(markup);
+    }
+
+    removeLocation(index){
+        let places = [];
+        Object.assign(places, this.props.places);
+        places.splice(index,1);
+        this.props.updateItineraryInfo("places", places);
     }
 
 }

@@ -22,12 +22,17 @@ export default class Itinerary extends Component {
         this.updateItineraryInfo = this.updateItineraryInfo.bind(this);
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.itineraryPlan.places !== this.props.itineraryPlan.places){
+            this.calculateDistances();
+        }
+    }
+
     addLocation(id, name, latitude, longitude) {
         let placesCopy = [];
         Object.assign(placesCopy, this.props.itineraryPlan.places);
         placesCopy.push({id: id, name: name, latitude: latitude, longitude: longitude});
         this.updateItineraryInfo('places', placesCopy);
-        console.log(this.props.itineraryPlan);
     }
 
     render(){
@@ -43,7 +48,8 @@ export default class Itinerary extends Component {
                 <Row> <Col xs={12} sm={12} md={12} lg={12} xl={12}>
                     <ItineraryTable     places={this.props.itineraryPlan.places}
                                         distances={this.props.itineraryPlan.distances}
-                                        details={this.state.details}/>
+                                        details={this.state.details}
+                                        updateItineraryInfo={this.updateItineraryInfo}/>
                 </Col> </Row>
             </Container>
         );
