@@ -42,16 +42,18 @@ export default class Home extends Component {
         // 1: bounds={this.coloradoGeographicBoundaries()}
         // 2: center={this.csuOvalGeographicCoordinates()} zoom={10}
         let c_location;
-        if(this.props.currentLocation == null){c_location = this.csuOvalGeographicCoordinates()}
-        else{c_location = this.props.getUserLocation();}
+        if (this.props.currentLocation == null) {c_location = this.csuOvalGeographicCoordinates()}
+        else {c_location = this.props.getUserLocation();}
         return (
             <Map center={c_location} zoom={10}
-                 style={{height: 500, maxwidth: 700}}>
+                 style={{height: 500, maxwidth: 700}}
+                 id={'map'}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                            attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                 />
                 <Marker position={c_location}
-                        icon={this.markerIcon()}>
+                        icon={this.markerIcon()}
+                        id={'mapMarker'}>
                     <Popup className="font-weight-extrabold">Colorado State University</Popup>
                 </Marker>
             </Map>
@@ -68,30 +70,13 @@ export default class Home extends Component {
 
 
     /*coloradoGeographicBoundaries() {
-        // northwest and southeas< Itinerary-Mapt corners of the state of Colorado
+        // northwest and southeast< Itinerary-Map corners of the state of Colorado
         return L.latLngBounds(L.latLng(41, -109), L.latLng(37, -102));
     }*/
 
     csuOvalGeographicCoordinates() {
         return L.latLng(40.576179, -105.080773);
     }
-
-    /*userLocationCoordinates() {
-        if(navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                loc => {
-                    console.log(loc.coords.latitude);
-                    console.log(loc.coords.longitude);
-                    this.setState({
-                        currentLocation: {
-                            lat: loc.coords.latitude,
-                            lon: loc.coords.longitude
-                        }
-                    });
-                });
-            return L.latLng(this.state.currentLocation.lat, this.state.currentLocation.lon);
-        }
-    }*/
 
     markerIcon() {
         // react-leaflet does not currently handle default marker icons correctly,
