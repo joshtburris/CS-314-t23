@@ -102,7 +102,7 @@ export default class Calculator extends Component {
         return 0;
     }
     const tipConfigRequest = {
-      'type'        : 'distance',
+      'requestType'        : 'distance',
       'requestVersion'     : 3,
       'origin'      : {'latitude': coordinates(this.props.calculatorInput.origin).lat, 'longitude': coordinates(this.props.calculatorInput.origin).lng},
       'destination' : {'latitude': coordinates(this.props.calculatorInput.destination).lat, 'longitude': coordinates(this.props.calculatorInput.destination).lng},

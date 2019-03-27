@@ -19,6 +19,16 @@ const startProperties = {
 
 };
 
+const startDetails = {
+    'details' : {
+        'Destination' : true,
+        'Leg Distance' : true,
+        'Total Distance' : true,
+        'Latitude' : false,
+        'Longitude' : false
+    }
+};
+
 const tableOne = {
     'options': {
         'units': {'miles': 3959, 'kilometers': 6371},
@@ -38,10 +48,11 @@ const tableOne = {
 
 function testAddLocation(){
     let updatedItin = jest.fn();
-    const itinerary = shallow((<Itinerary
-        options={startProperties.options}
-        itineraryPlan={startProperties.itineraryPlan}
-        updateItineraryPlan={updatedItin}/>));
+    const itinerary = shallow((<Itinerary   details={startDetails.details}
+                                            itineraryPlan={startProperties.itineraryPlan}
+                                            settings={startProperties.options.serverPort}
+                                            options={startProperties.options}
+                                            updateItineraryPlan={updatedItin}/>));
 
     let place = [];
     place.push({id: "id", name: "name", latitude: 50.0, longitude: 100.0});
@@ -54,20 +65,12 @@ function testAddLocation(){
 
 test("Testing addLocation function of itinerary", testAddLocation);
 
-const startDetails = {
-    'details' : {
-        'Destination' : true,
-        'Leg Distance' : true,
-        'Total Distance' : true,
-        'Latitude' : false,
-        'Longitude' : false
-    }
-};
-
 function testDetailOptions() {
     const itinerary = shallow((<Itinerary   details={startDetails.details}
                                             itineraryPlan={startProperties.itineraryPlan}
-                                            options={startProperties.options}/>));
+                                            settings={startProperties.options.serverPort}
+                                            options={startProperties.options}
+                                            updateItineraryPlan={jest.fn()}/>));
     itinerary.instance().toggleCheckbox('Destination', (!startDetails.details.Destination));
     expect(itinerary.state().details.Destination).toEqual(false);
 
@@ -78,10 +81,11 @@ function testDetailOptions() {
 test("Testing toggleCheckbox function of itinerary",testDetailOptions);
 
 function testSaveButton(){
-    let updatedItin = jest.fn();
     const itinerary = shallow((
         <Itinerary   options={startProperties.options}
                      itineraryPlan={startProperties.itineraryPlan}
+                     settings={startProperties.options.serverPort}
+                     updateItineraryPlan={jest.fn()}
                      />
     ));
 
@@ -91,11 +95,13 @@ function testSaveButton(){
 
 test("Testing save button in itinerary",testSaveButton);
 
+
 function testUploadButton(){
     const itinerary = shallow((
         <Itinerary   options={startProperties.options}
                      itineraryPlan={startProperties.itineraryPlan}
-        />
+                     settings={startProperties.options.serverPort}
+                     updateItineraryPlan={jest.fn()}/>
     ));
 
     // testing that it exists (According to TA testing functionality is too complicated, this is fine)
@@ -109,6 +115,7 @@ function testReverseButton(){
     const itinerary = shallow((
         <Itinerary   options={startProperties.options}
                      itineraryPlan={tableOne.itineraryPlan}
+                     settings={startProperties.options.serverPort}
                      updateItineraryPlan={revfunction}
         />
     ));
@@ -129,3 +136,5 @@ function simulateReverseButtonPress(e, reactWrapper) {
     reactWrapper.find('#reverseButton').at(0).simulate('click');
     reactWrapper.update();
 }
+
+test("Testing reverse button", testReverseButton);

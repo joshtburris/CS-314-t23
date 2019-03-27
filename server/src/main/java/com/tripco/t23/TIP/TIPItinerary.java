@@ -36,7 +36,7 @@ public class TIPItinerary extends TIPHeader{
         double earthRadius = Double.parseDouble(options.get("earthRadius").toString());
         Optimizer optimizer;
         if (this.requestVersion >=3) {
-            switch (this.options.get("optimization").toString()) {
+            switch (this.options.get("optimizations").toString()) {
                 case "short":
                     optimizer = new NearestNeighbor(this.places, earthRadius);
                     break;

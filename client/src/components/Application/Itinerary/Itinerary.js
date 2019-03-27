@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
-import { saveAs } from 'file-saver'; //
+import { saveAs } from 'file-saver';
 import {Alert, Container, Row, Col, CustomInput, Button} from 'reactstrap'
 import {Map, TileLayer, Polyline} from "react-leaflet";
 import ItineraryTable from "./ItineraryTable";
@@ -10,7 +10,7 @@ export default class Itinerary extends Component {
     constructor(props) {
         super(props);
         this.state={
-            'options': {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit], optimization: "none"},
+            'options': {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit], optimizations: this.props.options.optimizations},
             errorMessage: null,
             details: {'Name':true, 'Leg Distance':true, 'Total Distance':true,
                         'Latitude': false, 'Longitude': false, }
@@ -20,12 +20,22 @@ export default class Itinerary extends Component {
         this.addLocation = this.addLocation.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
         this.updateItineraryInfo = this.updateItineraryInfo.bind(this);
+        this.calculateDistances();
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.itineraryPlan.places !== this.props.itineraryPlan.places){
+        if(prevProps.itineraryPlan.places.length !== this.props.itineraryPlan.places.length){
             this.calculateDistances();
+            return;
         }
+        for(let i =0; i < prevProps.itineraryPlan.places.length && i < this.props.itineraryPlan.places.length; i++){
+            if (prevProps.itineraryPlan.places[i][1] !== this.props.itineraryPlan.places[i][1]){ //this assumes all places have a name
+                this.calculateDistances();
+                return;
+            }
+        }
+
+
     }
 
     addLocation(id, name, latitude, longitude) {
@@ -203,7 +213,7 @@ export default class Itinerary extends Component {
 
     calculateDistances() {
         const tipConfigRequest = {
-            'type'        : 'itinerary',
+            'requestType'        : 'itinerary',
             'requestVersion'     : 3,
             'options'     : this.state.options,
             'places'      : this.props.itineraryPlan.places,
@@ -215,6 +225,7 @@ export default class Itinerary extends Component {
                     this.setState({
                         errorMessage: null
                     });
+                    this.updateItineraryInfo('places', response.body.places);
                     this.updateItineraryInfo('distances', response.body.distances);
                 }
                 else {

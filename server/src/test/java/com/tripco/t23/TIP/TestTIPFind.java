@@ -11,7 +11,6 @@ public class TestTIPFind {
     private TIPFind finder;
 
     private Map[] data = new Map[3];
-
     @Test
     public void testFindOne(){
         TIPFind findOne = new TIPFind("Capri", 3);

@@ -28,10 +28,8 @@ public class NearestNeighbor implements Optimizer{
 
     public Map[] getPlaces(){
         for(int i= 0; i<this.places.length; i++){
-            log.debug("places {}", this.places[i]);
         }
         for(int i=0; i<this.ordPlaces.length;i++){
-            log.debug("ordPlaces: {}", this.ordPlaces[i]);
         }
         return this.ordPlaces;
     }
