@@ -19,6 +19,23 @@ const startProperties = {
 
 };
 
+const tableOne = {
+    'options': {
+        'units': {'miles': 3959, 'kilometers': 6371},
+        'activeUnit': 'miles',
+        'serverPort': 'black-bottle.cs.colostate.edu:31400'
+    },
+    'itineraryPlan': {
+        'places':[{id: "do", name: "does", latitude: -12, longitude: -12},
+                  {id: "th", name: "this", latitude: -8.5, longitude: 4},
+                  {id: "te", name: "test", latitude: 4, longitude: 2},
+                  {id: "th", name: "this", latitude: 11, longitude: -2.5}],
+        'distances':[14, 24, 6, 41],
+        'boundaries':null
+    }
+
+};
+
 function testAddLocation(){
     let updatedItin = jest.fn();
     const itinerary = shallow((<Itinerary
@@ -74,19 +91,6 @@ function testSaveButton(){
 
 test("Testing save button in itinerary",testSaveButton);
 
-function testSaveButton(){
-    const itinerary = shallow((
-        <Itinerary   options={startProperties.options}
-                     itineraryPlan={startProperties.itineraryPlan}
-                     />
-    ));
-
-    // testing that it exists (According to TA testing functionality is too complicated, this is fine)
-    expect(itinerary.find('#saveButton').length).toEqual(1);
-}
-
-test("Testing save button in itinerary",testSaveButton);
-
 function testUploadButton(){
     const itinerary = shallow((
         <Itinerary   options={startProperties.options}
@@ -99,3 +103,29 @@ function testUploadButton(){
 }
 
 test("Testing upload button in itinerary",testUploadButton);
+
+function testReverseButton(){
+    let revfunction = jest.fn();
+    const itinerary = shallow((
+        <Itinerary   options={startProperties.options}
+                     itineraryPlan={tableOne.itineraryPlan}
+                     updateItineraryPlan={revfunction}
+        />
+    ));
+
+    let e = tableOne.itineraryPlan.places;
+    simulateReverseButtonPress(e, itinerary);
+
+    expect(revfunction.mock.calls.length).toEqual(1);
+    expect(revfunction.mock.calls[0][0]).toEqual("places");
+
+    let revPlaces = [];
+    Object.assign(revPlaces, tableOne.itineraryPlan.places);
+    revPlaces.reverse();
+    expect(revfunction.mock.calls[0][1]).toEqual(revPlaces);
+}
+
+function simulateReverseButtonPress(e, reactWrapper) {
+    reactWrapper.find('#reverseButton').at(0).simulate('click');
+    reactWrapper.update();
+}

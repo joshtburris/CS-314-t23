@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
 import { saveAs } from 'file-saver'; //
-import {Alert, Container, Row, Col, CustomInput} from 'reactstrap'
+import {Alert, Container, Row, Col, CustomInput, Button} from 'reactstrap'
 import {Map, TileLayer, Polyline} from "react-leaflet";
 import ItineraryTable from "./ItineraryTable";
 
@@ -57,7 +57,7 @@ export default class Itinerary extends Component {
 
     checkList(){
         return(
-            <Pane header={'Detail Options'}>
+            <Pane header={'Details/Options'}>
                 {<Container>{this.getCheckbox()}</Container>}
             </Pane>
         );
@@ -74,6 +74,7 @@ export default class Itinerary extends Component {
                 list.push(<CustomInput type="checkbox" id={detail+i} label={detail} onClick={()=>{this.toggleCheckbox(detail, (!this.state.details[detail]))}}/>);
             i++;
         }
+        list.push(<Button type="submit" value="Reverse" id="reverseButton" onClick={(e) => this.reverseItinerary(e)}>Reverse</Button>);
         return(list);
     }
 
@@ -226,6 +227,13 @@ export default class Itinerary extends Component {
                     });
                 }
             });
+    }
+
+    reverseItinerary(){
+        let rPlaces = [];
+        Object.assign(rPlaces, this.props.itineraryPlan.places);
+        rPlaces.reverse();
+        this.updateItineraryInfo('places', rPlaces);
     }
 
     updateItineraryInfo(stateVar, value) {
