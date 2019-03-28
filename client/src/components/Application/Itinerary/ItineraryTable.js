@@ -57,7 +57,10 @@ export default class ItineraryTable extends Component {
             }
         }
         let tag = 'remove'+index;
-        markup.push(<td><Button id={tag} type='submit' color="link" onClick={()=>{this.removeLocation(index);}} > <b>X</b> </Button></td>);
+        markup.push(<td><Button id={tag} type='submit' color="link" onClick={()=>{this.removeLocation(index);}} > <b>Del</b> </Button>
+            <Button id={tag} type='submit' color="link" onClick={() => {this.rearrange(index, 1);}}> <b>↑</b> </Button>
+            <Button id={tag} type='submit' color="link" onClick={() => {this.rearrange(index, 0);}}> <b>↓</b> </Button>
+        </td>);
         return(markup);
     }
 
@@ -77,4 +80,38 @@ export default class ItineraryTable extends Component {
         this.props.updateItineraryInfo("places", places);
     }
 
+    //Function that moves an index in the itinerary up or down by one
+    //index: the index of the item to be moved
+    //direction: 0 for down, 1 for up
+    rearrange(index, direction){
+        let itinLen = this.props.places.length;
+        let copyPlaces = [];
+        Object.assign(copyPlaces, this.props.places);
+
+        //console.log(index-1);
+        //console.log(copyPlaces[index-1]);
+
+        if(direction == 0){
+            //swap the selected index and the one below it
+            let temp = copyPlaces[(parseInt(index)+1) % itinLen]
+            copyPlaces[(parseInt(index)+1) % itinLen] = copyPlaces[index];
+            copyPlaces[index] = temp;
+        }
+        else{
+            if(parseInt(index) == 0) {
+                //swap the selected index's item and the last item
+                let temp = copyPlaces[itinLen-1]
+                copyPlaces[itinLen-1] = copyPlaces[index];
+                copyPlaces[index] = temp;
+            }
+            else {
+                //swap the selected index and the one above it
+                let temp = copyPlaces[index - 1]
+                copyPlaces[index - 1] = copyPlaces[index];
+                copyPlaces[index] = temp;
+            }
+        }
+        //put new array into the proper area
+        this.props.updateItineraryInfo('places', copyPlaces);
+    }
 }

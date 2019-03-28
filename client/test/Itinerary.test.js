@@ -39,7 +39,7 @@ const tableOne = {
         'places':[{id: "do", name: "does", latitude: -12, longitude: -12},
                   {id: "th", name: "this", latitude: -8.5, longitude: 4},
                   {id: "te", name: "test", latitude: 4, longitude: 2},
-                  {id: "th", name: "this", latitude: 11, longitude: -2.5}],
+                  {id: "wo", name: "work", latitude: 11, longitude: -2.5}],
         'distances':[14, 24, 6, 41],
         'boundaries':null
     }

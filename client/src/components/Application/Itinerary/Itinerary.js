@@ -20,7 +20,6 @@ export default class Itinerary extends Component {
         this.addLocation = this.addLocation.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
         this.updateItineraryInfo = this.updateItineraryInfo.bind(this);
-        this.calculateDistances();
     }
 
     componentDidUpdate(prevProps) {
@@ -29,13 +28,11 @@ export default class Itinerary extends Component {
             return;
         }
         for(let i =0; i < prevProps.itineraryPlan.places.length && i < this.props.itineraryPlan.places.length; i++){
-            if (prevProps.itineraryPlan.places[i][1] !== this.props.itineraryPlan.places[i][1]){ //this assumes all places have a name
+            if (prevProps.itineraryPlan.places[i].name !== this.props.itineraryPlan.places[i].name){ //this assumes all places have a name
                 this.calculateDistances();
                 return;
             }
         }
-
-
     }
 
     addLocation(id, name, latitude, longitude) {
