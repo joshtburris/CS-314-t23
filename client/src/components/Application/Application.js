@@ -8,6 +8,8 @@ import Calculator from './Calculator/Calculator';
 import Settings from './Settings/Settings';
 import ErrorBanner from './ErrorBanner';
 import Itinerary from "./Itinerary/Itinerary";
+import Ajv from 'ajv'
+import schema from './TIPConfigSchema';
 
 
 /* Renders the application.
@@ -157,6 +159,21 @@ export default class Application extends Component {
     processConfigResponse(config) {
         if(config.statusCode >= 200 && config.statusCode <= 299) {
             console.log("Switching to server ", this.state.clientSettings.serverPort);
+            //validate response
+            var ajv = new Ajv();
+            var valid = ajv.validate(schema, config.body);
+            if (!valid) {
+                console.log(ajv.errors);
+                this.setState({
+                    serverConfig: null,
+                    errorMessage:
+                        <Container>
+                            {this.createErrorBanner(config.statusText, config.statusCode,
+                                `Invalid config from ${ this.state.clientSettings.serverPort}. Please choose a valid server.`)}
+                        </Container>
+                });
+                return;
+            }
             this.setState({
                 serverConfig: config.body,
                 errorMessage: null

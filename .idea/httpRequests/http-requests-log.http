@@ -1,0 +1,456 @@
+POST http://localhost:8088/api/distance
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+POST http://localhost:8088/api/distance
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+POST http://localhost:8088/api/distance
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+POST http://localhost:8088/api/distance
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+POST http://localhost:8088/api/distance
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+POST http://localhost:8088/api/distance
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-27T110222.500.html
+
+###
+
+POST http://localhost:8080/api/distance
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+POST http://localhost:8080/api/distance
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-27T105118.500.html
+
+###
+
+POST http://localhost:8080/api/distance
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-27T104924.500.html
+
+###
+
+POST http://localhost:8080/api/distance
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-27T104814.500.html
+
+###
+
+POST http://localhost:8080/api/distance
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-03-27T104514.500.html
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType": "itinerary", "requestVersion": 3, "options": { "title": "My Trip", "earthRadius": "3958.761316", "optimizations": "short" }, "places": [{"id": "dnvr","name": "Denver","latitude": "39.7392","longitude": "-104.9903"}, {"id": "bldr","name": "Boulder","latitude": "40.01499","longitude": "-105.27055"}, {"id": "cosp","name": "Colorado Springs","latitude": "38.8339","longitude": "-104.8214"}, {"id": "foco","name": "Fort Collins","latitude": "40.585258","longitude": "-105.084419"}, {"id": "pueb","name": "Pueblo","latitude": "38.2544","longitude": "-104.6091"} ], "distances": [] }
+
+<> 2019-03-27T104459.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType": "itinerary", "requestVersion": 3, "options": { "title": "My Trip", "earthRadius": "3958.761316", "optimizations": "short" }, "places": [{"id": "dnvr","name": "Denver","latitude": "39.7392","longitude": "-104.9903"}, {"id": "bldr","name": "Boulder","latitude": "40.01499","longitude": "-105.27055"}, {"id": "cosp","name": "Colorado Springs","latitude": "38.8339","longitude": "-104.8214"}, {"id": "foco","name": "Fort Collins","latitude": "40.585258","longitude": "-105.084419"}, {"id": "pueb","name": "Pueblo","latitude": "38.2544","longitude": "-104.6091"} ], "distances": [] }
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType": "itinerary", "requestVersion": 3, "options": { "title": "My Trip", "earthRadius": "3958.761316", "optimizations": "short" }, "places": [{"id": "dnvr","name": "Denver","latitude": "39.7392","longitude": "-104.9903"}, {"id": "bldr","name": "Boulder","latitude": "40.01499","longitude": "-105.27055"}, {"id": "cosp","name": "Colorado Springs","latitude": "38.8339","longitude": "-104.8214"}, {"id": "foco","name": "Fort Collins","latitude": "40.585258","longitude": "-105.084419"}, {"id": "pueb","name": "Pueblo","latitude": "38.2544","longitude": "-104.6091"} ], "distances": [] }
+
+###
+
+POST http://localhost:8088/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType": "itinerary", "requestVersion": 3, "options": { "title": "My Trip", "earthRadius": "3958.761316", "optimizations": "short" }, "places": [{"id": "dnvr","name": "Denver","latitude": "39.7392","longitude": "-104.9903"}, {"id": "bldr","name": "Boulder","latitude": "40.01499","longitude": "-105.27055"}, {"id": "cosp","name": "Colorado Springs","latitude": "38.8339","longitude": "-104.8214"}, {"id": "foco","name": "Fort Collins","latitude": "40.585258","longitude": "-105.084419"}, {"id": "pueb","name": "Pueblo","latitude": "38.2544","longitude": "-104.6091"} ], "distances": [] }
+
+<> 2019-03-26T020606.200.json
+
+###
+
+POST http://localhost:31400/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType": "itinerary", "requestVersion": 3, "options": { "title": "My Trip", "earthRadius": "3958.761316", "optimizations": "short" }, "places": [{"id": "dnvr","name": "Denver","latitude": "39.7392","longitude": "-104.9903"}, {"id": "bldr","name": "Boulder","latitude": "40.01499","longitude": "-105.27055"}, {"id": "cosp","name": "Colorado Springs","latitude": "38.8339","longitude": "-104.8214"}, {"id": "foco","name": "Fort Collins","latitude": "40.585258","longitude": "-105.084419"}, {"id": "pueb","name": "Pueblo","latitude": "38.2544","longitude": "-104.6091"} ], "distances": [] }
+
+###
+
+POST http://localhost:31400/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType": "itinerary", "requestVersion": 3, "options": { "title": "My Trip", "earthRadius": "3958.761316", "optimizations": "short" }, "places": [{"id": "dnvr","name": "Denver","latitude": "39.7392","longitude": "-104.9903"}, {"id": "bldr","name": "Boulder","latitude": "40.01499","longitude": "-105.27055"}, {"id": "cosp","name": "Colorado Springs","latitude": "38.8339","longitude": "-104.8214"}, {"id": "foco","name": "Fort Collins","latitude": "40.585258","longitude": "-105.084419"}, {"id": "pueb","name": "Pueblo","latitude": "38.2544","longitude": "-104.6091"} ], "distances": [] }
+
+<> 2019-03-26T122437.500.json
+
+###
+
+POST http://localhost:8088/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType": "itinerary", "requestVersion": 3, "options": { "title": "My Trip", "earthRadius": "3958.761316", "optimizations": "short" }, "places": [{"id": "dnvr","name": "Denver","latitude": "39.7392","longitude": "-104.9903"}, {"id": "bldr","name": "Boulder","latitude": "40.01499","longitude": "-105.27055"}, {"id": "cosp","name": "Colorado Springs","latitude": "38.8339","longitude": "-104.8214"}, {"id": "foco","name": "Fort Collins","latitude": "40.585258","longitude": "-105.084419"}, {"id": "pueb","name": "Pueblo","latitude": "38.2544","longitude": "-104.6091"} ], "distances": [] }
+
+###
+
+POST http://localhost:8088/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType"   : "itinerary",   "requestVersion" : 2,   "options"  : { "title":"My Trip",  "earthRadius":"3958.761316" ,"optimization":"short"},   "places"   : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-15T031652.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType"   : "itinerary",   "requestVersion" : 2,   "options"  : { "title":"My Trip",  "earthRadius":"3958.761316" ,"optimization":"short"},   "places"   : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType"   : "itinerary",   "requestVersion" : 2,   "options"  : { "title":"My Trip",  "earthRadius":"3958.761316" ,"optimization":"short"},   "places"   : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-12T083601.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType"   : "itinerary",   "requestVersion" : 2,   "options"  : { "title":"My Trip",  "earthRadius":"3958.761316" ,"optimization":"short"},   "places"   : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-12T083243.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType"   : "itinerary",   "requestVersion" : 2,   "options"  : { "title":"My Trip",  "earthRadius":"3958.761316" ,"optimization":"short"},   "places"   : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-12T082940.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType"   : "itinerary",   "requestVersion" : 2,   "options"  : { "title":"My Trip",  "earthRadius":"3958.761316" ,"optimization":"short"},   "places"   : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-12T082615.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType"   : "itinerary",   "requestVersion" : 2,   "options"  : { "title":"My Trip",  "earthRadius":"3958.761316" ,"optimization":"short"},   "places"   : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-12T082538.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType"   : "itinerary",   "requestVersion" : 2,   "options"  : { "title":"My Trip",  "earthRadius":"3958.761316" ,"optimization":"short"},   "places"   : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-12T082359.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType"   : "itinerary",   "requestVersion" : 2,   "options"  : { "title":"My Trip",  "earthRadius":"3958.761316" ,"optimization":"short"},   "places"   : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-12T082016.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType"   : "itinerary",   "requestVersion" : 2,   "options"  : { "title":"My Trip",  "earthRadius":"3958.761316" ,"optimization":"short"},   "places"   : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-12T081724.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType"   : "itinerary",   "requestVersion" : 2,   "options"  : { "title":"My Trip",  "earthRadius":"3958.761316" ,"optimization":"short"},   "places"   : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-12T081508.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType"   : "itinerary",   "requestVersion" : 2,   "options"  : { "title":"My Trip",  "earthRadius":"3958.761316" ,"optimization":"short"},   "places"   : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-12T081355.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType"   : "itinerary",   "requestVersion" : 2,   "options"  : { "title":"My Trip",  "earthRadius":"3958.761316" ,"optimization":"short"},   "places"   : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-12T081300.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType"   : "itinerary",   "requestVersion" : 2,   "options"  : { "title":"My Trip",  "earthRadius":"3958.761316" ,"optimization":"short"},   "places"   : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-12T081216.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType"   : "itinerary",   "requestVersion" : 2,   "options"  : { "title":"My Trip",  "earthRadius":"3958.761316" ,"optimization":"short"},   "places"   : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-12T081154.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType"   : "itinerary",   "requestVersion" : 2,   "options"  : { "title":"My Trip",  "earthRadius":"3958.761316" ,"optimization":"short"},   "places"   : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-12T081126.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType"   : "itinerary",   "requestVersion" : 2,   "options"  : { "title":"My Trip",  "earthRadius":"3958.761316" ,"optimization":"short"},   "places"   : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-12T080915.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{ "requestType"   : "itinerary",   "requestVersion" : 2,   "options"  : { "title":"My Trip",  "earthRadius":"3958.761316" ,"optimization":"short"},   "places"   : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-12T080851.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{   "requestType"    : "itinerary",   "requestVersion" : 2,   "options"        : { "title":"My Trip",                         "earthRadius":"3958.761316" ,"optimization":"none"},   "places"         : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-08T020012.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{   "requestType"    : "itinerary",   "requestVersion" : 2,   "options"        : { "title":"My Trip",                         "earthRadius":"3958.761316" ,"optimization":"none"},   "places"         : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-08T015835.500.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{   "requestType"    : "itinerary",   "requestVersion" : 2,   "options"        : { "title":"My Trip",                         "earthRadius":"3958.761316" ,"optimization":"none"},   "places"         : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-08T015752.500.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{   "requestType"    : "itinerary",   "requestVersion" : 2,   "options"        : { "title":"My Trip",                         "earthRadius":"3958.761316" },   "places"         : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-03-08T015528.500.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{   "requestType"    : "itinerary",   "requestVersion" : 2,   "options"        : { "title":"My Trip",                         "earthRadius":"3958.761316" },   "places"         : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-02-25T082636.200.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{   "requestType"    : "itinerary",   "requestVersion" : 2,   "options"        : { "title":"My Trip",                         "earthRadius":"3958.761316" },   "places"         : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-02-25T081314.500.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{   "requestType"    : "itinerary",   "requestVersion" : 2,   "options"        : { "title":"My Trip",                         "earthRadius":"3958.761316" },   "places"         : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-02-25T081052.500.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{   "requestType"    : "itinerary",   "requestVersion" : 2,   "options"        : { "title":"My Trip",                         "earthRadius":"3958.761316" },   "places"         : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-02-25T080719.500.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{   "requestType"    : "itinerary",   "requestVersion" : 2,   "options"        : { "title":"My Trip",                         "earthRadius":"3958.761316" },   "places"         : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-02-25T080511.500.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{   "requestType"    : "itinerary",   "requestVersion" : 2,   "options"        : { "title":"My Trip",                         "earthRadius":"3958.761316" },   "places"         : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-02-25T080319.500.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{   "requestType"    : "itinerary",   "requestVersion" : 2,   "options"        : { "title":"My Trip",                         "earthRadius":"3958.761316" },   "places"         : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-02-25T080136.500.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{   "requestType"    : "itinerary",   "requestVersion" : 2,   "options"        : { "title":"My Trip",                         "earthRadius":"3958.761316" },   "places"         : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-02-25T080014.500.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{   "requestType"    : "itinerary",   "requestVersion" : 2,   "options"        : { "title":"My Trip",                         "earthRadius":"3958.761316" },   "places"         : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-02-25T075836.500.json
+
+###
+
+POST http://localhost:8080/api/itinerary
+Accept: */*
+Cache-Control: no-cache
+
+{   "requestType"    : "itinerary",   "requestVersion" : 2,   "options"        : { "title":"My Trip",                         "earthRadius":"3958.761316" },   "places"         : [{"id":"dnvr", "name":"Denver",       "latitude": "39.7392",   "longitude": "-104.9903"},                       {"id":"bldr", "name":"Boulder",      "latitude": "40.01499",  "longitude": "-105.27055"},                       {"id":"foco", "name":"Fort Collins", "latitude": "40.585258", "longitude": "-105.084419"}] }
+
+<> 2019-02-25T074802.500.json
+
+###
+

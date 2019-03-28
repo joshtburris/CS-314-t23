@@ -5,12 +5,14 @@ import { saveAs } from 'file-saver';
 import {Alert, Container, Row, Col, CustomInput, Button} from 'reactstrap'
 import {Map, TileLayer, Polyline} from "react-leaflet";
 import ItineraryTable from "./ItineraryTable";
+import Ajv from 'ajv'
+import schema from './TIPItinerarySchema';
 
 export default class Itinerary extends Component {
     constructor(props) {
         super(props);
         this.state={
-            'options': {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit], optimizations: this.props.options.optimizations},
+            'options': {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit].toString(), optimizations: this.props.options.optimizations},
             errorMessage: null,
             details: {'Name':true, 'Leg Distance':true, 'Total Distance':true,
                         'Latitude': false, 'Longitude': false, }
@@ -185,8 +187,8 @@ export default class Itinerary extends Component {
             //parse the string into a JSON file
             try{let fileInfo = JSON.parse(content);
                 //set places and distances equal to the JSON file's places and distances
+                console.log(fileInfo.places);
                 this.updateItineraryInfo('places', fileInfo.places);
-                this.setState(() => this.calculateDistances());
             } catch (err) {
                 this.setState({
                     errorMessage: <Alert className='bg-csu-canyon text-white font-weight-extrabold'>
@@ -219,6 +221,18 @@ export default class Itinerary extends Component {
         sendServerRequestWithBody('itinerary', tipConfigRequest, this.props.settings.serverPort)
             .then((response) => {
                 if(response.statusCode >= 200 && response.statusCode <= 299) {
+                    //validate response
+                    var ajv = new Ajv();
+                    var valid = ajv.validate(schema, response.body);
+                    if (!valid){
+                        console.log(ajv.errors);
+                        this.setState({
+                            errorMessage: this.props.createErrorBanner(
+                                "Invalid response from server"
+                            )
+                        });
+                        return;
+                    }
                     this.setState({
                         errorMessage: null
                     });

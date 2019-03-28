@@ -20,10 +20,12 @@ public class NearestNeighbor implements Optimizer{
         this.places = places;
         this.ordPlaces = new Map[places.length];
         this.ordDistances = new long[places.length];
+        if (places.length == 0){
+            return;
+        }
         this.generateDistances(earthRadius);
         int [] route = this.findOptimalRoute();
         order(route);
-        return;
     }
 
     public Map[] getPlaces(){

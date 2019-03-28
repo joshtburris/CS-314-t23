@@ -2,13 +2,11 @@ package com.tripco.t23.server;
 
 import com.google.gson.Gson;
 
-import com.tripco.t23.TIP.TIPConfig;
-import com.tripco.t23.TIP.TIPDistance;
-import com.tripco.t23.TIP.TIPHeader;
+import com.tripco.t23.TIP.*;
 
 import java.lang.reflect.Type;
 
-import com.tripco.t23.TIP.TIPItinerary;
+import com.tripco.t23.TIP.SchemaValidator;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
@@ -70,7 +68,7 @@ class MicroServer {
 
 
   private String processTIPconfigRequest(Request request, Response response) {
-    log.info("TIP Config request: {}", HTTPrequestToJson(request));
+    log.info("TIP Config request: {}", request);
     response.type("application/json");
     response.header("Access-Control-Allow-Origin", "*");
     response.status(200);
@@ -98,10 +96,26 @@ class MicroServer {
 
 
   private String processTIPrequest(Type tipType, Request request, Response response) {
-    log.info("TIP Request: {}", HTTPrequestToJson(request));
+    String jsonRequest = HTTPrequestToJson(request);
+    log.info("TIP Request: {}", jsonRequest);
     response.type("application/json");
     response.header("Access-Control-Allow-Origin", "*");
     response.status(200);
+
+    //validate schema
+    String schema_path = "";
+    if (tipType == TIPDistance.class) schema_path = "/schemas/TIPDistanceSchema.json";
+    else if (tipType == TIPItinerary.class) schema_path = "/schemas/TIPItinerarySchema.json";
+    else if (tipType == TIPFind.class) schema_path = "/schemas/TIPFindSchema.json";
+
+    SchemaValidator sv = new SchemaValidator(request.body(), schema_path);
+    if(!sv.performValidation()){
+      log.trace("Invalid distance request");
+      response.status(400);
+      return request.body();
+    }
+
+    //process request
     try {
       Gson jsonConverter = new Gson();
       TIPHeader tipRequest = jsonConverter.fromJson(request.body(), tipType);

@@ -5,6 +5,8 @@ import { Alert } from 'reactstrap';
 import { sendServerRequestWithBody } from '../../../api/restfulAPI'
 import Pane from '../Pane';
 import coordinates from 'parse-coords'
+import Ajv from 'ajv'
+import schema from './TIPDistanceSchema';
 
 export default class Calculator extends Component {
   constructor(props) {
@@ -104,14 +106,26 @@ export default class Calculator extends Component {
     const tipConfigRequest = {
       'requestType'        : 'distance',
       'requestVersion'     : 3,
-      'origin'      : {'latitude': coordinates(this.props.calculatorInput.origin).lat, 'longitude': coordinates(this.props.calculatorInput.origin).lng},
-      'destination' : {'latitude': coordinates(this.props.calculatorInput.destination).lat, 'longitude': coordinates(this.props.calculatorInput.destination).lng},
+      'origin'      : {'latitude': coordinates(this.props.calculatorInput.origin).lat.toString(), 'longitude': coordinates(this.props.calculatorInput.origin).lng.toString()},
+      'destination' : {'latitude': coordinates(this.props.calculatorInput.destination).lat.toString(), 'longitude': coordinates(this.props.calculatorInput.destination).lng.toString()},
       'earthRadius' : this.props.options.units[this.props.options.activeUnit]
     };
 
     sendServerRequestWithBody('distance', tipConfigRequest, this.props.settings.serverPort)
       .then((response) => {
         if(response.statusCode >= 200 && response.statusCode <= 299) {
+            //validate response
+            var ajv = new Ajv();
+            var valid = ajv.validate(schema, response.body);
+            if (!valid) {
+                console.log(ajv.errors);
+                this.setState({
+                    errorMessage: this.props.createErrorBanner(
+                        "Invalid response from server"
+                    )
+                });
+                return;
+            }
           this.setState({
             distance: response.body.distance,
             errorMessage: null
