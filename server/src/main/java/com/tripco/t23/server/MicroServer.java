@@ -61,7 +61,7 @@ class MicroServer {
     Spark.get("/api/config", this::processTIPconfigRequest);
     Spark.post("/api/distance", this::processTIPdistanceRequest);
     Spark.post("/api/itinerary", this::processTIPitineraryRequest);
-    Spark.post("/api/find)", this::processTIPfindRequest);
+    Spark.post("/api/find", this::processTIPfindRequest);
     Spark.get("/api/echo", this::echoHTTPrequest);
     log.trace("Restful configuration complete");
   }
