@@ -68,52 +68,58 @@ We chose our epics this sprint by working top down from the TRIPCO repositories 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
 | 3/4/19 | none | #138, #162, #182, #184 | none | 
+| 3/6/19 | #194 | #138, #18,2 #184, #162 | none |
+| 3/8/19 | #197, #180, #186, #199 | #173, #162, #104, #107 | Itinerary tests waiting on TA fix |
+| 3/11/19 | #186 | #180, #173, #162, #107 | none |
+| 3/15/19 | #213, #162, #206, #207, #180, #173 | #179, #106 | none |
+| 3/25/19 | #179 | #106, #105, #185, #219 | none |
+| 3/27/19 | #106, #223, #138, #220, #185 | #219, #107, #187 | none |
 
 
 ## Review (focus on solution and technology)
 
-In this sprint, ...
+In this sprint, we worked in groups more often, assisted each other, and assisted each other in working on both server and client side work.
 
 #### Completed epics in Sprint Backlog 
 
 These Epics were completed.
 
-* *## epic title: comments*
-* 
+* #178 User: Make my trip shorter
+* #181 TripCo: validate all requests sent to the server and responses received by the client.
+* #172 User: Data shouldn't go away when I change tabs.
+* #183 User: Give me a friendly message if something goes wrong.
 
 #### Incomplete epics in Sprint Backlog 
 
 These Epics were not completed.
 
-* *## epic title: explanation*
-*
+* User: Let me change my itinerary: Ran out of time, time went to improving code climate score
 
 #### What went well
 
-The ...
+The progress was consistent and quality before Spring Break. After Spring Break, we picked things back up again fairly well.
 
 
 #### Problems encountered and resolutions
 
-The ...
+Some issues had some key other issues locked behind them, such as the Itinerary tests being locked behind a TA fix and home page tests being delayed by an issue that was not solved until halfway through the sprint. We solved this by assisting those who needed help and bug checking each others' code when necessary.
 
 
 ## Retrospective (focus on people, process, tools)
 
-In this sprint, ...
-
+In this sprint, we worked at a nice pace and accomplished most of what we aimed to do. The process was much more streamlined than previous sprints, and those who did not know JavaScript are getting a handle on it by now. 
 #### What we changed this sprint
 
-Our changes for this sprint included ...
+We worked in pairs more often and helped each other when we needed.
 
 #### What we did well
 
-We ...
+We worked at a consistent rate, continued to work even through delays, and worked together more.
 
 #### What we need to work on
 
-We could improve ...
+Checking each others' work in a timely manner when something does not pass checks and ensuring code passes tests before pushing.
 
 #### What we will change next sprint 
 
-We will change ...
+We will increase how often we work in pairs and improve readability and maintainability of code.
