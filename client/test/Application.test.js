@@ -46,7 +46,7 @@ test("Testing Application's initial state", testInitialState);
 function testUpdateOption() {
   const app = shallow(<Application/>);
 
-  app.instance().updatePlanOption("activeUnit", "miles");
+  app.instance().updateStateVar('planOptions', 'activeUnit', 'miles');
 
   let actualUnit = app.state().planOptions.activeUnit;
   let expectedUnit = "miles";
@@ -55,14 +55,14 @@ function testUpdateOption() {
 
 test("Testing Application's updatePlanOption function", testUpdateOption);
 
-function testUpdateCalculator(){
+function testUpdateCalculator() {
     const app = shallow(<Application/>);
 
-    app.instance().updateCalculatorInput("origin", "0, 0");
+    app.instance().updateStateVar('calculatorInput', 'origin', '0, 0');
 
     let actualVal = app.state().calculatorInput.origin;
     let expectedVal = "0, 0";
     expect(actualVal).toEqual(expectedVal);
 }
 
-test("Testing Application's updateCalculatorInput function", testUpdateCalculator);
+test("Testing Application's updateStateVar function for calculator", testUpdateCalculator);

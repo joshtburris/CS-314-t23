@@ -13,20 +13,20 @@ const startProperties = {
     'activeUnit': 'miles'
   },
   'config': {'optimizations': ['none', 'short']},
-  'updateOption' : () => {}
+  'updateStateVar' : () => {}
 };
 
 function testRender() {
   const options = shallow(<Options options={startProperties.options}
                                    config={startProperties.config}
-                                   updateOption={startProperties.updateOption}/>);
+                                   updateStateVar={startProperties.updateStateVar}/>);
 
   expect(options.contains(<Units options={startProperties.options}
                                  activeUnit={startProperties.options.activeUnit}
-                                 updateOption={startProperties.updateOption}/>)).toEqual(true);
+                                 updateStateVar={startProperties.updateStateVar}/>)).toEqual(true);
   expect(options.contains(<Optimizations  optimizations={startProperties.config.optimizations}
                                           activeOpt={startProperties.options.optimizations}
-                                          updateOption={startProperties.updateOption}/>)).toEqual(true);
+                                          updateStateVar={startProperties.updateStateVar}/>)).toEqual(true);
 }
 
 test('Check to see if a Units component is rendered', testRender);

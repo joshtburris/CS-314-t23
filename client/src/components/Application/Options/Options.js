@@ -26,12 +26,12 @@ export default class Options extends Component{
             <Col xs="12" sm="12" md="6" lg="4" xl="3">
               <Units options={this.props.options}
                      activeUnit={this.props.options.activeUnit}
-                     updateOption={this.props.updateOption}/>
+                     updateStateVar={this.props.updateStateVar}/>
             </Col>
             <Col xs="12" sm="12" md="6" lg="4" xl="3">
               <Optimizations optimizations={this.props.config.optimizations}
                              activeOpt={this.props.options.optimizations}
-                             updateOption={this.props.updateOption}/>
+                             updateStateVar={this.props.updateStateVar}/>
             </Col>
           </Row>
         </Container>

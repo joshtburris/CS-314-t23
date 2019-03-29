@@ -13,7 +13,8 @@ const startProperties = {
 function testButtonValues() {
   const units = mount((
       <Units options={startProperties.config}
-             activeUnit={startProperties.activeUnit}/>
+             activeUnit={startProperties.activeUnit}
+             updateStateVar={jest.fn()}/>
     ));
 
   let actual = [];
@@ -32,7 +33,8 @@ test('Check to see if a Button is rendered for each unit', testButtonValues);
 function testInitialActiveButton() {
   const units = mount((
       <Units options={startProperties.config}
-             activeUnit={startProperties.activeUnit}/>
+             activeUnit={startProperties.activeUnit}
+             updateStateVar={jest.fn()}/>
   ));
 
   let actualButtons = [];

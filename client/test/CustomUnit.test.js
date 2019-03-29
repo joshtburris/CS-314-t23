@@ -22,7 +22,8 @@ const startInput = {
 function testCreateInputFields() {
     const customunit = mount((
         <CustomUnit planOptions={startProperties.planOptions}
-                    customUnitInput={startInput.customUnitInput}/>
+                    customUnitInput={startInput.customUnitInput}
+                    updateStateVar={jest.fn()}/>
     ));
 
     let numberOfInputs = customunit.find('Input').length;
@@ -48,7 +49,7 @@ function testCustomUnitAdd() {
     const customunit = mount((
         <CustomUnit planOptions={startProperties.planOptions}
                     customUnitInput={startInput.customUnitInput}
-                    updatePlanOption={mockPlanOptions}/>
+                    updateStateVar={mockPlanOptions}/>
     ));
 
     expect(customunit.state().inputText).toEqual('');
@@ -82,7 +83,7 @@ function testCustomUnitDelete() {
     const customunit = mount((
         <CustomUnit planOptions={startProperties.planOptions}
                     customUnitInput={startInput.customUnitInput}
-                    updatePlanOption={mockPlanOptions}/>
+                    updateStateVar={mockPlanOptions}/>
     ));
 
     //Custom unit from previous test is still stored

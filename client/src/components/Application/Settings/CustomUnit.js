@@ -119,9 +119,9 @@ export default class CustomUnit extends Component{
                 delete temp[key];
             }
         }
-        this.props.updatePlanOption('units', temp);
+        this.props.updateStateVar('planOptions', 'units', temp);
         if (temp[unit] === temp[this.props.planOptions.activeUnit]){
-            this.props.updatePlanOption('activeUnit', 'miles');
+            this.props.updateStateVar('planOptions', 'activeUnit', 'miles');
         }
     }
 
@@ -141,7 +141,7 @@ export default class CustomUnit extends Component{
             inputText: '',
             inputNum: ''
         });
-        this.props.updatePlanOption('units', updatedUnits);
+        this.props.updateStateVar('planOptions', 'units', updatedUnits);
     }
 
 }

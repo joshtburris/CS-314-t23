@@ -1,6 +1,6 @@
 import './enzyme.config.js';
 import React from 'react';
-import {mount, shallow} from 'enzyme';
+import {mount} from 'enzyme';
 import Home from '../src/components/Application/Home';
 import 'leaflet/dist/leaflet.css';
 

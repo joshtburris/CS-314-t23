@@ -57,16 +57,16 @@ function testInputsOnChange() {
       <Calculator options={startProperties.options}
                   calculatorInput={startInput.calculatorInput}
                   settings={startProperties.options}
-                  updateCalculatorInput={updateCalc}/>
+                  updateStateVar={updateCalc}/>
   ));
 
   simulateOnChangeEvent("0, 0", calculator);
 
   expect(updateCalc.mock.calls.length).toBe(2);
-  expect(updateCalc.mock.calls[0][0]).toBe("origin");
-  expect(updateCalc.mock.calls[0][1]).toBe("0, 0");
-  expect(updateCalc.mock.calls[1][0]).toBe("destination");
-  expect(updateCalc.mock.calls[1][1]).toBe("0, 0");
+  expect(updateCalc.mock.calls[0][1]).toBe("origin");
+  expect(updateCalc.mock.calls[0][2]).toBe("0, 0");
+  expect(updateCalc.mock.calls[1][1]).toBe("destination");
+  expect(updateCalc.mock.calls[1][2]).toBe("0, 0");
 
 }
 
@@ -93,7 +93,7 @@ function simulateOnChangeEvent(input, reactWrapper) {
  */
 test('Testing the onChange event of Origin/Destination in Calculator with valid numbers', testInputsOnChange);
 
-function testServerCalledTrue(){
+function testServerCalledTrue() {
     sendServerRequestWithBody.mockResolvedValue({statuscode: 200, distance: [1,1]});
 
     const calculator = mount((
@@ -107,7 +107,7 @@ function testServerCalledTrue(){
 
 test("Testing that server is called when valid coordinates are passed in", testServerCalledTrue);
 
-function testServerCallFalse(){
+function testServerCallFalse() {
     const calculator = mount((
         <Calculator options={startProperties.options}
                     calculatorInput={{origin: "cat", destination: "cat"}}

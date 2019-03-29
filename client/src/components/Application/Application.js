@@ -16,8 +16,8 @@ import schema from './TIPConfigSchema';
  * Holds the destinations and options state shared with the trip.
  */
 export default class Application extends Component {
-    constructor(props){
-        super(props);
+  constructor(props) {
+    super(props);
 
         this.state = {
             serverConfig: null,
@@ -34,6 +34,13 @@ export default class Application extends Component {
                 places:[],
                 distances:[]
             },
+            headerOptions: {
+                name:true,
+                legDistance:true,
+                totalDistance:true,
+                lat:false,
+                lon:false
+            },
             clientSettings: {
                 serverPort: getOriginalServerPort()
             },
@@ -44,14 +51,13 @@ export default class Application extends Component {
             }
         };
 
-        this.updateCalculatorInput = this.updateCalculatorInput.bind(this);
-        this.updateItineraryPlan = this.updateItineraryPlan.bind(this);
-        this.updatePlanOption = this.updatePlanOption.bind(this);
+        this.updateStateVar = this.updateStateVar.bind(this);
         this.updateClientSetting = this.updateClientSetting.bind(this);
         this.createApplicationPage = this.createApplicationPage.bind(this);
+        this.getUserLocation = this.getUserLocation.bind(this);
+
         this.updateServerConfig();
         this.getUserLocation();
-        this.getUserLocation = this.getUserLocation.bind(this);
     }
 
     render() {
@@ -74,26 +80,27 @@ export default class Application extends Component {
         }
     }
 
-    updatePlanOption(option, value) {
-        let optionsCopy = Object.assign({}, this.state.planOptions);
-        optionsCopy[option] = value;
-        this.setState({'planOptions': optionsCopy});
+    updateStateVar(stateVar, option, value) {
+        let copy = Object.assign({}, this.state[stateVar]);
+        copy[option] = value;
+        switch (stateVar) {
+            case 'planOptions':
+                this.setState({'planOptions': copy});
+                break;
+            case 'calculatorInput':
+                this.setState({'calculatorInput': copy});
+                break;
+            case 'itineraryPlan':
+                this.setState({'itineraryPlan': copy});
+                break;
+            case 'headerOptions':
+                this.setState({'headerOptions': copy});
+                break;
+        }
     }
 
-    updateCalculatorInput(option, value){
-        let inputCopy = Object.assign({}, this.state.calculatorInput);
-        inputCopy[option] = value;
-        this.setState({'calculatorInput': inputCopy});
-    }
-
-    updateItineraryPlan(option, value) {
-        let itineraryCopy = Object.assign({}, this.state.itineraryPlan);
-        itineraryCopy[option] = value;
-        this.setState({'itineraryPlan': itineraryCopy});
-    }
-
-    getUserLocation(){
-        if(navigator.geolocation) {
+    getUserLocation() {
+        if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 loc => {
                     this.setState({
@@ -129,17 +136,17 @@ export default class Application extends Component {
                                    settings={this.state.clientSettings}
                                    createErrorBanner={this.createErrorBanner}
                                    calculatorInput={this.state.calculatorInput}
-                                   updateCalculatorInput={this.updateCalculatorInput}/>;
+                                   updateStateVar={this.updateStateVar}/>;
             case 'options':
                 return <Options options={this.state.planOptions}
                                 config={this.state.serverConfig}
-                                updateOption={this.updatePlanOption}/>;
+                                updateStateVar={this.updateStateVar}/>;
             case 'settings':
                 return <Settings planOptions={this.state.planOptions}
                                  settings={this.state.clientSettings}
                                  serverConfig={this.state.serverConfig}
                                  updateSetting={this.updateClientSetting}
-                                 updateOption={this.updatePlanOption}/>;
+                                 updateStateVar={this.updateStateVar}/>;
             case 'about':
                 return <About/>;
             case 'itinerary':
@@ -148,7 +155,8 @@ export default class Application extends Component {
                                   settings={this.state.clientSettings}
                                   serverConfig={this.state.serverConfig}
                                   itineraryPlan={this.state.itineraryPlan}
-                                  updateItineraryPlan={this.updateItineraryPlan}/>;
+                                  headerOptions={this.state.headerOptions}
+                                  updateStateVar={this.updateStateVar}/>;
 
             default:
                 return <Home  currentLocation={this.state.currentLocation}

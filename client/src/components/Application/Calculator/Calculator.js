@@ -152,9 +152,8 @@ export default class Calculator extends Component {
       }
   }
 
-
   updateCalculatorInput(stateVar, value) {
-      this.props.updateCalculatorInput(stateVar, value);
+      this.props.updateStateVar('calculatorInput', stateVar, value);
   }
 
 }

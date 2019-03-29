@@ -4,73 +4,75 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import ItineraryTable from '../src/components/Application/Itinerary/ItineraryTable'
 
-
 const startProperties = {
-    'itineraryPlan': {
-        'places': [{id: "foco", name: "foco", latitude: 0, longitude: 0},
-            {id: "bldr", name: "bldr", latitude: 1, longitude: 1}],
-        'distances': [1]
-    },
-    'details': {
-        'Name': true, 'Leg Distance': true, 'Total Distance': true,
-        'Latitude': false, 'Longitude': false,
-    }
-};
-
-const tableOne = {
     'options': {
         'units': {'miles': 3959, 'kilometers': 6371},
         'activeUnit': 'miles',
         'serverPort': 'black-bottle.cs.colostate.edu:31400'
     },
     'itineraryPlan': {
-        'places':[{id: "do", name: "does", latitude: -12, longitude: -12},
-            {id: "th", name: "this", latitude: -8.5, longitude: 4},
-            {id: "te", name: "test", latitude: 4, longitude: 2},
-            {id: "wo", name: "work", latitude: 11, longitude: -2.5}],
+        'places':[  {id: "do", name: "does", latitude: -12, longitude: -12},
+                    {id: "th", name: "this", latitude: -8.5, longitude: 4},
+                    {id: "te", name: "test", latitude: 4, longitude: 2},
+                    {id: "wo", name: "work", latitude: 11, longitude: -2.5}],
         'distances':[14, 24, 6, 41],
         'boundaries':null
+    },
+    'headerOptions' : {
+        'name' : true,
+        'legDistance' : true,
+        'totalDistance' : true,
+        'lat' : false,
+        'lon' : false
     }
-
 };
 
-function testRemoveLocationButton(){
+function testRemoveLocationButton() {
    let update = jest.fn();
-    const it = shallow(<ItineraryTable     places={startProperties.itineraryPlan.places}
-                                           distances={startProperties.itineraryPlan.distances}
-                                           details={startProperties.details}
-                                           updateItineraryInfo={update}/>);
+    const it = shallow(<ItineraryTable
+        options={startProperties.options}
+        settings={startProperties.settings}
+        headerOptions={startProperties.headerOptions}
+        itineraryPlan={startProperties.itineraryPlan}
+        updateStateVar={update}/>
+    );
 
     it.find('#remove1').at(0).simulate('click');
+    let expected = [    {id: "do", name: "does", latitude: -12, longitude: -12},
+                        {id: "te", name: "test", latitude: 4, longitude: 2},
+                        {id: "wo", name: "work", latitude: 11, longitude: -2.5}];
 
     expect(update.mock.calls.length).toBe(1);
-    expect(update.mock.calls[0][0]).toEqual("places");
-    expect(update.mock.calls[0][1]).toEqual([{id: "foco", name: "foco", latitude: 0, longitude: 0}]);
+    expect(update.mock.calls[0][0]).toEqual("itineraryPlan");
+    expect(update.mock.calls[0][1]).toEqual("places");
+    expect(update.mock.calls[0][2]).toEqual(expected);
 }
 
 test("Testing removeLocation function of itineraryTable", testRemoveLocationButton);
 
-function testRearrange(){
+function testRearrange() {
     let arrfunction = jest.fn();
     const itinerary = shallow((
-        <ItineraryTable   places={tableOne.itineraryPlan.places}
-                          distances={tableOne.itineraryPlan.distances}
-                          details={startProperties.details}
-                          updateItineraryInfo={arrfunction}
-        />
+        <ItineraryTable
+            options={startProperties.options}
+            settings={startProperties.settings}
+            headerOptions={startProperties.headerOptions}
+            itineraryPlan={startProperties.itineraryPlan}
+            updateStateVar={arrfunction}/>
     ));
 
     let instance = itinerary.instance();
     instance.rearrange(1, 1);
 
     expect(arrfunction.mock.calls.length).toEqual(1);
-    expect(arrfunction.mock.calls[0][0]).toEqual("places");
+    expect(arrfunction.mock.calls[0][0]).toEqual("itineraryPlan");
+    expect(arrfunction.mock.calls[0][1]).toEqual("places");
 
-    let arrPlaces = [{id: "th", name: "this", latitude: -8.5, longitude: 4},
-        {id: "do", name: "does", latitude: -12, longitude: -12},
-        {id: "te", name: "test", latitude: 4, longitude: 2},
-        {id: "wo", name: "work", latitude: 11, longitude: -2.5}];
-    expect(arrfunction.mock.calls[0][1]).toEqual(arrPlaces);
+    let arrPlaces = [   {id: "th", name: "this", latitude: -8.5, longitude: 4},
+                        {id: "do", name: "does", latitude: -12, longitude: -12},
+                        {id: "te", name: "test", latitude: 4, longitude: 2},
+                        {id: "wo", name: "work", latitude: 11, longitude: -2.5}];
+    expect(arrfunction.mock.calls[0][2]).toEqual(arrPlaces);
 }
 
-test("Testing rearrange function of itineraryTable",testRearrange);
+test("Testing rearrange function of itineraryTable", testRearrange);

@@ -27,7 +27,7 @@ export default class Optimizations extends Component {
             key={"button_" + opt}
             active={this.props.activeOpt === opt}
             value={opt}
-            onClick={(event) => this.props.updateOption('optimizations', event.target.value)}
+            onClick={(event) => this.props.updateStateVar('planOptions', 'optimizations', event.target.value)}
             >
             {opt.charAt(0).toUpperCase() + opt.slice(1)}
         </Button>

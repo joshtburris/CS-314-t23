@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import Pane from "../Pane";
-import {Button} from 'reactstrap'
+import {Button} from 'reactstrap';
 import { Table } from 'reactstrap';
 
 export default class ItineraryTable extends Component {
@@ -8,11 +8,11 @@ export default class ItineraryTable extends Component {
         super(props);
     }
 
-    render(){
+    render() {
         return(this.renderTable());
     }
 
-    renderTable(){
+    renderTable() {
         return(
             <Pane header={'Your Itinerary'}>
                 <Table hover>
@@ -22,96 +22,110 @@ export default class ItineraryTable extends Component {
         );
     }
 
-    generateItinerary(){
+    generateItinerary() {
         let myItinerary = [];
         myItinerary.push(<thead><tr>{this.itineraryHeader()}</tr></thead>);
-        if(this.props.places.length > 0){
+        if (this.props.itineraryPlan.places.length > 0){
             myItinerary.push(<tbody>{this.getItineraryRows()}</tbody>);
         }
         return(myItinerary);
     }
 
-    getItineraryRows(){
-        let tempList = [], dist = 0;
-        tempList.push(<tr>{this.getLine(this.props.places[0].name, 0, 0, 0)}</tr>);
-        dist = dist + this.props.distances[0];
-        for(let place in this.props.places){
+    getItineraryRows() {
+        let list = [], dist = 0, index = 0;
+        list.push(<tr>{this.getLine(0, dist, index)}</tr>);
+        dist = dist + this.props.itineraryPlan.distances[0];
+        for (let place in this.props.itineraryPlan.places) {
             if (place == 0) continue;
-            tempList.push(<tr>{this.getLine(this.props.places[place].name, place, this.props.distances[place-1], dist)}</tr>);
-            dist = dist + this.props.distances[place];
+            list.push(<tr>{this.getLine(    this.props.itineraryPlan.distances[place-1],
+                                            dist,
+                                            index+1)}</tr>);
+            dist = dist + this.props.itineraryPlan.distances[place];
+            ++index;
         }
-        if(this.props.places.length > 1){
-            tempList.push(<tr>{this.getLine(this.props.places[0].name, 0, this.props.distances[this.props.distances.length-1], dist)}</tr>);
+        if (this.props.itineraryPlan.places.length > 1){
+            list.push(<tr>{this.getLine(    this.props.itineraryPlan.distances[this.props.itineraryPlan.distances.length-1],
+                                            dist,
+                                            0)}</tr>);
         }
-        return(tempList);
+        return(list);
     }
 
-    getLine(name, index, legDist, dist){
-        let markup=[], temp = '';
-        for(let detail in this.props.details) {
-            temp = detail.toLowerCase();
-            if(this.props.details[detail] === true) {
-                if (detail === 'Leg Distance') markup.push(<td>{legDist}</td>);
-                else if (detail === 'Total Distance') markup.push(<td>{dist}</td>);
-                else markup.push(<td>{this.props.places[index][temp]}</td>);
+    getLine(legDist, tDist, index) {
+        let markup = [];
+        let headers = [ this.props.itineraryPlan.places[index].name,
+                        legDist,
+                        tDist,
+                        this.props.itineraryPlan.places[index].latitude,
+                        this.props.itineraryPlan.places[index].longitude];
+        let i = 0;
+        for (let opt in this.props.headerOptions) {
+            if (this.props.headerOptions[opt] === true) {
+                markup.push(<td>{headers[i]}</td>);
             }
+            ++i;
         }
+
         let tag = 'remove'+index;
-        markup.push(<td><Button id={tag} type='submit' color="link" onClick={()=>{this.removeLocation(index);}} > <b>Del</b> </Button>
+        markup.push(<td><Button id={tag} type='submit' color="link" onClick={()=>{this.removeLocation(index);}} > <b>X</b> </Button>
             <Button id={tag} type='submit' color="link" onClick={() => {this.rearrange(index, 1);}}> <b>↑</b> </Button>
             <Button id={tag} type='submit' color="link" onClick={() => {this.rearrange(index, 0);}}> <b>↓</b> </Button>
         </td>);
         return(markup);
     }
 
-    itineraryHeader(){
-        let markup=[];
-        for(let detail in this.props.details)
-            if(this.props.details[detail] === true)
-                markup.push(<th><b>{detail}</b></th>);
-        markup.push(<th><b>Remove</b></th>)
+    itineraryHeader() {
+        let markup = [];
+        let labels = ['Name', 'Leg Distance', 'Total Distance', 'Latitude', 'Longitude'];
+        let i = 0;
+        for (let detail in this.props.headerOptions) {
+            if (this.props.headerOptions[detail] === true)
+                markup.push(<th><b>{labels[i]}</b></th>);
+            ++i;
+        }
+        //markup.push(<th><b>Remove</b></th>);
         return(markup);
     }
 
-    removeLocation(index){
+    removeLocation(index) {
         let places = [];
-        Object.assign(places, this.props.places);
+        Object.assign(places, this.props.itineraryPlan.places);
         places.splice(index,1);
-        this.props.updateItineraryInfo("places", places);
+        this.props.updateStateVar('itineraryPlan', 'places', places);
     }
 
     //Function that moves an index in the itinerary up or down by one
     //index: the index of the item to be moved
     //direction: 0 for down, 1 for up
-    rearrange(index, direction){
-        let itinLen = this.props.places.length;
+    rearrange(index, direction) {
+        let itinLen = this.props.itineraryPlan.places.length;
         let copyPlaces = [];
-        Object.assign(copyPlaces, this.props.places);
+        Object.assign(copyPlaces, this.props.itineraryPlan.places);
 
         //console.log(index-1);
         //console.log(copyPlaces[index-1]);
 
-        if(direction == 0){
+        if (direction == 0) {
             //swap the selected index and the one below it
-            let temp = copyPlaces[(parseInt(index)+1) % itinLen]
+            let temp = copyPlaces[(parseInt(index)+1) % itinLen];
             copyPlaces[(parseInt(index)+1) % itinLen] = copyPlaces[index];
             copyPlaces[index] = temp;
         }
-        else{
-            if(parseInt(index) == 0) {
+        else {
+            if (parseInt(index) == 0) {
                 //swap the selected index's item and the last item
-                let temp = copyPlaces[itinLen-1]
+                let temp = copyPlaces[itinLen-1];
                 copyPlaces[itinLen-1] = copyPlaces[index];
                 copyPlaces[index] = temp;
             }
             else {
                 //swap the selected index and the one above it
-                let temp = copyPlaces[index - 1]
+                let temp = copyPlaces[index - 1];
                 copyPlaces[index - 1] = copyPlaces[index];
                 copyPlaces[index] = temp;
             }
         }
         //put new array into the proper area
-        this.props.updateItineraryInfo('places', copyPlaces);
+        this.props.updateStateVar('itineraryPlan', 'places', copyPlaces);
     }
 }

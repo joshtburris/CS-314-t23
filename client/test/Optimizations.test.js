@@ -13,7 +13,8 @@ const startProperties = {
 function testButtonValues() {
     const opts = mount((
         <Optimizations  optimizations={startProperties.optimizations}
-                        activeUnit={startProperties.activeUnit}/>
+                        activeUnit={startProperties.activeUnit}
+                        updateStateVar={jest.fn()}/>
     ));
 
     let actual = [];
@@ -32,7 +33,8 @@ test('Check to see if a Button is rendered for each optimizations', testButtonVa
 function testInitialActiveButton() {
     const opts = mount((
         <Optimizations  optimizations={startProperties.optimizations}
-                        activeOpt={startProperties.activeOpt}/>
+                        activeOpt={startProperties.activeOpt}
+                        updateStateVar={jest.fn()}/>
     ));
 
     let actualButtons = [];

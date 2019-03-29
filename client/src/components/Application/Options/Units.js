@@ -27,7 +27,7 @@ export default class Units extends Component {
         key={"button_"+unit}
         active={this.props.activeUnit === unit}
         value={unit}
-        onClick={(event) => this.props.updateOption('activeUnit', event.target.value)}
+        onClick={(event) => this.props.updateStateVar('planOptions', 'activeUnit', event.target.value)}
       >
         {unit.charAt(0).toUpperCase() + unit.slice(1)}
       </Button>
