@@ -78,7 +78,7 @@ We chose our epics this sprint by working top down from the TRIPCO repositories 
 
 ## Review (focus on solution and technology)
 
-In this sprint, 
+In this sprint, we worked in groups more often, assisted each other, and assisted each other in working on both server and client side work.
 
 #### Completed epics in Sprint Backlog 
 
@@ -94,7 +94,6 @@ These Epics were completed.
 These Epics were not completed.
 
 * User: Let me change my itinerary: Ran out of time, time went to improving code climate score
-*
 
 #### What went well
 
