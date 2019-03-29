@@ -72,6 +72,7 @@ public class SchemaValidator {
 
     public boolean performValidation() {
         boolean validationResult = true;
+        if (json == null) return false;
         try {
             // This is the line that will throw a ValidationException if anything doesn't conform to the schema!
             this.schema.validate(json);
