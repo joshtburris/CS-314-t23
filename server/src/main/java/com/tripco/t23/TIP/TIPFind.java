@@ -11,7 +11,7 @@ public class TIPFind extends TIPHeader {
     private String match;
     private int limit;
     private int found;
-    private ArrayList<Map> places = new ArrayList<>();
+    private ArrayList<Map> places;
 
     private final transient Logger log = LoggerFactory.getLogger(TIPFind.class);
 
@@ -21,6 +21,7 @@ public class TIPFind extends TIPHeader {
         this.match = match;
         this.limit = 0;
         this.found  = 0;
+        this.places = new ArrayList<>();
     }
 
     TIPFind(String match, int limit) {
@@ -29,6 +30,7 @@ public class TIPFind extends TIPHeader {
         this.match = match;
         this.limit = limit;
         this.found  = 0;
+        this.places = new ArrayList<>();
     }
 
     private TIPFind() {
