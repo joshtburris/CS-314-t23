@@ -61,6 +61,7 @@ class MicroServer {
     Spark.get("/api/config", this::processTIPconfigRequest);
     Spark.post("/api/distance", this::processTIPdistanceRequest);
     Spark.post("/api/itinerary", this::processTIPitineraryRequest);
+    Spark.post("/api/find", this::processTIPfindRequest);
     Spark.get("/api/echo", this::echoHTTPrequest);
     log.trace("Restful configuration complete");
   }
@@ -94,6 +95,9 @@ class MicroServer {
     return processTIPrequest(TIPDistance.class, request, response);
   }
 
+  private String processTIPfindRequest(Request request, Response response){
+    return processTIPrequest(TIPFind.class, request, response);
+  }
 
   private String processTIPrequest(Type tipType, Request request, Response response) {
     String jsonRequest = HTTPrequestToJson(request);
