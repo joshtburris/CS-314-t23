@@ -44,6 +44,8 @@ public class SchemaValidator {
             return;
         }
         log.trace("SchemaValidator created");
+        log.trace(this.json.toString());
+        log.trace(this.schema.toString());
     }
 
     private static JSONObject parseJsonFile(String path) {

@@ -16,21 +16,16 @@ export default class Itinerary extends Component {
             errorMessage: null,
         };
         this.loadFile = this.loadFile.bind(this);
+        this.saveFile = this.saveFile.bind(this);
         this.addLocation = this.addLocation.bind(this);
-        this.updateItineraryInfo = this.updateItineraryInfo.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
         this.calculateDistances();
     }
 
     componentDidUpdate(prevProps) {
-        //check if units have changed
-        if((prevProps.activeUnit !== this.props.aciveUnit) || (prevProps.optimizations !== this.props.optimizations)){
-            this.calculateDistances();
-            return;
-        }
-        //check if places has changed
-        if(prevProps.itineraryPlan.places.length !== this.props.itineraryPlan.places.length){
-
+        console.log("DEBUG: props update");
+        if (prevProps.itineraryPlan.places.length !== this.props.itineraryPlan.places.length) {
+            console.log("DEBUG: recalcing distances length change");
             this.calculateDistances();
             return;
         }
@@ -41,7 +36,6 @@ export default class Itinerary extends Component {
                 return;
             }
         }
-        //nothing has changed
     }
 
     addLocation(id, name, latitude, longitude) {
