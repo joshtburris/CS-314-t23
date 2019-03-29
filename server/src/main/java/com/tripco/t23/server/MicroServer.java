@@ -103,17 +103,10 @@ class MicroServer {
     response.status(200);
 
     //validate schema
-    String schema_path = "";
-    if (tipType == TIPDistance.class) schema_path = "/schemas/TIPDistanceSchema.json";
-    else if (tipType == TIPItinerary.class) schema_path = "/schemas/TIPItinerarySchema.json";
-    else if (tipType == TIPFind.class) schema_path = "/schemas/TIPFindSchema.json";
-
-    SchemaValidator sv = new SchemaValidator(request.body(), schema_path);
-    if(!sv.performValidation()){
-      log.trace("Invalid distance request");
-      response.status(400);
-      return request.body();
-    }
+   if(!validateRequest(tipType, request)){
+     response.status(400);
+     return request.body();
+   }
 
     //process request
     try {
@@ -128,6 +121,20 @@ class MicroServer {
       response.status(500);
       return request.body();
     }
+  }
+
+  private boolean validateRequest(Type tipType, Request request){
+    String schema_path = "";
+    if (tipType == TIPDistance.class) schema_path = "/schemas/TIPDistanceSchema.json";
+    else if (tipType == TIPItinerary.class) schema_path = "/schemas/TIPItinerarySchema.json";
+    else if (tipType == TIPFind.class) schema_path = "/schemas/TIPFindSchema.json";
+
+    SchemaValidator sv = new SchemaValidator(request.body(), schema_path);
+    if(!sv.performValidation()){
+      log.trace("Invalid distance request");
+      return false;
+    }
+    return true;
   }
 
 
