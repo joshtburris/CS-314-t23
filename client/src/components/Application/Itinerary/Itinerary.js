@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import {sendServerRequestWithBody} from "../../../api/restfulAPI";
-import Pane from "../Pane";
-import { saveAs } from 'file-saver';
 import {Alert, Container, Row, Col, CustomInput, Button} from 'reactstrap';
 import {Map, TileLayer, Polyline} from "react-leaflet";
-import ItineraryTable from "./ItineraryTable";
 import Ajv from 'ajv';
+import { saveAs } from 'file-saver';
+import {sendServerRequestWithBody} from "../../../api/restfulAPI";
+import Pane from "../Pane";
+import ItineraryTable from "./ItineraryTable";
 import schema from './TIPItinerarySchema';
+import Parsing from '../Parsing'
 
 export default class Itinerary extends Component {
     constructor(props) {
