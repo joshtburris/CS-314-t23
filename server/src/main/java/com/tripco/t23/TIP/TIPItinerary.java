@@ -31,6 +31,8 @@ public class TIPItinerary extends TIPHeader{
         return distances;
     }
 
+    Map[] getPlaces() { return places; }
+
     @Override
     public void buildResponse() {
         double earthRadius = Double.parseDouble(options.get("earthRadius").toString());
