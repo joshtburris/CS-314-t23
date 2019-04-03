@@ -193,7 +193,7 @@ export default class Itinerary extends Component {
             //parse the string into a JSON file
             try {let fileInfo = JSON.parse(content);
                 //set places and distances equal to the JSON file's places and distances
-                this.props.updateStateVar('itineraryPlan', 'places', fileInfo.places);
+                this.props.updateStateVar('itineraryPlan', 'places', Parsing.parseObject(fileInfo.places));
             } catch (err) {
                 this.setState({
                     errorMessage: <Alert className='bg-csu-canyon text-white font-weight-extrabold'>
