@@ -70,6 +70,7 @@ export default class ItineraryTable extends Component {
         markup.push(<td><Button id={tag} type='submit' color="link" onClick={()=>{this.removeLocation(index);}} > <b>X</b> </Button>
             <Button id={tag} type='submit' color="link" onClick={() => {this.rearrange(index, 1);}}> <b>↑</b> </Button>
             <Button id={tag} type='submit' color="link" onClick={() => {this.rearrange(index, 0);}}> <b>↓</b> </Button>
+            <Button id={tag} type='submit' color="link" onClick={() => {this.moveTop(index);}}> <b>↑↑</b> </Button>
         </td>);
         return(markup);
     }
@@ -102,9 +103,6 @@ export default class ItineraryTable extends Component {
         let copyPlaces = [];
         Object.assign(copyPlaces, this.props.itineraryPlan.places);
 
-        //console.log(index-1);
-        //console.log(copyPlaces[index-1]);
-
         if (direction == 0) {
             //swap the selected index and the one below it
             let temp = copyPlaces[(parseInt(index)+1) % itinLen];
@@ -125,6 +123,23 @@ export default class ItineraryTable extends Component {
                 copyPlaces[index] = temp;
             }
         }
+        //put new array into the proper area
+        this.props.updateStateVar('itineraryPlan', 'places', copyPlaces);
+    }
+
+    //Function that moves the selected index to the top of the table
+    //index: the index of the item to be moved
+    moveTop(index){
+        let copyPlaces = [];
+        Object.assign(copyPlaces, this.props.itineraryPlan.places);
+        let temp = copyPlaces[index];
+
+        //copy objects from 0-index down by 1, then replace index 0
+        for(let i=parseInt(index); i > 0; i--){
+            copyPlaces[i] = copyPlaces[i-1];
+        }
+        copyPlaces[0] = temp;
+
         //put new array into the proper area
         this.props.updateStateVar('itineraryPlan', 'places', copyPlaces);
     }

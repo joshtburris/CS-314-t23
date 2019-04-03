@@ -76,3 +76,30 @@ function testRearrange() {
 }
 
 test("Testing rearrange function of itineraryTable", testRearrange);
+
+function testNewStart() {
+    let arrfunction = jest.fn();
+    const itinerary = shallow((
+        <ItineraryTable
+            options={startProperties.options}
+            settings={startProperties.settings}
+            headerOptions={startProperties.headerOptions}
+            itineraryPlan={startProperties.itineraryPlan}
+            updateStateVar={arrfunction}/>
+    ));
+
+    let instance = itinerary.instance();
+    instance.moveTop(2);
+
+    expect(arrfunction.mock.calls.length).toEqual(1);
+    expect(arrfunction.mock.calls[0][0]).toEqual("itineraryPlan");
+    expect(arrfunction.mock.calls[0][1]).toEqual("places");
+
+    let moveTopPlaces = [   {id: "te", name: "test", latitude: 4, longitude: 2},
+                        {id: "do", name: "does", latitude: -12, longitude: -12},
+                        {id: "th", name: "this", latitude: -8.5, longitude: 4},
+                        {id: "wo", name: "work", latitude: 11, longitude: -2.5}];
+    expect(arrfunction.mock.calls[0][2]).toEqual(moveTopPlaces);
+}
+
+test("Testing moveTop function of itineraryTable", testNewStart);

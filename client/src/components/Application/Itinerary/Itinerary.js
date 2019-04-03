@@ -35,7 +35,6 @@ export default class Itinerary extends Component {
         }
         for (let i = 0; i < prevProps.itineraryPlan.places.length && i < this.props.itineraryPlan.places.length; i++) {
             if (prevProps.itineraryPlan.places[i].name !== this.props.itineraryPlan.places[i].name){ //this assumes all places have a name
-                console.log("DEBUG: recalcing distance rearrange");
                 this.calculateDistances();
                 return;
             }
