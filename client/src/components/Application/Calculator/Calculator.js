@@ -7,6 +7,7 @@ import Pane from '../Pane';
 import coordinates from 'parse-coords'
 import Ajv from 'ajv'
 import schema from './TIPDistanceSchema';
+import Parsing from '../Parsing'
 
 export default class Calculator extends Component {
   constructor(props) {
@@ -145,8 +146,9 @@ export default class Calculator extends Component {
 
   validateCoordinates(statevar) {
       try {
-          let coords = coordinates(this.props.calculatorInput[statevar]);
-          return (coords != null && !isNaN(coords.lat) && !isNaN(coords.lng));
+          let coords = new Parsing();
+          let temp = coords.parseCoordinatePair(this.props.calculatorInput[statevar]);
+          return (temp != null && !isNaN(temp.latitude) && !isNaN(temp.longitude));
       } catch (e) {
           return false;
       }

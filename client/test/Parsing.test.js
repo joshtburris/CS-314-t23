@@ -1,10 +1,12 @@
 import './enzyme.config.js'
-import Parsing from '../components/Application/Parsing'
+import Parsing from '../src/components/Application/Parsing'
 
 function testParseCoordinateDMS(){
     expect(Parsing.parseCoordinate("39.87°N")).toBe(39.87);
     expect(Parsing.parseCoordinate("106.25°W")).toBe(106.25);
     // todo potentialy add S and E
+    expect(Parsing.parseCoordinate("39.87°S")).toBe(-39.87);
+    expect(Parsing.parseCoordinate("106.25°E")).toBe(-106.25);
 }
 
 function testParseCoordinateLL(){
@@ -13,11 +15,10 @@ function testParseCoordinateLL(){
 
 
 // todo will parse return Null or throw
-/*
 function testInvalidCoordinate(){
-    expect(Parsing.parseCoordinate("Mumble rap is good"))
+    expect(Parsing.parseCoordinate("Mumble rap is good")).toBe(NaN);
 }
-/*
+
 /*TODO add case for out of bounds coordinate ex(777778.23)*/
 
 function testParseCoordEmptyString(){
