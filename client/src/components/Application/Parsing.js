@@ -52,20 +52,20 @@ export default class Parsing{
     //returns numeric LL coordinate on success NaN on failure
     parseCoordinate(input){
         //caleb will do this
-        let regex = /^\s*([+-]?\d{1,3}\s+\d{1,2}'?\s+\d{1,2}"?[NSEW]?|\d{1,3}(:\d{2}){2}\.\d[NSEW]\s*){1,2}$|\d{1,3}(.\d{1,9})/;
+        let regex = /^\s*([+-]?\d{1,3}\s+\d{1,2}'?\s+\d{1,2}"?[NSEW]?|\d{1,3}(:\d{2}){2}\.\d[NSEW]\s*){1,2}$|\d{1,3}(.\d{1,9})?/;
         let parts;
         let dd;
         if(regex.test(input)) {
             parts = input.split(/[^-?+?\d\w\.]+/);
-            if (parts[parts.length - 1] === "S" || parts[parts.length - 1] === "W") {
-                for (let i in parts){ i = i * -1;}
+            if (parts[parts.length - 1] === "S" || parts[parts.length - 1] === "W") { // testing for  SW
+                for (let i = 0; i < parts.length-1; i++ ){ parts[i] = parts[i] * -1;}
             }
-            else if (!(parts[parts.length - 1] === "N" || parts[parts.length - 1] === "E")) {
+            else if (!(parts[parts.length - 1] === "N" || parts[parts.length - 1] === "E")) { // tesing for no NSEW
                 if(parts[0] < 0){ for (let i = 1; i < parts.length; i++){ parts[i] = parts[i] * -1; } }
                 parts.push("0");                    //push an empty last element
             }
-            else{ if(Number(parts[0]) < 0){return NaN} }
-            dd = this.calculateDegrees(parts);
+            else if(Number(parts[0]) < 0){return NaN}
+            dd = this.calculateDegrees(parts); // if has NE, jump straight to here
         }
         else{ dd = undefined; }
         return dd;

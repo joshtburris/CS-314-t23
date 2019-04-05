@@ -68,9 +68,9 @@ export default class ItineraryTable extends Component {
 
         let tag = 'remove'+index;
         markup.push(<td><Button id={tag} type='submit' color="link" onClick={()=>{this.removeLocation(index);}} > <b>X</b> </Button>
-            <Button id={tag} type='submit' color="link" onClick={() => {this.rearrange(index, 1);}}> <b>↑</b> </Button>
-            <Button id={tag} type='submit' color="link" onClick={() => {this.rearrange(index, 0);}}> <b>↓</b> </Button>
-            <Button id={tag} type='submit' color="link" onClick={() => {this.moveTop(index);}}> <b>↑↑</b> </Button>
+            <Button id={tag} type='submit' color="link" size="lg" onClick={() => {this.rearrange(index, 1);}}> <b>↑</b> </Button>
+            <Button id={tag} type='submit' color="link" size="lg" onClick={() => {this.rearrange(index, 0);}}> <b>↓</b> </Button>
+            <Button id={tag} type='submit' color="link" size="lg" onClick={() => {this.moveTop(index);}}> <b>↑↑</b> </Button>
         </td>);
         return(markup);
     }
