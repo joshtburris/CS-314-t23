@@ -4,7 +4,7 @@ import Parsing from '../src/components/Application/Parsing'
 function testParseCoordinateDMS(){
     expect(Parsing.parseCoordinate("39.87°N")).toBe(39.87);
     expect(Parsing.parseCoordinate("106.25°W")).toBe(106.25);
-    // todo potentialy add S and E
+    // todo potentialy add S and E - Done
     expect(Parsing.parseCoordinate("39.87°S")).toBe(-39.87);
     expect(Parsing.parseCoordinate("106.25°E")).toBe(-106.25);
 }
@@ -14,12 +14,10 @@ function testParseCoordinateLL(){
 }
 
 
-// todo will parse return Null or throw
+// todo will parse return Null or throw - Done
 function testInvalidCoordinate(){
     expect(Parsing.parseCoordinate("Mumble rap is good")).toBe(NaN);
 }
-
-/*TODO add case for out of bounds coordinate ex(777778.23)*/
 
 function testParseCoordEmptyString(){
     expect(Parsing.parseCoordinate("")).toBeNull()
@@ -44,21 +42,21 @@ test('ParseCoordinates throws on single number', () => {
     }).toThrow();
 });
 
-/*
+
 test('ParseCoordinates throws on non-numeric', () => {
     expect(() => {
         Parsing.parseCoordinate("cat dog");
     }).toThrow();
 });
-*/
-/*
-*todo How to handle the following cases?
+
+/*TODO add case for out of bounds coordinate ex(777778.23)
+*todo How to handle the following cases? - Done
 * " 1234.5 12435 "
  */
-
-
 function testParseCoordPairOneInvalid(){
-
+    expect(() => {
+        Parsing.parseCoordinate("1234.5 12435");
+    }).toThrow();
 }
 
 function testPlacesValid(){

@@ -29,24 +29,23 @@ export default class Parsing{
         let temp;
         if (separatorIndex === -1){ // separated only by space
             separatorIndex = coordinates.indexOf(" ");
-            if( separatorIndex === -1){
-                throw "invalid coordinate formatting"
-            }
+            if( separatorIndex === -1){ throw "invalid coordinate formatting" }
             cord2 = coordinates.substring(separatorIndex+1,coordinates.length);
         }
-        else{// separated by ", "
-            cord2 = coordinates.substring(separatorIndex+2,coordinates.length);
-        }
+        else{ cord2 = coordinates.substring(separatorIndex+2,coordinates.length); } // separated by ", "
         cord1 = coordinates.substring(0,separatorIndex);
-
         //parse each
         cord1 = this.parseCoordinate(cord1);
         cord2 = this.parseCoordinate(cord2);
-        if(cord1 === undefined && cord2 === undefined){
+        if(cord1 === undefined || cord2 === undefined){
             temp = coord(coordinates);
-            cord1 = temp.lat;
-            cord2 = temp.lng;
+            if(temp !== undefined){
+                cord1 = temp.lat;
+                cord2 = temp.lng;
+            }
         }
+        if((cord1 > 90 || cord1 < -90) || (cord2 > 180 || cord2 < -180)){ throw "Coordinate out of bounds!" } // check lat lng bounds
+        if(cord1 === undefined || cord2 === undefined){ throw "Invalid Input!" }
         return {latitude: cord1, longitude: cord2} //return object with latitude and longitude
     }
 
@@ -58,7 +57,6 @@ export default class Parsing{
         let dd;
         if(regex.test(input)) {
             parts = input.split(/[^-?+?\d\w\.]+/);
-
             if (parts[parts.length - 1] === "S" || parts[parts.length - 1] === "W") {
                 for (let i in parts){ i = i * -1;}
             }
