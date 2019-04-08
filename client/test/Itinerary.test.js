@@ -18,6 +18,7 @@ const startProperties = {
                     {id: "te", name: "test", latitude: 4, longitude: 2},
                     {id: "wo", name: "work", latitude: 11, longitude: -2.5}],
         'distances':[14, 24, 6, 41],
+        'markers':{},
         'boundaries':null
     },
     'headerOptions': {
@@ -33,6 +34,17 @@ const startProperties = {
 const emptyItinerary = {
     'places':[],
     'distances':[],
+    'markers':{},
+    'boundaries':null
+}
+
+const markersSetItinerary = {
+    'places':[  {id: "do", name: "does", latitude: -12, longitude: -12},
+        {id: "th", name: "this", latitude: -8.5, longitude: 4},
+        {id: "te", name: "test", latitude: 4, longitude: 2},
+        {id: "wo", name: "work", latitude: 11, longitude: -2.5}],
+    'distances':[14, 24, 6, 41],
+    'markers':{do: true, th: true, te: true, wo: true},
     'boundaries':null
 }
 
@@ -143,3 +155,53 @@ function simulateReverseButtonPress(e, reactWrapper) {
 }
 
 test("Testing reverse button", testReverseButton);
+
+function testMarkerToggle(){
+    let markTog = jest.fn();
+    const itinerary = shallow((
+        <Itinerary   options={startProperties.options}
+                     settings={startProperties.options}
+                     itineraryPlan={startProperties.itineraryPlan}
+                     headerOptions={startProperties.headerOptions}
+                     updateStateVar={markTog}/>
+    ));
+
+    let e = startProperties.itineraryPlan.markers;
+    simulateMarkerTogglePress(e, itinerary);
+
+    expect(markTog.mock.calls.length).toEqual(1);
+    expect(markTog.mock.calls[0][0]).toEqual("itineraryPlan");
+    expect(markTog.mock.calls[0][1]).toEqual("markers");
+
+    let markerSet = {do: true, th: true, te: true, wo: true}
+    expect(markTog.mock.calls[0][2]).toEqual(markerSet);
+}
+
+function simulateMarkerTogglePress(e, reactWrapper) {
+    reactWrapper.find('#markerToggleAll').at(0).simulate('click');
+    reactWrapper.update();
+}
+
+test("Testing All Markers ON toggle in itinerary", testMarkerToggle);
+
+function testMarkerToggle(){
+    let markTog = jest.fn();
+    const itinerary = shallow((
+        <Itinerary   options={startProperties.options}
+                     settings={startProperties.options}
+                     itineraryPlan={markersSetItinerary}
+                     headerOptions={startProperties.headerOptions}
+                     updateStateVar={markTog}/>
+    ));
+
+    let e = startProperties.itineraryPlan.markers;
+    simulateMarkerTogglePress(e, itinerary);
+
+    expect(markTog.mock.calls.length).toEqual(1);
+    expect(markTog.mock.calls[0][0]).toEqual("itineraryPlan");
+    expect(markTog.mock.calls[0][1]).toEqual("markers");
+
+    expect(markTog.mock.calls[0][2]).toEqual({});
+}
+
+test("Testing All Markers OFF toggle in itinerary", testMarkerToggle);
