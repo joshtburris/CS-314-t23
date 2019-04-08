@@ -6,7 +6,6 @@ import Ajv from 'ajv';
 import { saveAs } from 'file-saver';
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
-import ItineraryTable from "./ItineraryTable";
 import schema from './TIPItinerarySchema';
 import Parsing from '../Parsing'
 import icon from 'leaflet/dist/images/marker-icon.png';
