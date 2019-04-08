@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Alert, Container, Row, Col, CustomInput, Button} from 'reactstrap';
-import {Map, TileLayer, Polyline} from "react-leaflet";
+import {Map, TileLayer, Polyline, Marker, Popup} from "react-leaflet";
+import ItineraryTable from "./ItineraryTable";
 import Ajv from 'ajv';
 import { saveAs } from 'file-saver';
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
@@ -8,6 +9,8 @@ import Pane from "../Pane";
 import ItineraryTable from "./ItineraryTable";
 import schema from './TIPItinerarySchema';
 import Parsing from '../Parsing'
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 export default class Itinerary extends Component {
     constructor(props) {
@@ -91,6 +94,7 @@ export default class Itinerary extends Component {
             i++;
         }
         list.push(<Button type="submit" value="Reverse" id="reverseButton" onClick={(e) => this.reverseItinerary(e)}>Reverse</Button>);
+        list.push(<Button type="submit" value="ToggleAll" id="markerToggleAll" onClick={(e) => this.allMarkerToggle(e)}>Markers On/Off</Button>);
         return(list);
     }
 
@@ -133,12 +137,38 @@ export default class Itinerary extends Component {
                            attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                 />
                 <Polyline positions = {[this.getLL()]}/>
+                {this.renderMarkers(this.props.itineraryPlan.places)}
             </Map>
         )
     }
 
+    renderMarkers(placeList) {
+        //Extract only true markers
+        let markerList = [];
+        for(let i=0; i < placeList.length; i++){
+            if(this.props.itineraryPlan.markers[placeList[i].id]){
+                markerList.push(placeList[i]);
+            }
+        }
+
+        //Array.map() creates a new array with the results of calling a provided function on every element in the calling array.
+        return markerList.map((markerItem) =>
+            <Marker
+                position={L.latLng(markerItem.latitude, markerItem.longitude)}
+                id={markerItem.id}
+                title={markerItem.name}
+                icon={L.icon({iconUrl: icon, shadowUrl: iconShadow, iconAnchor: [12,40]})}>
+                <Popup className="font-weight-extrabold">{markerItem.name}</Popup>
+            </Marker>
+        );
+    }
+
+    /* Popup format for later
+                <Popup className="font-weight-extrabold">Marker</Popup>
+    */
+
     coloradoGeographicBoundaries() {
-        // northwest and southeas< Itinerary-Mapt corners of the state of Colorado
+        // northwest and southeast Itinerary-Map corners of the state of Colorado
         return L.latLngBounds(L.latLng(41, -109), L.latLng(37, -102));
     }
 
@@ -262,4 +292,16 @@ export default class Itinerary extends Component {
         this.props.updateStateVar('itineraryPlan', 'places', rPlaces);
     }
 
+    allMarkerToggle(){
+        if(Object.keys(this.props.itineraryPlan.markers).length != 0){
+            this.props.updateStateVar('itineraryPlan', 'markers', {});
+        }
+        else{
+            let markerList = {};
+            for(let i=0; i < this.props.itineraryPlan.places.length; i++){
+                markerList[this.props.itineraryPlan.places[i].id] = true;
+            }
+            this.props.updateStateVar('itineraryPlan', 'markers', markerList);
+        }
+    }
 }
