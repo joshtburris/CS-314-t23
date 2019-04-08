@@ -4,24 +4,23 @@ export default class Parsing{
 
     //takes a places object with coordinates in any supported format and returns in LL format
     //return null object if any parse fails
-    parseObject(places){
-        console.log("inside parseObject");
+    static parseObject(places){
         let placesCopy = [];
-        for (let place in places){
-                let lat = this.parseCoordinate(place.latitude);
-                let lon = this.parseCoordinate(place.longitude);
+        for (let i = 0; i < places.length; i++){
+                let lat = this.parseCoordinate(places[i].latitude);
+                let lon = this.parseCoordinate(places[i].longitude);
                 if (isNaN(lat) || isNaN(lon)){
                     throw "invalid coordinate found";
                 }
-                let temp = Object.assign({}, place);
-                temp.latitude = lat; // does this work? does this modify the original object?
+                let temp = Object.assign({}, places[i]);
+                temp.latitude = lat;
                 temp.longitude = lon;
-                placesCopy.append(temp);
+                placesCopy.push(temp);
         }
         return placesCopy;
     }
 
-    parseCoordinatePair(coordinates){
+    static parseCoordinatePair(coordinates){
         //separate
         let separatorIndex = coordinates.indexOf(",");
         let cord1 = "";
@@ -37,24 +36,24 @@ export default class Parsing{
         //parse each
         cord1 = this.parseCoordinate(cord1);
         cord2 = this.parseCoordinate(cord2);
-        if(cord1 === undefined || cord2 === undefined){
+        if(isNaN(cord1) || isNaN(cord2)){
             temp = coord(coordinates);
             if(temp !== undefined){
                 cord1 = temp.lat;
                 cord2 = temp.lng;
             }
         }
-        if((cord1 > 90 || cord1 < -90) || (cord2 > 180 || cord2 < -180)){ throw "Coordinate out of bounds!" } // check lat lng bounds
-        if(cord1 === undefined || cord2 === undefined){ throw "Invalid Input!" }
+        if(isNaN(cord1) || isNaN(cord2)){ throw "Invalid Input!" }
+        if(cord1 > 90 || cord1 < -90 || cord2 > 180 || cord2 < -180){ throw "Coordinate out of bounds!" } // check lat lng bounds
         return {latitude: cord1, longitude: cord2} //return object with latitude and longitude
     }
 
     //returns numeric LL coordinate on success NaN on failure
-    parseCoordinate(input){
+    static parseCoordinate(input){
         //caleb will do this
         let regex = /^\s*([+-]?\d{1,3}\s+\d{1,2}'?\s+\d{1,2}"?[NSEW]?|\d{1,3}(:\d{2}){2}\.\d[NSEW]\s*){1,2}$|\d{1,3}(.\d{1,9})?/;
         let parts;
-        let dd;
+        let dd = NaN;
         if(regex.test(input)) {
             parts = input.split(/[^-?+?\d\w\.]+/);
             if (parts[parts.length - 1] === "S" || parts[parts.length - 1] === "W") { // testing for  SW
@@ -62,16 +61,19 @@ export default class Parsing{
             }
             else if (!(parts[parts.length - 1] === "N" || parts[parts.length - 1] === "E")) { // tesing for no NSEW
                 if(parts[0] < 0){ for (let i = 1; i < parts.length; i++){ parts[i] = parts[i] * -1; } }
-                parts.push("0");                    //push an empty last element
+                if(parts.length < 4) {
+                    if(parts[parts.length-1] === "") { parts[parts.length-1] = "0"; }
+                    else { parts.push("0"); }                            //push an empty last element
+                }
             }
             else if(Number(parts[0]) < 0){return NaN}
             dd = this.calculateDegrees(parts); // if has NE, jump straight to here
+            dd = Math.round(dd * 100) / 100;
         }
-        else{ dd = undefined; }
         return dd;
     }
 
-    calculateDegrees(parts){
+    static calculateDegrees(parts){
         let lengthOfParts = parts.length;
         let dd;
         switch (lengthOfParts){

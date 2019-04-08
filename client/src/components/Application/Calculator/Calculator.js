@@ -146,10 +146,10 @@ export default class Calculator extends Component {
 
   validateCoordinates(statevar) {
       try {
-          let coords = new Parsing();
-          let temp = coords.parseCoordinatePair(this.props.calculatorInput[statevar]);
+          let temp = Parsing.parseCoordinatePair(this.props.calculatorInput[statevar]);
           return (temp !== null && !isNaN(temp.latitude) && !isNaN(temp.longitude));
       } catch (e) {
+          console.log(e);
           return false;
       }
   }
