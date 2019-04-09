@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import { Form,  Input } from 'reactstrap'
-import { Alert } from 'reactstrap';
 import { sendServerRequestWithBody } from '../../../api/restfulAPI'
 import Pane from '../Pane';
-import coordinates from 'parse-coords'
 import Ajv from 'ajv'
 import schema from './TIPDistanceSchema';
+import Parsing from '../Parsing'
 
 export default class Calculator extends Component {
   constructor(props) {
@@ -106,8 +105,8 @@ export default class Calculator extends Component {
     const tipConfigRequest = {
       'requestType'        : 'distance',
       'requestVersion'     : 3,
-      'origin'      : {'latitude': coordinates(this.props.calculatorInput.origin).lat.toString(), 'longitude': coordinates(this.props.calculatorInput.origin).lng.toString()},
-      'destination' : {'latitude': coordinates(this.props.calculatorInput.destination).lat.toString(), 'longitude': coordinates(this.props.calculatorInput.destination).lng.toString()},
+      'origin'      : {'latitude': Parsing.parseCoordinatePair(this.props.calculatorInput.origin).latitude.toString(), 'longitude': Parsing.parseCoordinatePair(this.props.calculatorInput.origin).longitude.toString()},
+      'destination' : {'latitude': Parsing.parseCoordinatePair(this.props.calculatorInput.destination).latitude.toString(), 'longitude': Parsing.parseCoordinatePair(this.props.calculatorInput.destination).longitude.toString()},
       'earthRadius' : this.props.options.units[this.props.options.activeUnit]
     };
 
@@ -145,8 +144,8 @@ export default class Calculator extends Component {
 
   validateCoordinates(statevar) {
       try {
-          let coords = coordinates(this.props.calculatorInput[statevar]);
-          return (coords != null && !isNaN(coords.lat) && !isNaN(coords.lng));
+          let temp = Parsing.parseCoordinatePair(this.props.calculatorInput[statevar]);
+          return (temp !== null && !isNaN(temp.latitude) && !isNaN(temp.longitude));
       } catch (e) {
           return false;
       }
