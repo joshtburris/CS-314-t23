@@ -50,7 +50,6 @@ export default class Itinerary extends Component {
         Object.assign(placesCopy, this.props.itineraryPlan.places);
         placesCopy.push({id: id, name: name, latitude: latitude, longitude: longitude});
         this.props.updateStateVar('itineraryPlan', 'places', placesCopy);
-        console.log(this.props.itineraryPlan);
     }
 
     render() {

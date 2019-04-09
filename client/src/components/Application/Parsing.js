@@ -13,8 +13,8 @@ export default class Parsing{
                     throw "invalid coordinate found";
                 }
                 let temp = Object.assign({}, places[i]);
-                temp.latitude = lat;
-                temp.longitude = lon;
+                temp.latitude = lat.toString(); //converted to string for submission to TIPITinerary
+                temp.longitude = lon.toString();
                 placesCopy.push(temp);
         }
         return placesCopy;

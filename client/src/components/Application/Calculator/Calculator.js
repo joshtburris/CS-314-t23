@@ -147,7 +147,6 @@ export default class Calculator extends Component {
           let temp = Parsing.parseCoordinatePair(this.props.calculatorInput[statevar]);
           return (temp !== null && !isNaN(temp.latitude) && !isNaN(temp.longitude));
       } catch (e) {
-          console.log(e);
           return false;
       }
   }
