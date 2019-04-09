@@ -72,7 +72,7 @@ test("Testing for testParseCoordPairOneInvalid", testParseCoordPairOneInvalid);
 function testPlacesValid(){
     let placesIn = [{latitude: "11", longitude: "11"}, {latitude: "22", longitude: "22"}];
     let placesOut = Parsing.parseObject(placesIn);
-    expect(placesOut).toEqual([{latitude: 11, longitude: 11}, {latitude: 22, longitude: 22}]);
+    expect(placesOut).toEqual([{latitude: "11", longitude: "11"}, {latitude: "22", longitude: "22"}]);
 }
 test("Testing for testPlacesValid", testPlacesValid);
 
