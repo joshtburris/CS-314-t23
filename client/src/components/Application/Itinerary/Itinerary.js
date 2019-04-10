@@ -161,18 +161,10 @@ export default class Itinerary extends Component {
         );
     }
 
-    /* Popup format for later
-                <Popup className="font-weight-extrabold">Marker</Popup>
-    */
-
-    coloradoGeographicBoundaries() {
-        // northwest and southeast Itinerary-Map corners of the state of Colorado
-        return L.latLngBounds(L.latLng(41, -109), L.latLng(37, -102));
-    }
-
     getBounds() {
         if(this.props.itineraryPlan.places.length == 0){
-            return this.coloradoGeographicBoundaries();
+            // northwest and southeast Itinerary-Map corners of the state of Colorado
+            return L.latLngBounds(L.latLng(41, -109), L.latLng(37, -102));
         }
         if(this.props.itineraryPlan.places.length == 1){
             return this.getSingleLoc();
