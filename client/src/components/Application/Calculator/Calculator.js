@@ -18,7 +18,7 @@ export default class Calculator extends Component {
         distance: '',
         errorMessage: null,
     };
-    this.calculateDistance()
+    this.calculateDistance();
   }
 
   componentDidUpdate(prevProps) {
@@ -53,7 +53,7 @@ export default class Calculator extends Component {
         <Pane header={'Calculator'}>
               <div>Determine the distance between the origin and destination.
                 Change the units on the <b>Options</b> page.
-              Valid formats are as follows with examples, note that only DMS accepts N/S/E/W and it may NOT be comma seperated.
+                Valid formats are as follows with examples, note that only DMS accepts N/S/E/W and it may NOT be comma seperated.
                   <table><tbody><tr><td>Decimal Degree</td><td><p>41.40338, 2.17403</p></td></tr>
                       <tr><td>Degrees Decimal Minutes</td><td><p>47°38.938 122° 20.887</p></td></tr>
                   <tr><td>Degrees Minutes Decimal Seconds</td><td><p>41°24'12.2"N 2°10'26.5"E</p></td></tr></tbody></table>
@@ -104,7 +104,7 @@ export default class Calculator extends Component {
     }
     const tipConfigRequest = {
       'requestType'        : 'distance',
-      'requestVersion'     : 3,
+      'requestVersion'     : 4,
       'origin'      : {'latitude': Parsing.parseCoordinatePair(this.props.calculatorInput.origin).latitude.toString(), 'longitude': Parsing.parseCoordinatePair(this.props.calculatorInput.origin).longitude.toString()},
       'destination' : {'latitude': Parsing.parseCoordinatePair(this.props.calculatorInput.destination).latitude.toString(), 'longitude': Parsing.parseCoordinatePair(this.props.calculatorInput.destination).longitude.toString()},
       'earthRadius' : this.props.options.units[this.props.options.activeUnit]

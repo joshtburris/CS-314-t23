@@ -15,10 +15,6 @@ public class database {
     private static String user="cs314-db";
     private static String pass="eiK5liet1uej";
 
-    // fill in SQL queries to count the number of records and to retrieve the data
-    //private final static String count = "";
-    //private final static String search = "";
-
     public static void loginInfo() {
         // Here are some environment variables. The first one is set by default in
         // Travis, and the other we set ourselves (see the other guide)
@@ -81,29 +77,9 @@ public class database {
     }
 
     private static Map[] printJSON(ResultSet count, ResultSet query) throws SQLException {
-        //Header commented out
-        /*
-        System.out.printf("\n{\n");
-        System.out.printf("\"type\": \"find\",\n");
-        System.out.printf("\"title\": \"%s\",\n",search);
-        System.out.printf("\"places\": [\n");
-        */
-
         // determine the number of results that match the query
         count.next();
         int results = count.getInt(1);
-
-        // iterate through query results and print out the airport codes
-        /*
-        while (query.next()) {
-            System.out.printf("  \"%s\"", query.getString("code"));
-            if (--results == 0)
-                System.out.printf("\n");
-            else
-                System.out.printf(",\n");
-        }
-        System.out.printf("  ]\n}\n");
-        */
 
         Map[] values = new Map[results];
         int index = results;

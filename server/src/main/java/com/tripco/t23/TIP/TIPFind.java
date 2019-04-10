@@ -4,7 +4,6 @@ import com.tripco.t23.database.database;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.ArrayList;
 
 public class TIPFind extends TIPHeader {
@@ -15,15 +14,6 @@ public class TIPFind extends TIPHeader {
 
     private final transient Logger log = LoggerFactory.getLogger(TIPFind.class);
 
-    TIPFind(String match) {
-        this();
-        this.requestVersion = 3;
-        this.match = match;
-        this.limit = 0;
-        this.found  = 0;
-        this.places = new ArrayList<>();
-    }
-
     TIPFind(String match, int limit) {
         this();
         this.requestVersion = 3;
@@ -31,6 +21,10 @@ public class TIPFind extends TIPHeader {
         this.limit = limit;
         this.found  = 0;
         this.places = new ArrayList<>();
+    }
+
+    TIPFind(String match) {
+        this(match, 0);
     }
 
     private TIPFind() {
