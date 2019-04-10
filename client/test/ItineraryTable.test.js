@@ -16,7 +16,7 @@ const startProperties = {
                     {id: "te", name: "test", latitude: 4, longitude: 2},
                     {id: "wo", name: "work", latitude: 11, longitude: -2.5}],
         'distances':[14, 24, 6, 41],
-        'boundaries':null
+        'markers': {do: false, th: false, te: false, wo: false}
     },
     'headerOptions' : {
         'name' : true,
@@ -37,7 +37,7 @@ function testRemoveLocationButton() {
         updateStateVar={update}/>
     );
 
-    it.find('#remove1').at(0).simulate('click');
+    it.find('#editTable1').at(0).simulate('click');
     let expected = [    {id: "do", name: "does", latitude: -12, longitude: -12},
                         {id: "te", name: "test", latitude: 4, longitude: 2},
                         {id: "wo", name: "work", latitude: 11, longitude: -2.5}];
@@ -103,3 +103,25 @@ function testNewStart() {
 }
 
 test("Testing moveTop function of itineraryTable", testNewStart);
+
+function testIndividualMarker(){
+    let arrfunction = jest.fn();
+    const itinerary = shallow((
+        <ItineraryTable
+            options={startProperties.options}
+            settings={startProperties.settings}
+            headerOptions={startProperties.headerOptions}
+            itineraryPlan={startProperties.itineraryPlan}
+            updateStateVar={arrfunction}/>
+    ));
+
+    let instance = itinerary.instance();
+    instance.showMarkerPerLocation(1);
+    expect(arrfunction.mock.calls.length).toEqual(1);
+    expect(arrfunction.mock.calls[0][0]).toEqual("itineraryPlan");
+    expect(arrfunction.mock.calls[0][1]).toEqual("markers");
+    let toggleIndivMarker = {do: false, th: true, te: false, wo: false}
+    expect(arrfunction.mock.calls[0][2]).toEqual(toggleIndivMarker);
+}
+
+test("Testing individual marker toggle", testIndividualMarker);
