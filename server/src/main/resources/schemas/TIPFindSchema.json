@@ -20,6 +20,20 @@
       "type":"string",
       "pattern":"^[a-zA-z0-9 ]+$"
     },
+    "narrow": {
+      "description":"an array of maps which contain a name and values to filter requests by.",
+      "type":"array",
+      "items": {
+        "type":"object",
+        "properties": {
+          "name": {"type":"string"},
+          "values":{
+            "type":"array",
+            "items": {"type":"string"}
+          }
+        }
+      }
+    },
     "limit": {
       "description":"the maximum number of matching places that may be returned.",
       "type":"integer",

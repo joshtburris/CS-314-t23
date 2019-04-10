@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 public class database {
     // db configuration information
@@ -59,6 +60,31 @@ public class database {
         return login(countString, searchString);
     }
 
+
+    public static Map[] callLoginAllFiltered(String match, ArrayList<Map> narrow){
+        String filterName;
+        ArrayList<String> filterValues = new ArrayList<>();
+        for(Map filter : narrow){
+            //get each name variable
+            filterName = filter.get("name").toString();
+
+            //get the values variable corresponding to the names variable
+            filterValues = (ArrayList) filter.get("values");
+
+            //TODO:
+            //build part of the countString/searchString using these variables and store them
+        }
+
+        //temporary copy of calLoginAll while tools to build final string are constructed
+        String countString = "select count(id) from colorado where id like \'%" + match + "%\' or name like \'%" + match
+                + "%\' or municipality like \'%" + match +"%\' or type like \'%" + match + "%\' or latitude like \'%"
+                + match + "%\' or longitude like \'%" + match + "%\' order by name;";
+        String searchString = "select id,name,municipality,type from colorado where id like \'%" + match + "%\' or name like \'%" + match
+                + "%\' or municipality like \'%" + match +"%\' or type like \'%" + match + "%\' or latitude like \'%"
+                + match + "%\' or longitude like \'%" + match + "%\' order by name;";
+        return login(countString, searchString);
+    }
+
     // Arguments contain the username and password for the database
     public static Map[] login(String count, String search){
         try  {
@@ -81,29 +107,9 @@ public class database {
     }
 
     private static Map[] printJSON(ResultSet count, ResultSet query) throws SQLException {
-        //Header commented out
-        /*
-        System.out.printf("\n{\n");
-        System.out.printf("\"type\": \"find\",\n");
-        System.out.printf("\"title\": \"%s\",\n",search);
-        System.out.printf("\"places\": [\n");
-        */
-
         // determine the number of results that match the query
         count.next();
         int results = count.getInt(1);
-
-        // iterate through query results and print out the airport codes
-        /*
-        while (query.next()) {
-            System.out.printf("  \"%s\"", query.getString("code"));
-            if (--results == 0)
-                System.out.printf("\n");
-            else
-                System.out.printf(",\n");
-        }
-        System.out.printf("  ]\n}\n");
-        */
 
         Map[] values = new Map[results];
         int index = results;
@@ -114,7 +120,7 @@ public class database {
             tempMap.put("name", query.getString("name"));
             tempMap.put("municipality", query.getString("municipality"));
             tempMap.put("type", query.getString("type"));
-            //TODO: Fix latitude and longitude
+            //TODO: Fix latitude and longitude (should not use getString)
             //tempMap.put("latitude", query.getString("latitude"));
             //tempMap.put("longitude", query.getString("longitude"));
             values[results - index] = tempMap;
