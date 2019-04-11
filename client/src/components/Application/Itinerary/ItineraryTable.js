@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Pane from "../Pane";
-import {Button} from 'reactstrap';
-import { Table } from 'reactstrap';
+import {Button, CustomInput, Table} from 'reactstrap';
 
 export default class ItineraryTable extends Component {
     constructor(props) {
         super(props);
+        this.showMarkerPerLocation = this.showMarkerPerLocation.bind(this);
     }
 
     render() {
@@ -65,12 +65,13 @@ export default class ItineraryTable extends Component {
             }
             ++i;
         }
-
-        let tag = 'remove'+index;
+        let key = this.props.itineraryPlan.places[index].id;
+        let tag = 'editTable'+index;
         markup.push(<td><Button id={tag} type='submit' color="link" onClick={()=>{this.removeLocation(index);}} > <b>X</b> </Button>
             <Button id={tag} type='submit' color="link" size="lg" onClick={() => {this.rearrange(index, 1);}}> <b>↑</b> </Button>
             <Button id={tag} type='submit' color="link" size="lg" onClick={() => {this.rearrange(index, 0);}}> <b>↓</b> </Button>
             <Button id={tag} type='submit' color="link" size="lg" onClick={() => {this.moveTop(index);}}> <b>↑↑</b> </Button>
+            <CustomInput id={tag+"Marker"} checked={this.props.itineraryPlan.markers[key]} type="checkbox" label="Show Marker" onClick={() => {this.showMarkerPerLocation(index);}} />
         </td>);
         return(markup);
     }
@@ -84,7 +85,6 @@ export default class ItineraryTable extends Component {
                 markup.push(<th><b>{labels[i]}</b></th>);
             ++i;
         }
-        //markup.push(<th><b>Remove</b></th>);
         return(markup);
     }
 
@@ -142,5 +142,15 @@ export default class ItineraryTable extends Component {
 
         //put new array into the proper area
         this.props.updateStateVar('itineraryPlan', 'places', copyPlaces);
+    }
+
+    showMarkerPerLocation(index){
+        let copyMarkers = {};
+        let key = this.props.itineraryPlan.places[index].id;
+        let copyMValues = Object.values(this.props.itineraryPlan.markers);
+        Object.assign(copyMarkers, this.props.itineraryPlan.markers);
+
+        copyMarkers[key] = !copyMValues[index];
+        this.props.updateStateVar('itineraryPlan', 'markers', copyMarkers);
     }
 }
