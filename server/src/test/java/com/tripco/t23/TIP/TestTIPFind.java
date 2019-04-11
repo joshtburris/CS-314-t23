@@ -11,18 +11,19 @@ public class TestTIPFind {
     private TIPFind finder;
 
     private Map[] data = new Map[3];
+
     @Test
-    public void testFindOne(){
+    public void testFindFour(){
         TIPFind findOne = new TIPFind("Capri", 3);
         findOne.buildResponse();
-        long expect = 1;
+        long expect = 4;
         long actual = findOne.getFound();
-        assertEquals("one object is found", expect, actual);
+        assertEquals("Finding four objects", expect, actual);
     }
 
     @Test
     public void findDtc(){
-        TIPFind dtc = new TIPFind("Dtc North Heliport", 0);
+        TIPFind dtc = new TIPFind("Dtc North Heliport");
         dtc.buildResponse();
         Map expect = new HashMap();
         //TODO: Update when latitude and longitude are working
@@ -30,6 +31,8 @@ public class TestTIPFind {
         expect.put("name", "Dtc North Heliport");
         expect.put("municipality","Denver");
         expect.put("type", "heliport");
+        expect.put("latitude", 39.6349983215);
+        expect.put("longitude", -104.898002625);
         System.out.print(dtc.getPlaces());
         Map actual = dtc.getPlaces().get(0);
         assertEquals("maps are equal", expect, actual);

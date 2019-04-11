@@ -39,7 +39,7 @@ public class TIPFind extends TIPHeader {
         int lim = this.limit;
         Map[] returnedItems;
         //Check if following line is needed in if statement:
-        //this.narrow != null &&
+        //this.narrow != null ||
         if(this.narrow.isEmpty()){
             //narrow is empty, check all areas
             returnedItems = database.callLoginAll(this.match);
