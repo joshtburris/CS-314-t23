@@ -45,13 +45,6 @@ export default class Itinerary extends Component {
         //nothing has changed
     }
 
-    addLocation(id, name, latitude, longitude) {
-        let placesCopy = [];
-        Object.assign(placesCopy, this.props.itineraryPlan.places);
-        placesCopy.push({id: id, name: name, latitude: latitude, longitude: longitude});
-        this.props.updateStateVar('itineraryPlan', 'places', placesCopy);
-    }
-
     render() {
         return(
             <Container>
@@ -98,6 +91,20 @@ export default class Itinerary extends Component {
 
     toggleCheckbox(option, value) {
         this.props.updateStateVar('headerOptions', option, value);
+    }
+
+    addLocation(id, name, latitude, longitude) {
+        let placesCopy = [];
+        Object.assign(placesCopy, this.props.itineraryPlan.places);
+        placesCopy.push({id: id, name: name, latitude: latitude, longitude: longitude});
+        this.props.updateStateVar('itineraryPlan', 'places', placesCopy);
+    }
+
+    reverseItinerary() {
+        let rPlaces = [];
+        Object.assign(rPlaces, this.props.itineraryPlan.places);
+        rPlaces.reverse();
+        this.props.updateStateVar('itineraryPlan', 'places', rPlaces);
     }
 
     renderItinerary() {
@@ -273,13 +280,6 @@ export default class Itinerary extends Component {
                     });
                 }
             });
-    }
-
-    reverseItinerary() {
-        let rPlaces = [];
-        Object.assign(rPlaces, this.props.itineraryPlan.places);
-        rPlaces.reverse();
-        this.props.updateStateVar('itineraryPlan', 'places', rPlaces);
     }
 
     allMarkerToggle(){
