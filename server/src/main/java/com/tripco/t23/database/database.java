@@ -98,7 +98,7 @@ public class database {
         String countString = "select count(id) from world where (id like \'%" + match + "%\' or name like \'%" + match
                 + "%\' or municipality like \'%" + match +"%\' or type like \'%" + match + "%\' or latitude like \'%"
                 + match + "%\' or longitude like \'%" + match + "%\')" + finalFilter;
-        String searchString = "select id,name,municipality,type from world where (id like \'%" + match + "%\' or name like \'%" + match
+        String searchString = "select id,name,municipality,type,latitude,longitude from world where (id like \'%" + match + "%\' or name like \'%" + match
                 + "%\' or municipality like \'%" + match +"%\' or type like \'%" + match + "%\' or latitude like \'%"
                 + match + "%\' or longitude like \'%" + match + "%\')" + finalFilter;
         return login(countString, searchString);
@@ -139,9 +139,9 @@ public class database {
             tempMap.put("name", query.getString("name"));
             tempMap.put("municipality", query.getString("municipality"));
             tempMap.put("type", query.getString("type"));
-            //TODO: Fix latitude and longitude (should not use getString)
-            //tempMap.put("latitude", query.getString("latitude"));
-            //tempMap.put("longitude", query.getString("longitude"));
+            //Latitude and Longitude can also use query.getString if needed
+            tempMap.put("latitude", query.getDouble("latitude"));
+            tempMap.put("longitude", query.getDouble("longitude"));
             values[results - index] = tempMap;
             --index;
         }
