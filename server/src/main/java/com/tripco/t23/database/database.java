@@ -16,10 +16,6 @@ public class database {
     private static String user="cs314-db";
     private static String pass="eiK5liet1uej";
 
-    // fill in SQL queries to count the number of records and to retrieve the data
-    //private final static String count = "";
-    //private final static String search = "";
-
     public static void loginInfo() {
         // Here are some environment variables. The first one is set by default in
         // Travis, and the other we set ourselves (see the other guide)

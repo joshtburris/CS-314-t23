@@ -25,14 +25,10 @@ public class NearestNeighbor implements Optimizer{
         }
         this.generateDistances(earthRadius);
         int [] route = this.findOptimalRoute();
-        order(route);
+        useRoute(route);
     }
 
     public Map[] getPlaces(){
-        for(int i= 0; i<this.places.length; i++){
-        }
-        for(int i=0; i<this.ordPlaces.length;i++){
-        }
         return this.ordPlaces;
     }
 
@@ -109,7 +105,7 @@ public class NearestNeighbor implements Optimizer{
         return dist;
     }
 
-    private void order(int [] route){
+    private void useRoute(int [] route){
         for (int i = 0; i < route.length; i++){
             this.ordPlaces[i] = this.places[route[i]];
             this.ordDistances[i] = this.distances[route[i]][route[(i+1)%route.length]];

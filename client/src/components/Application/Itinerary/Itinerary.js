@@ -45,14 +45,6 @@ export default class Itinerary extends Component {
         //nothing has changed
     }
 
-    addLocation(id, name, latitude, longitude) {
-        let placesCopy = [];
-        Object.assign(placesCopy, this.props.itineraryPlan.places);
-        placesCopy.push({id: id, name: name, latitude: latitude, longitude: longitude});
-        this.props.updateStateVar('itineraryPlan', 'places', placesCopy);
-        console.log(this.props.itineraryPlan);
-    }
-
     render() {
         return(
             <Container>
@@ -99,6 +91,20 @@ export default class Itinerary extends Component {
 
     toggleCheckbox(option, value) {
         this.props.updateStateVar('headerOptions', option, value);
+    }
+
+    addLocation(id, name, latitude, longitude) {
+        let placesCopy = [];
+        Object.assign(placesCopy, this.props.itineraryPlan.places);
+        placesCopy.push({id: id, name: name, latitude: latitude, longitude: longitude});
+        this.props.updateStateVar('itineraryPlan', 'places', placesCopy);
+    }
+
+    reverseItinerary() {
+        let rPlaces = [];
+        Object.assign(rPlaces, this.props.itineraryPlan.places);
+        rPlaces.reverse();
+        this.props.updateStateVar('itineraryPlan', 'places', rPlaces);
     }
 
     renderItinerary() {
@@ -162,18 +168,10 @@ export default class Itinerary extends Component {
         );
     }
 
-    /* Popup format for later
-                <Popup className="font-weight-extrabold">Marker</Popup>
-    */
-
-    coloradoGeographicBoundaries() {
-        // northwest and southeast Itinerary-Map corners of the state of Colorado
-        return L.latLngBounds(L.latLng(41, -109), L.latLng(37, -102));
-    }
-
     getBounds() {
         if(this.props.itineraryPlan.places.length == 0){
-            return this.coloradoGeographicBoundaries();
+            // northwest and southeast Itinerary-Map corners of the state of Colorado
+            return L.latLngBounds(L.latLng(41, -109), L.latLng(37, -102));
         }
         if(this.props.itineraryPlan.places.length == 1){
             return this.getSingleLoc();
@@ -221,7 +219,7 @@ export default class Itinerary extends Component {
             //parse the string into a JSON file
             try {let fileInfo = JSON.parse(content);
                 //set places and distances equal to the JSON file's places and distances
-                this.props.updateStateVar('itineraryPlan', 'places', fileInfo.places);
+                this.props.updateStateVar('itineraryPlan', 'places', Parsing.parseObject(fileInfo.places));
             } catch (err) {
                 this.setState({
                     errorMessage: <Alert className='bg-csu-canyon text-white font-weight-extrabold'>
@@ -246,7 +244,7 @@ export default class Itinerary extends Component {
     calculateDistances() {
         const tipConfigRequest = {
             'requestType'        : 'itinerary',
-            'requestVersion'     : 3,
+            'requestVersion'     : 4,
             'options'            : this.state.options,
             'places'             : this.props.itineraryPlan.places,
         };
@@ -282,13 +280,6 @@ export default class Itinerary extends Component {
                     });
                 }
             });
-    }
-
-    reverseItinerary() {
-        let rPlaces = [];
-        Object.assign(rPlaces, this.props.itineraryPlan.places);
-        rPlaces.reverse();
-        this.props.updateStateVar('itineraryPlan', 'places', rPlaces);
     }
 
     allMarkerToggle(){

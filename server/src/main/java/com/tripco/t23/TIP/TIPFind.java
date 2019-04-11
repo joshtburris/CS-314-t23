@@ -14,17 +14,7 @@ public class TIPFind extends TIPHeader {
     private ArrayList<Map> places;
 
     private final transient Logger log = LoggerFactory.getLogger(TIPFind.class);
-
-    TIPFind(String match) {
-        this();
-        this.requestVersion = 4;
-        this.match = match;
-        this.narrow = new ArrayList<>();
-        this.limit = 0;
-        this.found  = 0;
-        this.places = new ArrayList<>();
-    }
-
+  
     TIPFind(String match, int limit) {
         this();
         this.requestVersion = 4;
@@ -33,6 +23,10 @@ public class TIPFind extends TIPHeader {
         this.limit = limit;
         this.found  = 0;
         this.places = new ArrayList<>();
+    }
+
+    TIPFind(String match) {
+        this(match, 0);
     }
 
     private TIPFind() {
