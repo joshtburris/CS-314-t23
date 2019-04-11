@@ -15,8 +15,6 @@ public class TIPFind extends TIPHeader {
 
     private final transient Logger log = LoggerFactory.getLogger(TIPFind.class);
 
-    //TODO: Have all these contructors call each other
-
     TIPFind(String match) {
         this();
         this.requestVersion = 4;

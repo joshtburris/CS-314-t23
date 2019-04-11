@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import {sendServerRequestWithBody} from "../../../api/restfulAPI";
-import Pane from "../Pane";
-import { saveAs } from 'file-saver';
 import {Alert, Container, Row, Col, CustomInput, Button} from 'reactstrap';
 import {Map, TileLayer, Polyline, Marker, Popup} from "react-leaflet";
 import ItineraryTable from "./ItineraryTable";
 import Ajv from 'ajv';
+import { saveAs } from 'file-saver';
+import {sendServerRequestWithBody} from "../../../api/restfulAPI";
+import Pane from "../Pane";
 import schema from './TIPItinerarySchema';
+import Parsing from '../Parsing'
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
