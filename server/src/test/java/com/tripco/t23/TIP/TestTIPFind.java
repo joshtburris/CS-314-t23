@@ -26,7 +26,6 @@ public class TestTIPFind {
         TIPFind dtc = new TIPFind("Dtc North Heliport");
         dtc.buildResponse();
         Map expect = new HashMap();
-        //TODO: Update when latitude and longitude are working
         expect.put("id", "US-0073");
         expect.put("name", "Dtc North Heliport");
         expect.put("municipality","Denver");
