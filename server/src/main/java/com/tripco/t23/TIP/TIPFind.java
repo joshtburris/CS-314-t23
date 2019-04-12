@@ -14,15 +14,19 @@ public class TIPFind extends TIPHeader {
     private ArrayList<Map> places;
 
     private final transient Logger log = LoggerFactory.getLogger(TIPFind.class);
-  
-    TIPFind(String match, int limit) {
+
+    TIPFind(String match, int limit, ArrayList<Map> filter){
         this();
         this.requestVersion = 4;
         this.match = match;
-        this.narrow = new ArrayList<>();
+        this.narrow = filter;
         this.limit = limit;
         this.found  = 0;
         this.places = new ArrayList<>();
+    }
+  
+    TIPFind(String match, int limit) {
+        this(match, limit, new ArrayList<>());
     }
 
     TIPFind(String match) {
@@ -38,8 +42,10 @@ public class TIPFind extends TIPHeader {
     public void buildResponse() {
         int lim = this.limit;
         Map[] returnedItems;
-        //Check if following line is needed in if statement:
-        //this.narrow != null ||
+
+        if(this.narrow == null){
+            this.narrow = new ArrayList<>();
+        }
         if(this.narrow.isEmpty()){
             //narrow is empty, check all areas
             returnedItems = database.callLoginAll(this.match);
@@ -79,6 +85,6 @@ public class TIPFind extends TIPHeader {
 
     @Override
     public String toString(){
-        return getClass().getName() + String.format("\tMatch: %s\tLimit: %f\tFound: %f\tPlaces: %s",getMatch(),getLimit(),getFound(),getPlaces().toString());
+        return getClass().getName() + String.format("\tMatch: %s\tLimit: %d\tFound: %d\tPlaces: %s",getMatch(),getLimit(),getFound(),getPlaces().toString());
     }
 }
