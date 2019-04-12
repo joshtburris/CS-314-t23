@@ -165,7 +165,9 @@ export default class Itinerary extends Component {
                 id={markerItem.id}
                 title={markerItem.name}
                 icon={L.icon({iconUrl: icon, shadowUrl: iconShadow, iconAnchor: [12,40]})}>
-                <Popup className="font-weight-extrabold">{markerItem.name}</Popup>
+                <Popup className="font-weight-extrabold">
+                    {markerItem.name + ": (" + markerItem.latitude + ", " + markerItem.longitude + ")\n"}
+                </Popup>
             </Marker>
         );
     }

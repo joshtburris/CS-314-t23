@@ -29,12 +29,12 @@ test("Testing for testParseCoordEmptyString", testParseCoordEmptyString);
 function testParseCoordinatePairValid(){
     //using space as separator
     expect(Parsing.parseCoordinatePair("89.23 145.99")).toEqual({latitude: 89.23, longitude: 145.99});
-    expect(Parsing.parseCoordinatePair("89°23\' 145°99\'")).toEqual({latitude: 89.38, longitude: 146.65,});
-    expect(Parsing.parseCoordinatePair("89°23\'11\" 145°99\'11\"")).toEqual({latitude: 89.39, longitude: 146.65});
+    expect(Parsing.parseCoordinatePair("89°23\' 145°99\'")).toEqual({latitude: 89.38333, longitude: 146.65,});
+    expect(Parsing.parseCoordinatePair("89°23\'11\" 145°99\'11\"")).toEqual({latitude: 89.38639, longitude: 146.65306});
     //using ", " as separator
     expect(Parsing.parseCoordinatePair("89.23, 145.99")).toEqual({latitude: 89.23, longitude: 145.99});
-    expect(Parsing.parseCoordinatePair("89°23\', 145°99\'")).toEqual({latitude: 89.38, longitude: 146.65,});
-    expect(Parsing.parseCoordinatePair("89°23\'11\", 145°99\'11\"")).toEqual({latitude: 89.39, longitude: 146.65});
+    expect(Parsing.parseCoordinatePair("89°23\', 145°99\'")).toEqual({latitude: 89.38333, longitude: 146.65,});
+    expect(Parsing.parseCoordinatePair("89°23\'11\", 145°99\'11\"")).toEqual({latitude: 89.38639, longitude: 146.65306});
 
 }
 test("Testing for testParseCoordinatePairValid DMS", testParseCoordinatePairValid);

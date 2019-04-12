@@ -68,7 +68,7 @@ export default class Parsing{
             }
             else if(Number(parts[0]) < 0){return NaN}
             dd = this.calculateDegrees(parts); // if has NE, jump straight to here
-            dd = Math.round(dd * 100) / 100;
+            dd = Math.round(dd * 100000) / 100000;
         }
         return dd;
     }
