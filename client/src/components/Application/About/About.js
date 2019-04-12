@@ -3,7 +3,6 @@ import { Container, Row, Col, Media } from 'reactstrap'
 import Pane from '../Pane';
 import KurtImage from '../../../../../team/KurtWimer/Kurt.jpg'
 import CalebImg from '../../../../../team/CalebET/Caleb.jpg'
-import KelynImage from '../../../../../team/kshaffner/Kelyn.jpg'
 import JoshImg from '../../../../../team/joshtburris/Josh.jpg'
 import TimImg from '../../../../../team/tprooney/TimImage.jpg'
 /*

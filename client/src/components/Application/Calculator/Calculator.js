@@ -11,9 +11,6 @@ export default class Calculator extends Component {
   constructor(props) {
     super(props);
 
-    this.calculateDistance = this.calculateDistance.bind(this);
-    this.createInputField = this.createInputField.bind(this);
-
     this.state = {
         distance: '',
         errorMessage: null,

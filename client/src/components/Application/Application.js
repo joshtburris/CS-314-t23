@@ -54,7 +54,6 @@ export default class Application extends Component {
 
         this.updateStateVar = this.updateStateVar.bind(this);
         this.updateClientSetting = this.updateClientSetting.bind(this);
-        this.createApplicationPage = this.createApplicationPage.bind(this);
         this.getUserLocation = this.getUserLocation.bind(this);
 
         this.updateServerConfig();
