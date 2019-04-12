@@ -8,6 +8,7 @@ import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
 import schema from './TIPItinerarySchema';
 import Parsing from '../Parsing'
+import Saver from './Saver'
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
@@ -115,7 +116,7 @@ export default class Itinerary extends Component {
                     <Row>
                         <input type="file" name="" id="loadButton" onChange={this.loadFile} />
                         <form>
-                            <input type="submit" value="Save File" id="saveButton" color="link" onClick={(e) => this.saveFile(e)} />
+                            <input type="submit" value="Save File" id="saveButton" color="link" onClick={(e) => this.saveFile(e, "csv")} />
                         </form>
                     </Row>
                 </Container>
@@ -206,10 +207,9 @@ export default class Itinerary extends Component {
         return LL
     }
 
-    saveFile(event) {
+    saveFile(event, fileType) {
         event.preventDefault();
-        var file = new Blob([JSON.stringify(this.props.itineraryPlan)], {type: "text/plain;charset=utf-8"});  // Source="https://www.npmjs.com/package/file-saver/v/1.3.2"
-        saveAs(file, "MyItinerary.txt");
+        Saver.save(this.props.itineraryPlan.places, fileType);
     }
 
     loadFile(e) {
