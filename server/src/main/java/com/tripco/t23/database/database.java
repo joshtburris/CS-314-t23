@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 public class database {
     // db configuration information
@@ -45,13 +46,57 @@ public class database {
         }
     }
 
+    //Function which has a prebuilt request to the database to return everything matching the string requested
+    //match: String searched for in database
     public static Map[] callLoginAll(String match){
-        String countString = "select count(id) from colorado where id like \'%" + match + "%\' or name like \'%" + match
+        String countString = "select count(id) from world where id like \'%" + match + "%\' or name like \'%" + match
                                 + "%\' or municipality like \'%" + match +"%\' or type like \'%" + match + "%\' or latitude like \'%"
                                 + match + "%\' or longitude like \'%" + match + "%\' order by name;";
-        String searchString = "select id,name,municipality,type from colorado where id like \'%" + match + "%\' or name like \'%" + match
+        String searchString = "select id,name,municipality,type,latitude,longitude from world where id like \'%" + match + "%\' or name like \'%" + match
                                 + "%\' or municipality like \'%" + match +"%\' or type like \'%" + match + "%\' or latitude like \'%"
                                 + match + "%\' or longitude like \'%" + match + "%\' order by name;";
+        return login(countString, searchString);
+    }
+
+    //function that builds a request to the database to return everything matching the string requested
+    //while also filtering by variables
+    //match: String searched for in database
+    //narrow: Array of maps containing "name" and "variables" keys. "name" specifies the item to filter by
+    //        and "variables" specifies an array containing the items to filter by in "name"
+    public static Map[] callLoginAllFiltered(String match, ArrayList<Map> narrow){
+        String filterName;
+        ArrayList<String> filterValues;
+        String finalFilter = "";
+        for(Map filter : narrow){
+            //get each name variable
+            filterName = filter.get("name").toString();
+
+            //get the values variable corresponding to the names variable
+            filterValues = (ArrayList) filter.get("values");
+
+            //build the end of the countString/searchString using the variables defined prior
+            finalFilter += " and (";
+
+            //goes through each map and builds the string for each filter
+            for(int i=0; i < filterValues.size(); i++){
+                finalFilter += filterName + " like \'%" + filterValues.get(i) + "%\'";
+
+                //add an or for the next item in the list, if it exists
+                if(i+1 < filterValues.size()){
+                    finalFilter += " or ";
+                }
+            }
+            //build the end of the string
+            finalFilter += ") order by name;";
+        }
+
+        //temporary copy of calLoginAll while tools to build final string are constructed
+        String countString = "select count(id) from world where (id like \'%" + match + "%\' or name like \'%" + match
+                + "%\' or municipality like \'%" + match +"%\' or type like \'%" + match + "%\' or latitude like \'%"
+                + match + "%\' or longitude like \'%" + match + "%\')" + finalFilter;
+        String searchString = "select id,name,municipality,type,latitude,longitude from world where (id like \'%" + match + "%\' or name like \'%" + match
+                + "%\' or municipality like \'%" + match +"%\' or type like \'%" + match + "%\' or latitude like \'%"
+                + match + "%\' or longitude like \'%" + match + "%\')" + finalFilter;
         return login(countString, searchString);
     }
 
@@ -90,9 +135,9 @@ public class database {
             tempMap.put("name", query.getString("name"));
             tempMap.put("municipality", query.getString("municipality"));
             tempMap.put("type", query.getString("type"));
-            //TODO: Fix latitude and longitude
-            //tempMap.put("latitude", query.getString("latitude"));
-            //tempMap.put("longitude", query.getString("longitude"));
+            //Latitude and Longitude can also use query.getString if needed
+            tempMap.put("latitude", query.getDouble("latitude"));
+            tempMap.put("longitude", query.getDouble("longitude"));
             values[results - index] = tempMap;
             --index;
         }
