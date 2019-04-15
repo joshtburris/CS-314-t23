@@ -165,7 +165,9 @@ export default class Itinerary extends Component {
                 id={markerItem.id}
                 title={markerItem.name}
                 icon={L.icon({iconUrl: icon, shadowUrl: iconShadow, iconAnchor: [12,40]})}>
-                <Popup className="font-weight-extrabold">{markerItem.name}</Popup>
+                <Popup className="font-weight-extrabold">
+                    {this.getMarkerInfo(markerItem)}
+                </Popup>
             </Marker>
         );
     }
@@ -284,6 +286,16 @@ export default class Itinerary extends Component {
                     });
                 }
             });
+    }
+
+    getMarkerInfo(markerItem){
+        let mInfo = "";
+        for (let i in markerItem){
+            if (i !== 'id'){
+                mInfo = mInfo + i.charAt(0).toUpperCase() + i.slice(1) + ": " + markerItem[i] + " ";
+            }
+        }
+        return mInfo;
     }
 
     allMarkerToggle(){
