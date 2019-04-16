@@ -57,7 +57,7 @@ export default class Itinerary extends Component {
                     {this.renderItinerary()}
                     {this.checkList()}
                 </Col> </Row>
-                <Row> <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                <Row> <Col xl={12}>
                     <ItineraryTable     itineraryPlan={this.props.itineraryPlan}
                                         headerOptions={this.props.headerOptions}
                                         updateStateVar={this.props.updateStateVar}/>
