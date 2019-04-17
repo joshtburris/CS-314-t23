@@ -12,7 +12,7 @@
 | ---- | ---- |
 | Timothy Rooney | 33 minutes |
 | Caleb Tong | 25 minutes |
-|  |  |
+|  Kurt Wimer | 25 minutes |
 
 ### Problems found
 
@@ -24,6 +24,9 @@
 | ItineraryTable.js:60 | Table variables' constraints affects mobile experience | low | Tim | |
 | Application.js:22-52 | Very long state, decrease it as much as possible and change those calling this state to check if undefined | high | Caleb |  |
 | Application.js:38-44 | HeaderOptions are hardcoded | low | Caleb |  |
-| Application.js:83-100 | Using switch statement, use function calling instead | mid | Caleb |  |
+| Application.js:83-100 | Using switch statement, use function calling instead | med | Caleb |  |
 | Application.js:169 & 174 | Unnecessary console.log statements | low | Caleb |  |
-
+| CustomUnit.js:17-19 | Unneccessary binds | low | Kurt | |
+| CustomUnit.js:23 | Commented out code | high | Kurt |  |
+| CustomUnit.js:45/62 | Duplicate code | med | Kurt |  |
+| CustomUnit.js:107 | Potential error use try/catch | Kurt |  |
