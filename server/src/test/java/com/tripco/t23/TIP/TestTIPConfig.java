@@ -39,7 +39,7 @@ public class TestTIPConfig {
   @Test
   public void testPlaceAttributes() {
     List<String> attr = conf.getPlaceAttributes();
-    assertEquals("config attribute size", 6, attr.size());
+    assertEquals("config attribute size", 7, attr.size());
   }
 
   @Test
