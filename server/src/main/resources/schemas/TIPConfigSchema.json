@@ -40,6 +40,19 @@
       "minItems":1,
       "uniqueItems": true,
       "required":["none"]
+    },
+    "filters": {
+      "type":"array",
+      "items": {
+        "type":"object",
+        "properties": {
+          "name": {"type":"string"},
+          "values":{
+            "type":"array",
+            "items": {"type":"string"}
+          }
+        }
+      }
     }
   },
   "required":["requestVersion","requestType","serverName","placeAttributes","optimizations"],

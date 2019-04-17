@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /** This class defines the Config response that provides the client
  * with server specific configuration information.
@@ -23,16 +25,18 @@ public class TIPConfig extends TIPHeader {
   private String serverName;
   private List<String> placeAttributes;
   private List<String> optimizations;
+  private List<Map<String, Object>> filters;
 
   private final transient Logger log = LoggerFactory.getLogger(TIPConfig.class);
 
 
   public TIPConfig() {
     this.requestType = "config";
-    this.requestVersion = 2;
+    this.requestVersion = 4;
     this.serverName = "t23 Byte Me";
-    this.placeAttributes = Arrays.asList("latitude", "longitude", "name", "id", "municipality", "altitude");
+    this.placeAttributes = Arrays.asList("latitude", "longitude", "name", "id", "municipality", "altitude", "type");
     this.optimizations = Arrays.asList("none", "short");
+    this.filters = Arrays.asList(new HashMap<String, Object>() {{put("name", "type"); put("values", Arrays.asList("airport","heliport","balloonport","closed"));}});
   }
 
 
