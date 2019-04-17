@@ -33,4 +33,4 @@
 | CustomUnit.js:17-19 | Unneccessary binds | low | Kurt | |
 | CustomUnit.js:23 | Commented out code | high | Kurt |  |
 | CustomUnit.js:45/62 | Duplicate code | med | Kurt |  |
-| CustomUnit.js:107 | Potential error use try/catch | Kurt |  |
+| CustomUnit.js:107 | Potential error use try/catch | high | Kurt |  |
