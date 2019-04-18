@@ -29,7 +29,7 @@
 | Calculator.js:96 | Needs updating to use Parsing.js to check coordinates | low | Josh |  |
 | Calculator.js:142-149 | validateCoordinates() should be deleted or replaced by Parsing.js functions | low | Josh |  |
 | Calculator.js:151-153 | updateCalculatorInput() could be deleted as it's only called in one place but it does slightly increase readablility so maybe not | low | Josh |  |
-| CustomUnit.js:17-19 | Unneccessary binds | low | Kurt | |
-| CustomUnit.js:23 | Commented out code | high | Kurt |  |
-| CustomUnit.js:45/62 | Duplicate code | med | Kurt |  |
-| CustomUnit.js:107 | Potential error use try/catch | high | Kurt |  |
+| CustomUnit.js:17-19 | Unneccessary binds | low | Kurt | 307 |
+| CustomUnit.js:23 | Commented out code | high | Kurt |  308 |
+| CustomUnit.js:45/62 | Duplicate code | med | Kurt |  309 |
+| CustomUnit.js:107 | Potential error use try/catch | high | Kurt | 310 |
