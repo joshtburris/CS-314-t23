@@ -116,7 +116,6 @@ export default class Application extends Component {
 
     updateServerConfig() {
         sendServerRequest('config', this.state.clientSettings.serverPort).then(config => {
-            console.log(config);
             this.processConfigResponse(config);
         });
     }
@@ -166,12 +165,10 @@ export default class Application extends Component {
 
     processConfigResponse(config) {
         if(config.statusCode >= 200 && config.statusCode <= 299) {
-            console.log("Switching to server ", this.state.clientSettings.serverPort);
             //validate response
             var ajv = new Ajv();
             var valid = ajv.validate(schema, config.body);
             if (!valid) {
-                console.log(ajv.errors);
                 this.setState({
                     serverConfig: null,
                     errorMessage:
