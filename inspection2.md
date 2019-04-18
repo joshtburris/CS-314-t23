@@ -18,10 +18,9 @@
 
 | file:line | problem | hi/med/low | who found | github#  |
 | --- | --- | :---: | :---: | --- |
-| ItineraryTable.js:39 | checks that a place equals 0 | med | Tim | |
-| ItineraryTable.js:70-74 | very similar code could be function-formatted | low | Tim | |
-| ItineraryTable.js:81 | Labels are hard-coded and missing some labels | low | Tim | |
-| ItineraryTable.js:60 | Table variables' constraints affects mobile experience | low | Tim | |
+| ItineraryTable.js:39 | checks that a place equals 0 | med | Tim | #306 |
+| ItineraryTable.js:81 | Labels are hard-coded and missing some labels | low | Tim | #269 |
+| ItineraryTable.js:60 | Table variables' constraints affects mobile experience | low | Tim | #296 |
 | Application.js:22-52 | Very long state, decrease it as much as possible and change those calling this state to check if undefined | high | Caleb |  |
 | Application.js:38-44 | HeaderOptions are hardcoded | low | Caleb |  |
 | Application.js:83-100 | Using switch statement, use function calling instead | med | Caleb |  |
