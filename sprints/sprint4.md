@@ -110,21 +110,22 @@ A couple rather hackey solutions are in the code which is not ideal.
 
 ## Retrospective (focus on people, process, tools)
 
-Picking up tasks and not completing them/ switching tasks or taking multiple tasks messed up the task flow.
-
+Picking up tasks and not completing them in time/ switching tasks or taking multiple tasks messed up the task flow.
 
 #### What we changed this sprint
 
-More time was spent working as a group.
+More time was spent working as a group. Communication between teammates got better.
 
 #### What we did well
 
-We didn't break master. 
+We didn't break master. We started to proactively ask each other if we had any problems.
 
 #### What we need to work on
 
-We could improve improve efficiency and breaking tasks down into smaller increments.
+We could improve improve efficiency and breaking tasks down into smaller increments
+and make sure that the assignee is available to finish the task.
 
 #### What we will change next sprint 
 
+Get into a faster pace of work at the beginning of the sprint.
 
