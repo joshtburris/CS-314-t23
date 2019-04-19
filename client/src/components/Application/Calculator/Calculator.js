@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
-import { Container, Row, Col } from 'reactstrap'
-import { Form,  Input } from 'reactstrap'
-import { sendServerRequestWithBody } from '../../../api/restfulAPI'
+import React, { Component } from 'react';
+import { Container, Row, Col } from 'reactstrap';
+import { Form,  Input } from 'reactstrap';
+import { sendServerRequestWithBody } from '../../../api/restfulAPI';
 import Pane from '../Pane';
-import Ajv from 'ajv'
+import Ajv from 'ajv';
 import schema from './TIPDistanceSchema';
-import Parsing from '../Parsing'
+import Parsing from '../Parsing';
 
 export default class Calculator extends Component {
   constructor(props) {
@@ -63,10 +63,11 @@ export default class Calculator extends Component {
     let capitalizedCoordinate = stateVar.charAt(0).toUpperCase() + stateVar.slice(1);
     let color = this.validateCoordinates(stateVar) ? "black": "red";
     return (
-      <Input name={stateVar} placeholder={capitalizedCoordinate}
+      <Input name={stateVar}
+             placeholder={capitalizedCoordinate}
              id={`${stateVar}${capitalizedCoordinate}`}
              value={this.props.calculatorInput[stateVar]}
-             onChange={(e) => this.updateCalculatorInput(stateVar,e.target.value)}
+             onChange={(e) => this.updateCalculatorInput(stateVar, e.target.value)}
              style={{width: "100%", borderColor: color}} />
     );
 
@@ -139,13 +140,8 @@ export default class Calculator extends Component {
       });
   }
 
-  validateCoordinates(statevar) {
-      try {
-          let temp = Parsing.parseCoordinatePair(this.props.calculatorInput[statevar]);
-          return (temp !== null && !isNaN(temp.latitude) && !isNaN(temp.longitude));
-      } catch (e) {
-          return false;
-      }
+  validateCoordinates(stateVar) {
+      return Parsing.validateCoordinates(this.props.calculatorInput[stateVar]);
   }
 
   updateCalculatorInput(stateVar, value) {

@@ -4,7 +4,7 @@ export default class Parsing{
 
     //takes a places object with coordinates in any supported format and returns in LL format
     //return null object if any parse fails
-    static parseObject(places){
+    static parseObject(places) {
         let placesCopy = [];
         for (let i = 0; i < places.length; i++){
                 let lat = this.parseCoordinate(places[i].latitude);
@@ -20,36 +20,36 @@ export default class Parsing{
         return placesCopy;
     }
 
-    static parseCoordinatePair(coordinates){
+    static parseCoordinatePair(coordinates) {
         //separate
         let separatorIndex = coordinates.indexOf(",");
         let cord1 = "";
         let cord2 = "";
         let temp;
-        if (separatorIndex === -1){ // separated only by space
+        if (separatorIndex === -1) { // separated only by space
             separatorIndex = coordinates.indexOf(" ");
             if( separatorIndex === -1){ throw "invalid coordinate formatting" }
             cord2 = coordinates.substring(separatorIndex+1,coordinates.length);
         }
-        else{ cord2 = coordinates.substring(separatorIndex+2,coordinates.length); } // separated by ", "
+        else { cord2 = coordinates.substring(separatorIndex+2,coordinates.length); } // separated by ", "
         cord1 = coordinates.substring(0,separatorIndex);
         //parse each
         cord1 = this.parseCoordinate(cord1);
         cord2 = this.parseCoordinate(cord2);
-        if(isNaN(cord1) || isNaN(cord2)){
+        if (isNaN(cord1) || isNaN(cord2)) {
             temp = coord(coordinates);
-            if(temp !== undefined){
+            if (temp !== undefined) {
                 cord1 = temp.lat;
                 cord2 = temp.lng;
             }
         }
-        if(isNaN(cord1) || isNaN(cord2)){ throw "Invalid Input!" }
-        if(cord1 > 90 || cord1 < -90 || cord2 > 180 || cord2 < -180){ throw "Coordinate out of bounds!" } // check lat lng bounds
+        if (isNaN(cord1) || isNaN(cord2)) { throw "Invalid Input!" }
+        if (cord1 > 90 || cord1 < -90 || cord2 > 180 || cord2 < -180) { throw "Coordinate out of bounds!" } // check lat lng bounds
         return {latitude: cord1, longitude: cord2} //return object with latitude and longitude
     }
 
     //returns numeric LL coordinate on success NaN on failure
-    static parseCoordinate(input){
+    static parseCoordinate(input) {
         //caleb will do this
         let regex = /^\s*([+-]?\d{1,3}\s+\d{1,2}'?\s+\d{1,2}"?[NSEW]?|\d{1,3}(:\d{2}){2}\.\d[NSEW]\s*){1,2}$|\d{1,3}(.\d{1,9})?/;
         let parts;
@@ -73,7 +73,7 @@ export default class Parsing{
         return dd;
     }
 
-    static calculateDegrees(parts){
+    static calculateDegrees(parts) {
         let lengthOfParts = parts.length;
         let dd;
         switch (lengthOfParts){
@@ -82,6 +82,29 @@ export default class Parsing{
             case 4: dd = Number(parts[0]) + Number(parts[1])/60 + Number(parts[2])/(60*60); break;
         }
         return dd;
+    }
+
+    static validateCoordinates(coordinates) {
+        try {
+            let temp = Parsing.parseCoordinatePair(coordinates);
+            return (temp !== null && !isNaN(temp.latitude) && !isNaN(temp.longitude));
+        } catch (e) {
+            return false;
+        }
+    }
+
+    static validateLatitude(lat) {
+        return this.validateCoordinates(lat + " 0.0");
+    }
+
+    static validateLongitude(lon) {
+        return this.validateCoordinates("0.0 " + lon);
+    }
+
+    static matchExact(regex, str) {            // Source: "https://stackoverflow.com/questions/447250/matching-exact-string-with-javascript"
+        if (typeof str !== "string") str = str.toString();
+        let match = str.match(regex);
+        return(match && str === match[0]);
     }
 
 }

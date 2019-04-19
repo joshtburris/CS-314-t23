@@ -49,10 +49,13 @@ export default class Application extends Component {
             currentLocation: {
                 lat: 40.576179,
                 lon: -105.080773
-            }
+            },
+            nextPlaceID: "0"
         };
 
         this.updateStateVar = this.updateStateVar.bind(this);
+        this.setStateVar = this.setStateVar.bind(this);
+        this.getNextPlaceID = this.getNextPlaceID.bind(this);
         this.updateClientSetting = this.updateClientSetting.bind(this);
         this.getUserLocation = this.getUserLocation.bind(this);
 
@@ -71,7 +74,7 @@ export default class Application extends Component {
     }
 
     updateClientSetting(field, value) {
-        if(field === 'serverPort')
+        if (field === 'serverPort')
             this.setState({clientSettings: {serverPort: value}}, this.updateServerConfig);
         else {
             let newSettings = Object.assign({}, this.state.planOptions);
@@ -83,20 +86,19 @@ export default class Application extends Component {
     updateStateVar(stateVar, option, value) {
         let copy = Object.assign({}, this.state[stateVar]);
         copy[option] = value;
-        switch (stateVar) {
-            case 'planOptions':
-                this.setState({'planOptions': copy});
-                break;
-            case 'calculatorInput':
-                this.setState({'calculatorInput': copy});
-                break;
-            case 'itineraryPlan':
-                this.setState({'itineraryPlan': copy});
-                break;
-            case 'headerOptions':
-                this.setState({'headerOptions': copy});
-                break;
-        }
+        this.setState({[stateVar]: copy});
+    }
+
+    setStateVar(stateVar, value) {
+        this.setState({[stateVar]: value});
+    }
+
+    getNextPlaceID() {
+        let nextID = this.state.nextPlaceID;
+        this.setState({
+            nextPlaceID: (parseInt(nextID)+1).toString()
+        });
+        return nextID;
     }
 
     getUserLocation() {
@@ -150,12 +152,14 @@ export default class Application extends Component {
                 return <About/>;
             case 'itinerary':
                 return <Itinerary options={this.state.planOptions}
-                                  createErrorBanner={this.createErrorBanner}
                                   settings={this.state.clientSettings}
                                   serverConfig={this.state.serverConfig}
+                                  createErrorBanner={this.createErrorBanner}
                                   itineraryPlan={this.state.itineraryPlan}
                                   headerOptions={this.state.headerOptions}
-                                  updateStateVar={this.updateStateVar}/>;
+                                  updateStateVar={this.updateStateVar}
+                                  setStateVar={this.setStateVar}
+                                  getNextPlaceID={this.getNextPlaceID}/>;
 
             default:
                 return <Home  currentLocation={this.state.currentLocation}
@@ -164,7 +168,7 @@ export default class Application extends Component {
     }
 
     processConfigResponse(config) {
-        if(config.statusCode >= 200 && config.statusCode <= 299) {
+        if (config.statusCode >= 200 && config.statusCode <= 299) {
             //validate response
             var ajv = new Ajv();
             var valid = ajv.validate(schema, config.body);

@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
 import Pane from "../Pane";
-import {Button, CustomInput, Table} from 'reactstrap';
+import {Button, CustomInput, Input, Table} from 'reactstrap';
+import Parsing from '../Parsing';
 
 export default class ItineraryTable extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            name: "",
+            LL: {
+                latitude: 0.0,
+                longitude: 0.0
+            }
+        };
+
+        this.addNewLocation = this.addNewLocation.bind(this);
         this.showMarkerPerLocation = this.showMarkerPerLocation.bind(this);
     }
 
@@ -16,7 +27,7 @@ export default class ItineraryTable extends Component {
     }
 
     render() {
-        return(this.renderTable());
+        return this.renderTable();
     }
 
     renderTable() {
@@ -25,6 +36,12 @@ export default class ItineraryTable extends Component {
                 <div style={this.getStyle()}> <Table hover>
                     {this.generateItinerary()}
                 </Table> </div>
+                <thead><b>
+                    Add Location
+                </b></thead>
+                <tbody>
+                    {this.newLocationInput()}
+                </tbody>
             </Pane>
         );
     }
@@ -32,10 +49,10 @@ export default class ItineraryTable extends Component {
     generateItinerary() {
         let myItinerary = [];
         myItinerary.push(<thead><tr>{this.itineraryHeader()}</tr></thead>);
-        if (this.props.itineraryPlan.places.length > 0){
+        if (this.props.itineraryPlan.places.length > 0) {
             myItinerary.push(<tbody>{this.getItineraryRows()}</tbody>);
         }
-        return(myItinerary);
+        return myItinerary;
     }
 
     getItineraryRows() {
@@ -50,12 +67,12 @@ export default class ItineraryTable extends Component {
             dist = dist + this.props.itineraryPlan.distances[place];
             ++index;
         }
-        if (this.props.itineraryPlan.places.length > 1){
+        if (this.props.itineraryPlan.places.length > 1) {
             list.push(<tr>{this.getLine(    this.props.itineraryPlan.distances[this.props.itineraryPlan.distances.length-1],
                                             dist,
                                             0)}</tr>);
         }
-        return(list);
+        return list;
     }
 
     getLine(legDist, tDist, index) {
@@ -67,7 +84,7 @@ export default class ItineraryTable extends Component {
                         this.props.itineraryPlan.places[index].longitude];
         let i = 0;
         for (let opt in this.props.headerOptions) {
-            if (this.props.headerOptions[opt] === true) {
+            if (this.props.headerOptions[opt]) {
                 markup.push(<td>{headers[i]}</td>);
             }
             ++i;
@@ -83,6 +100,78 @@ export default class ItineraryTable extends Component {
         return(markup);
     }
 
+    newLocationInput() {
+        let list = [];
+        list.push(<td>
+            <Input
+                id={"newLocationName"}
+                placeholder={"Name"}
+                style={{width: "100%", borderColor: "black"}}
+                onChange={(e) => (this.updateAndValidateNameInput(e.target))}
+            /></td>
+        );
+        list.push(<td>
+            <Input
+                id={"newLocationLL"}
+                placeholder={"Latitude, Longitude"}
+                style={{width: "100%", borderColor: "black"}}
+                onChange={(e) => (this.updateAndValidateCoordinateInput(e.target))}
+            /></td>
+        );
+        list.push(<td><Button type='submit' color="link" onClick={()=>{this.addNewLocation();}}> <b>+</b> </Button></td>);
+        return list;
+    }
+
+    updateAndValidateNameInput(target) {
+        if (this.validateName(target.value)) {
+            this.setState({
+                name: target.value
+            });
+            target.style.borderColor = "black";
+        } else {
+            target.style.borderColor = "red";
+        }
+    }
+
+    validateName(name) {
+        return Parsing.matchExact(/[A-Za-z\\ ]+/, name);
+    }
+
+    updateAndValidateCoordinateInput(target) {
+        try {
+            let ll = Parsing.parseCoordinatePair(target.value);
+            this.setState({
+                LL: {
+                    latitude: ll.latitude,
+                    longitude: ll.longitude
+                }
+            });
+            target.style.borderColor = "black";
+        } catch (e) {
+            target.style.borderColor = "red";
+        }
+    }
+
+    addNewLocation() {
+        let nameElement = document.getElementById("newLocationName"),
+            llElement = document.getElementById("newLocationLL");
+        if (nameElement.style.borderColor !== "red" && llElement.style.borderColor !== "red") {
+            this.props.addLocation(this.state.name, this.state.LL.latitude, this.state.LL.longitude);
+            this.setState( {name: "", LL: {latitude: 0.0, longitude: 0.0}} );
+            nameElement.style.borderColor = "black";
+            nameElement.value = "";
+            llElement.style.borderColor = "black";
+            llElement.value = "";
+        }
+    }
+
+    checkLocationInput(name, lat, lon) {
+        if (    Parsing.matchExact(/[A-Za-z\\ ]+/, name)
+            &&  Parsing.validateCoordinates(lat+" "+lon))
+            return true;
+        return false;
+    }
+
     itineraryHeader() {
         let markup = [];
         let labels = ['Name', 'Leg Distance', 'Total Distance', 'Latitude', 'Longitude'];
@@ -92,13 +181,13 @@ export default class ItineraryTable extends Component {
                 markup.push(<th><b>{labels[i]}</b></th>);
             ++i;
         }
-        return(markup);
+        return markup;
     }
 
     removeLocation(index) {
         let places = [];
         Object.assign(places, this.props.itineraryPlan.places);
-        places.splice(index,1);
+        places.splice(index, 1);
         this.props.updateStateVar('itineraryPlan', 'places', places);
     }
 
@@ -115,8 +204,7 @@ export default class ItineraryTable extends Component {
             let temp = copyPlaces[(parseInt(index)+1) % itinLen];
             copyPlaces[(parseInt(index)+1) % itinLen] = copyPlaces[index];
             copyPlaces[index] = temp;
-        }
-        else {
+        } else {
             if (parseInt(index) == 0) {
                 //swap the selected index's item and the last item
                 let temp = copyPlaces[itinLen-1];
@@ -136,13 +224,13 @@ export default class ItineraryTable extends Component {
 
     //Function that moves the selected index to the top of the table
     //index: the index of the item to be moved
-    moveTop(index){
+    moveTop(index) {
         let copyPlaces = [];
         Object.assign(copyPlaces, this.props.itineraryPlan.places);
         let temp = copyPlaces[index];
 
         //copy objects from 0-index down by 1, then replace index 0
-        for(let i=parseInt(index); i > 0; i--){
+        for (let i=parseInt(index); i > 0; i--) {
             copyPlaces[i] = copyPlaces[i-1];
         }
         copyPlaces[0] = temp;
@@ -151,7 +239,7 @@ export default class ItineraryTable extends Component {
         this.props.updateStateVar('itineraryPlan', 'places', copyPlaces);
     }
 
-    showMarkerPerLocation(index){
+    showMarkerPerLocation(index) {
         let copyMarkers = {};
         let key = this.props.itineraryPlan.places[index].id;
         let copyMValues = Object.values(this.props.itineraryPlan.markers);

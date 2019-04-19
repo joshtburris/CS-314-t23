@@ -66,3 +66,14 @@ function testUpdateCalculator() {
 }
 
 test("Testing Application's updateStateVar function for calculator", testUpdateCalculator);
+
+function testNextPlaceID() {
+    const app = shallow(<Application/>);
+
+    expect(app.instance().getNextPlaceID()).toEqual("0");
+    expect(app.instance().getNextPlaceID()).toEqual("1");
+    expect(app.instance().getNextPlaceID()).toEqual("2");
+    expect(app.instance().getNextPlaceID()).toEqual("3");
+}
+
+test("Testing Application's getNextPlaceID function to get unique values", testNextPlaceID);
