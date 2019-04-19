@@ -14,15 +14,9 @@ export default class CustomUnit extends Component{
         this.updateInputText = this.updateInputText.bind(this);
         this.updateInputNum = this.updateInputNum.bind(this);
         this.updateUnits = this.updateUnits.bind(this);
-        this.header = this.header.bind(this);
-        this.example = this.example.bind(this);
-        this.addUnits = this.addUnits.bind(this);
     }
 
     render(){
-        /*let myArray = [];
-        myArray.push(<Row> <Col> </Col> </Row>)
-        myArray.push(<Row> <Col> </Col> </Row>)*/
         return(
             <Pane header={'Units'}>
                 {this.state.errorMessage}
@@ -42,34 +36,25 @@ export default class CustomUnit extends Component{
         );
     }
 
-    header(){
+    listCreateRow(name, radius){
         return(
-            <Container> <Row> <Col xs="5" sm="5" md="5" lg="5" xl="5">
-                <b>
-                    Unit Name
-                </b>
-            </Col>
-            <Col xs="5" sm="5" md="5" lg="5" xl="5">
-                <b>
-                    Earth Radius
-                </b>
-            </Col>
-                <Col xs="2" sm="2" md="2" lg="2" xl="2">
-            </Col> </Row> </Container>
+            <Container> <Row>
+                <Col xs="5" sm="5" md="5" lg="5" xl="5">
+                    {name}
+                </Col>
+                <Col xs="5" sm="5" md="5" lg="5" xl="5">
+                    {radius}
+                </Col>
+            </Row> </Container>
         );
     }
 
+    header(){
+        return this.listCreateRow(<b>Unit Name</b>, <b>Earth Radius</b>);
+    }
+
     example(){
-        return(
-            <Container> <Row> <Col xs="5" sm="5" md="5" lg="5" xl="5">
-                Miles
-            </Col>
-            <Col xs="5" sm="5" md="5" lg="5" xl="5">
-                3959
-            </Col>
-            <Col xs="2" sm="2" md="2" lg="2" xl="2">
-            </Col> </Row> </Container>
-        );
+        return this.listCreateRow("Miles", "3959");
     }
 
     addUnits(){
