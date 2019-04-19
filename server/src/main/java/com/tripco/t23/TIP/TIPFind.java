@@ -43,6 +43,10 @@ public class TIPFind extends TIPHeader {
         int lim = this.limit;
         Map[] returnedItems;
 
+        //make any non-alphanumeric, non-underscore character a wildcard (?)
+        String newMatch = this.match.replaceAll("[^a-zA-Z_]", "_");
+        this.match = newMatch;
+
         if(this.narrow == null){
             this.narrow = new ArrayList<>();
         }
