@@ -35,7 +35,7 @@ public class TIPConfig extends TIPHeader {
     this.requestVersion = 4;
     this.serverName = "t23 Byte Me";
     this.placeAttributes = Arrays.asList("latitude", "longitude", "name", "id", "municipality", "altitude", "type");
-    this.optimizations = Arrays.asList("none", "short");
+    this.optimizations = Arrays.asList("none", "short", "shorter");
     this.filters = Arrays.asList(new HashMap<String, Object>() {{put("name", "type"); put("values", Arrays.asList("airport","heliport","balloonport","closed"));}});
   }
 
@@ -62,7 +62,7 @@ public class TIPConfig extends TIPHeader {
     return this.placeAttributes;
   }
 
-  public List<String> getOptimizations() { return  this.optimizations; }
+  public List<String> getOptimizations() { return this.optimizations; }
 
   @Override
   public String toString(){

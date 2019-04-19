@@ -6,109 +6,49 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class NearestNeighbor implements Optimizer{
+public class NearestNeighbor extends Optimizer {
 
     private final transient Logger log = LoggerFactory.getLogger(NearestNeighbor.class);
 
-    private Map[] places;
-    private Map[] ordPlaces;
-    private long[] ordDistances;
-    private long[][] distances;
-
-
-    public NearestNeighbor(Map[] places, double earthRadius){
+    public NearestNeighbor(Map[] places, double earthRadius) {
         this.places = places;
-        this.ordPlaces = new Map[places.length];
-        this.ordDistances = new long[places.length];
-        if (places.length == 0){
+        ordPlaces = new Map[places.length];
+        ordDistances = new long[places.length];
+        if (places.length == 0)
             return;
-        }
-        this.generateDistances(earthRadius);
-        int [] route = this.findOptimalRoute();
-        useRoute(route);
+        generateDistances(earthRadius);
+        int[] route = circleToStart(getBestRoute());
+        order(route);
     }
 
-    public Map[] getPlaces(){
-        return this.ordPlaces;
-    }
+    public Map[] getPlaces() { return ordPlaces; }
 
-    public long[] getDistances(){
-        return this.ordDistances;
-    }
+    public long[] getDistances() { return ordDistances; }
 
-    //Create a table for easy distance lookup
-    private void generateDistances(double earthRadius){
-        int len = this.places.length;
-        this.distances = new long[len][len];
-        for (int i =0; i < len; i++){
-            this.distances[i][i] = 0;
-            for(int j = i+1; j <len; j++){
-                long dist = GreatCircleDistance.getDistance(this.places[i], this.places[j], earthRadius);
-                this.distances[i][j] = dist;
-                this.distances[j][i] = dist;
-            }
-        }
-    }
-
-    //Returns and integer array of indice locations corresponding to places
-    private int[] findOptimalRoute(){
-        int len = this.places.length;
+    private int[] getBestRoute() {
+        int len = places.length;
         long bestTotDistance = -1; //used as a placeholder
-        int [] bestRoute = new int[len];
+        int[] bestRoute = new int[len];
 
-        //start route from each places
-        for (int i = 0; i < len; i++){
-            int [] testRoute = new int[len];
-            boolean [] visited = new boolean[len]; //false by default
-
-            //route not complete
-            for(int count = 0; count < len; count++){
-                long bestDistance = -1; //placeholder values
-                int nextPlace = -1;
-                //find nearest neighbor
-                for(int j = 0; j<len; j++){
-                    if(visited[j]) continue;
-                    if (this.distances[i][j] < bestDistance || bestDistance == -1){
-                        bestDistance = this.distances[i][j];
-                        nextPlace = j;
-                    }
-                }
-                testRoute[count] = nextPlace;
-                visited[nextPlace] = true;
-            }
-
+        for (int i = 0; i < len; i++) {
+            int[] testRoute = getNNRoute(i);
             long testDist = getDistFromRoute(testRoute);
-            if (testDist < bestTotDistance || bestTotDistance == -1){
+            if (testDist < bestTotDistance || bestTotDistance == -1) {
                 bestTotDistance = testDist;
                 bestRoute = testRoute;
             }
         }
-        //make sure route starts at original location
-        int i =0;
-        //find starting location
-        while(bestRoute[i] != 0){
-            i++;
-        }
-        int[] myRoute = new int[len];
-        for(int j = 0; j <len; j++){
-            myRoute[j] = bestRoute[i++%len];
-        }
-        return myRoute;
+
+        return bestRoute;
     }
 
     //Route is the index locations corresponding with each place
-    private long getDistFromRoute(int[] route){
+    private long getDistFromRoute(int[] route) {
         long dist = 0;
-        for (int i = 0; i <route.length; i++){
-            dist += this.distances[route[i]][route[(i+1)%route.length]];
+        for (int i = 0; i < route.length; i++) {
+            dist += distances[route[i]][route[(i+1)%route.length]];
         }
         return dist;
     }
 
-    private void useRoute(int [] route){
-        for (int i = 0; i < route.length; i++){
-            this.ordPlaces[i] = this.places[route[i]];
-            this.ordDistances[i] = this.distances[route[i]][route[(i+1)%route.length]];
-        }
-    }
 }

@@ -45,6 +45,6 @@ public class TestTIPConfig {
   @Test
   public void testOptimizations() {
     List<String> opt = conf.getOptimizations();
-    assertEquals("optimization size", 2, opt.size());
+    assertEquals("optimization size", 3, opt.size());
   }
 }
