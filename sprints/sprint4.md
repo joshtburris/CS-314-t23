@@ -54,69 +54,77 @@ This sprint will complete the following Epics.
 ![server](https://github.com/csucs314s19/t23/blob/master/sprints/sprint4_resources/server.svg)
 ![itinerary](https://github.com/csucs314s19/t23/blob/master/sprints/sprint4_resources/itinerary.svg)
 
-All other client screnes remain unchanged
+All other client scenes remain unchanged
 
 
 ## Metrics
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | 5 | *value* |
-| Tasks |  14   | *value* | 
-| Story Points |  27  | *value* | 
+| Epics | 5 | 3 |
+| Tasks |  14   | 31 | 
+| Story Points |  27  | 34 | 
 
 
 ## Scrums
 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
-| *date* | *#task, ...* | *#task, ...* | *none* | 
+| 4/1 | | 240, 202, 247, 104 | |
+| 4/3 | | 240, 202, 247, 104 | |
+| 4/5 | | 247, 104, 202, 240| |
+| 4/8 | 202, 240, 268, 270, 272, 275, 277,| 262, 250, 104, 247 | |
+| 4/12 | 247, 291, 252, 254, 267, 276, 280, 282,  294, 262 | 249, 296, 251, 250 | |
+| 4/15 | 249, 296,  | 251, 250, 253, 104| |
+| 4/17 | 253, | 251, 250, 255, 104| |
 
 
 ## Review (focus on solution and technology)
 
-In this sprint, ...
+In this sprint, we implemented filters for the tip find requests, created multiple file save formats, and caught up on tasks from sprint 3.
+ 
 
 #### Completed epics in Sprint Backlog 
 
 These Epics were completed.
 
-* *## epic title: comments*
-* 
+* 242 I would like to highlight...:
+* 241 I would like to plan trips worldwide: minimal task, only needed to switch database
+* 246 I wan to view my trip in other tools: csv and sv implemented, kml was not
 
 #### Incomplete epics in Sprint Backlog 
 
 These Epics were not completed.
 
-* *## epic title: explanation*
-*
+* 99 I want to change my itinerary: adding locations from data-source has been left over from sprint three.
+* 243 Can trips be shorter: 2-opt has not been implemented
 
 #### What went well
 
-The ...
-
+Test coverage was very good this sprint.
 
 #### Problems encountered and resolutions
 
-The ...
-
+No major techincal problems faced. We changed up wo was working on which parts which led to some issues with infamiliarity on parts of the codebase and technologies.
+A couple rather hackey solutions are in the code which is not ideal.
 
 ## Retrospective (focus on people, process, tools)
 
-In this sprint, ...
+Picking up tasks and not completing them/ switching tasks or taking multiple tasks messed up the task flow.
+
 
 #### What we changed this sprint
 
-Our changes for this sprint included ...
+More time was spent working as a group.
 
 #### What we did well
 
-We ...
+We didn't break master. 
 
 #### What we need to work on
 
-We could improve ...
+We could improve improve efficiency and breaking tasks down into smaller increments.
 
 #### What we will change next sprint 
 
-We will change ...
+
