@@ -135,7 +135,13 @@ export default class Itinerary extends Component {
                     <Row>
                         <input type="file" name="" id="loadButton" onChange={this.loadFile} />
                         <form>
-                            <input type="submit" value="Save File" id="saveButton" color="link" onClick={(e) => this.saveFile(e, "csv")} />
+                            <input type="submit" value="Save as JSON" id="saveButtonJSON" color="link" onClick={(e) => this.saveFile(e, "json")} />
+                        </form>
+                        <form>
+                            <input type="submit" value="Save as CSV" id="saveButtonCSV" color="link" onClick={(e) => this.saveFile(e, "csv")} />
+                        </form>
+                        <form>
+                             <input type="submit" value="Save as SVG" id="saveButtonSVG" color="link" onClick={(e) => this.saveFile(e, "svg")} />
                         </form>
                     </Row>
                 </Container>

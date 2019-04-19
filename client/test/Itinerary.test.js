@@ -115,7 +115,9 @@ function testSaveButton() {
     ));
 
     // testing that it exists (According to TA testing functionality is too complicated, this is fine)
-    expect(itinerary.find('#saveButton').length).toEqual(1);
+    expect(itinerary.find('#saveButtonJSON').length).toEqual(1);
+    expect(itinerary.find('#saveButtonCSV').length).toEqual(1);
+    expect(itinerary.find('#saveButtonSVG').length).toEqual(1);
 }
 
 test("Testing save button in itinerary", testSaveButton);
