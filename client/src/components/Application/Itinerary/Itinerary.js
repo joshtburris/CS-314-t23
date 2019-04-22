@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Alert, Container, Row, Col, Button, Dropdown, DropdownMenu, DropdownToggle, DropdownItem} from 'reactstrap';
+import {CustomInput, Alert, Container, Row, Col, Button, Dropdown, DropdownMenu, DropdownToggle, DropdownItem} from 'reactstrap';
 import ItineraryTable from "./ItineraryTable";
 import Ajv from 'ajv';
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
@@ -200,7 +200,7 @@ export default class Itinerary extends Component {
     calculateDistances() {
         const tipConfigRequest = {
             'requestType'        : 'itinerary',
-            'requestVersion'     : 5,  
+            'requestVersion'     : 5,
             'options'            : {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit].toString(),
                                     optimization: this.props.options.optimization},
             'places'             : this.props.itineraryPlan.places,
@@ -213,6 +213,7 @@ export default class Itinerary extends Component {
                     var ajv = new Ajv();
                     var valid = ajv.validate(schema, response.body);
                     if (!valid){
+                        console.log(ajv.errors);
                         this.setState({
                             errorMessage: this.props.createErrorBanner(
                                 "Invalid response from server"

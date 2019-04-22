@@ -94,12 +94,7 @@ export default class Calculator extends Component {
   }
 
   calculateDistance() {
-    if (!this.validateCoordinates("origin") || !this.validateCoordinates("destination")){
-        this.setState({
-            distance: ''
-        });
-        return 0;
-    }
+    if (!this.validateCoordinates("origin") || !this.validateCoordinates("destination")){return 0;}
     const tipConfigRequest = {
       'requestType'        : 'distance',
       'requestVersion'     : 5,
