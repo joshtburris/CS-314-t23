@@ -32,8 +32,12 @@ export default class Application extends Component {
             },
             itineraryPlan: {
                 places:[],
+                placesFound: [],
                 distances:[],
-                markers:{}
+                markers:{},
+                match: '',
+                limit: 0,
+                narrow: [{name: "type", values: ["none"]}]
             },
             headerOptions: {
                 name:true,

@@ -5,6 +5,7 @@ import Ajv from 'ajv';
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
 import schema from './TIPItinerarySchema';
+import schemaFind from './ItineraryTIPFindSchema';
 import Parsing from '../Parsing'
 import Saver from './Saver';
 import Optimizations from './Optimizations';
@@ -17,10 +18,14 @@ export default class Itinerary extends Component {
             errorMessage: null,
             dropdownOpen: false,
             tableDropdownOpen: false,
+            narrow: [{name: "type", values: ['none']}]
         };
         this.loadFile = this.loadFile.bind(this);
         this.addLocation = this.addLocation.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
+        this.setMarkers = this.setMarkers.bind(this);
+        this.updateTipFindLocation = this.updateTipFindLocation.bind(this);
+        this.checkboxOnClick = this.checkboxOnClick.bind(this);
         this.calculateDistances();
         this.toggleSave = this.toggleSave.bind(this);
     }
@@ -48,6 +53,9 @@ export default class Itinerary extends Component {
                                         getTableOpts={this.getTableOpts}/>
 
                 </Col> </Row>
+                <Row> <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                    {this.searchLocationUsingTipFind()}
+                </Col> </Row>
             </Container>
         );
     }
@@ -74,6 +82,11 @@ export default class Itinerary extends Component {
     }
 
     addLocation(name, latitude, longitude) {
+        for(let temp in this.props.itineraryPlan.places){
+            if(this.props.itineraryPlan.places[temp].name === name){
+                return;
+            }
+        }
         name = name.trim();
         if (this.checkLocationInput(name, latitude, longitude)) {
             let newPlan = {};

@@ -22,7 +22,7 @@ export default class ItineraryTable extends Component {
     }
 
     getStyle(){
-        if (this.props.itineraryPlan.places.length >= 3){
+        if (this.props.places.length >= 3){
             return({height: '400px', overflowX: 'scroll', overflowY: 'scroll'});
         }
         return({overflowX: 'scroll'});
