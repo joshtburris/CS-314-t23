@@ -107,4 +107,8 @@ export default class Parsing{
         return(match && str === match[0]);
     }
 
+    static isNameValid(name) {
+        return this.matchExact(/[A-Za-z\\ \\-]+/, name);
+    }
+
 }

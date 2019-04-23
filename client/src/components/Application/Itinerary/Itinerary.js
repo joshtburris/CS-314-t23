@@ -29,7 +29,7 @@ export default class Itinerary extends Component {
 
     componentDidUpdate(prevProps) {
         //check if units have changed
-        if ((prevProps.activeUnit !== this.props.aciveUnit)
+        if ((prevProps.activeUnit !== this.props.activeUnit)
             || (prevProps.optimizations !== this.props.optimizations)) {
             this.calculateDistances();
             return;
@@ -64,6 +64,7 @@ export default class Itinerary extends Component {
                     <ItineraryTable     itineraryPlan={this.props.itineraryPlan}
                                         headerOptions={this.props.headerOptions}
                                         updateStateVar={this.props.updateStateVar}
+                                        setStateVar={this.props.setStateVar}
                                         addLocation={this.addLocation}
                                         getNextPlaceID={this.props.getNextPlaceID}/>
                 </Col> </Row>
@@ -115,7 +116,7 @@ export default class Itinerary extends Component {
     }
 
     checkLocationInput(name, lat, lon) {
-        if (    Parsing.matchExact(/[A-Za-z\\ ]+/, name)
+        if (    Parsing.isNameValid(name)
             &&  Parsing.validateCoordinates(lat+" "+lon))
             return true;
         return false;
@@ -271,11 +272,20 @@ export default class Itinerary extends Component {
     loadFileContent(content) {
         let fileInfo = JSON.parse(content);
         let places = [];
+        let markers = {};
         Object.assign(places, Parsing.parseObject(fileInfo.places));
-        for (let i = 0; i < places.length; ++i)
-            places[i].id = this.props.getNextPlaceID();
-        this.props.updateStateVar('itineraryPlan', 'places', places);
-        this.setMarkers();
+        for (let i = 0; i < places.length; ++i) {
+            let nextID = this.props.getNextPlaceID();
+            places[i].id = nextID;
+            markers[nextID] = false;
+        }
+
+        let newPlan = {};
+        Object.assign(newPlan, this.props.itineraryPlan);
+        newPlan["places"] = places;
+        newPlan["markers"] = markers;
+        this.props.setStateVar("itineraryPlan", newPlan);
+
         this.setState({errorMessage: ""});
     }
 
@@ -324,7 +334,7 @@ export default class Itinerary extends Component {
         let mInfo = "";
         for (let i in markerItem) {
             if (i !== 'id') {
-                mInfo = mInfo + i.charAt(0).toUpperCase() + i.slice(1) + ": " + markerItem[i] + " ";
+                mInfo += i.charAt(0).toUpperCase() + i.slice(1) + ": " + markerItem[i] + " ";
             }
         }
         return mInfo;
@@ -332,16 +342,19 @@ export default class Itinerary extends Component {
 
     allMarkerToggle() {
         let markerList = {};
-        if (Object.keys(this.props.itineraryPlan.markers).length === 0)
+        let len = Object.keys(this.props.itineraryPlan.markers).length;
+        if (len === 0) {
             markerList = this.setMarkers();
-        else {
+            console.log("Had to set markers.");
+        } else {
             Object.assign(markerList, this.props.itineraryPlan.markers);
-            let temp = Object.values(markerList);
+            let containsTrue = (Object.values(markerList).indexOf(true) !== -1) ? true : false;
+            console.log("The list does "+((containsTrue)?"":"not")+" contain true");
             let key;
-            for (let i = 0; i < Object.keys(markerList).length; i++) {
+            for (let i = 0; i < len; i++) {
                 key = this.props.itineraryPlan.places[i].id;
-                if (temp.indexOf(true) !== -1) markerList[key] = false;
-                else markerList[key] = !markerList[key];
+                if (containsTrue) markerList[key] = false;
+                else markerList[key] = true;
             }
         }
         this.props.updateStateVar('itineraryPlan', 'markers', markerList);
@@ -352,7 +365,6 @@ export default class Itinerary extends Component {
         for (let i = 0; i < this.props.itineraryPlan.places.length; i++) {
             markerList[this.props.itineraryPlan.places[i].id] = false;
         }
-        this.props.updateStateVar('itineraryPlan', 'markers', markerList);
         return markerList;
     }
 

@@ -8,48 +8,55 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TestTwoOpt {
-
-    private Map<String, Object> csu, boulder;
-    private final int version = 4;
+    private Map[] singleLocation = new Map[1];
+    private Map[] locations = new Map[5];
+    private final int version = 5;
     private final double earthRadiusMiles = 3958;
 
+    private static Map<String, Object> getLocation(String name, String lat, String lon) {
+        Map<String, Object> loc = new HashMap<>();
+        loc.put("name", name);
+        loc.put("latitude", lat);
+        loc.put("longitude", lon);
+        return loc;
+    }
 
     @Before
     public void createDataForTestCases() {
-        csu = new HashMap<>();
-        csu.put("latitude", "30");
-        csu.put("longitude", "-104");
-        csu.put("name", "Kinda Colorado");
-        boulder = new HashMap<>();
-        boulder.put("latitude", "40");
-        boulder.put("longitude", "-106");
-        boulder.put("name", "Boulder");
+        singleLocation = new Map[] {getLocation("Brighton", "39.87", "-104.33")};
+        locations = new Map[] { getLocation("Brighton", "39.87", "-104.33"),
+                getLocation("Alamosa", "37.57", "-105.79"),
+                getLocation("Littleton", "39.64", "-104.33"),
+                getLocation("Pagosa Springs", "37.2", "-107.05"),
+                getLocation("Springfield", "37.3", "-102.54")};
     }
 
     @Test
     public void testTwoOptSinglePlace() {
-        Optimizer nn = new TwoOpt(new Map[] {csu}, earthRadiusMiles);
-
-        long [] expectedDistances = {0};
-        Map[]  expectedPlaces = new Map[] {csu};
+        Optimizer nn = new TwoOpt(singleLocation, earthRadiusMiles);
 
         long[] actualDistances = nn.getDistances();
         Map[] actualPlaces = nn.getPlaces();
-        assertArrayEquals("Incorrect Distances", expectedDistances, actualDistances);
-        assertArrayEquals("Incorrect Places", expectedPlaces, actualPlaces);
+
+        assertArrayEquals("Incorrect Distances", new long[] {0}, actualDistances);
+        assertArrayEquals("Incorrect Places", singleLocation, actualPlaces);
     }
 
     @Test
-    public void testTwoOptTwoPlace() {
-        Optimizer nn = new NearestNeighbor(new Map[] {csu, boulder}, earthRadiusMiles);
+    public void testTwoOpt() {
+        Optimizer nn = new TwoOpt(locations, earthRadiusMiles);
 
-        long [] expectedDistances = {700,700};
-        Map[]  expectedPlaces = new Map[] {csu, boulder};
+        long[] expectedDistances = {202, 248, 74, 163, 16};
+        Map[] expectedLocations = { getLocation("Brighton", "39.87", "-104.33"),
+                                    getLocation("Springfield", "37.3", "-102.54"),
+                                    getLocation("Pagosa Springs", "37.2", "-107.05"),
+                                    getLocation("Alamosa", "37.57", "-105.79"),
+                                    getLocation("Littleton", "39.64", "-104.33")};
 
         long[] actualDistances = nn.getDistances();
         Map[] actualPlaces = nn.getPlaces();
-        assertArrayEquals("Incorrect Places", expectedPlaces, actualPlaces);
-        assertArrayEquals("Incorrect Distances", expectedDistances, actualDistances);
-    }
 
+        assertArrayEquals("Incorrect Distances", expectedDistances, actualDistances);
+        assertArrayEquals("Incorrect Places", expectedLocations, actualPlaces);
+    }
 }

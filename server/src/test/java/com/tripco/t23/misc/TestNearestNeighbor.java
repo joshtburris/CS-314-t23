@@ -3,53 +3,60 @@ package com.tripco.t23.misc;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertArrayEquals;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertArrayEquals;
-
-
 public class TestNearestNeighbor {
-    private Map<String, Object> csu, boulder;
-    private final int version = 4;
+    private Map[] singleLocation;
+    private Map[] locations;
+    private final int version = 5;
     private final double earthRadiusMiles = 3958;
 
+    private static Map<String, Object> getLocation(String name, String lat, String lon) {
+        Map<String, Object> loc = new HashMap<>();
+        loc.put("name", name);
+        loc.put("latitude", lat);
+        loc.put("longitude", lon);
+        return loc;
+    }
 
     @Before
     public void createDataForTestCases() {
-        csu = new HashMap<>();
-        csu.put("latitude", "40.576179");
-        csu.put("longitude", "-105.080773");
-        csu.put("name", "Oval, Colorado State University, Fort Collins, Colorado, USA");
-        boulder = new HashMap<>();
-        boulder.put("latitude", "40.0150");
-        boulder.put("longitude", "-105.2705");
-        boulder.put("name", "Boulder");
+        singleLocation = new Map[] {getLocation("Brighton", "39.87", "-104.33")};
+        locations = new Map[] { getLocation("Brighton", "39.87", "-104.33"),
+                                getLocation("Alamosa", "37.57", "-105.79"),
+                                getLocation("Littleton", "39.64", "-104.33"),
+                                getLocation("Pagosa Springs", "37.2", "-107.05"),
+                                getLocation("Springfield", "37.3", "-102.54")};
     }
 
     @Test
     public void testNNSinglePlace() {
-        Optimizer nn = new NearestNeighbor(new Map[]{csu}, earthRadiusMiles);
-
-        long [] expectedDistances = {0};
-        Map[]  expectedPlaces = new Map[]{csu};
+        Optimizer nn = new NearestNeighbor(singleLocation, earthRadiusMiles);
 
         long[] actualDistances = nn.getDistances();
         Map[] actualPlaces = nn.getPlaces();
-        assertArrayEquals("Incorrect Distances", expectedDistances, actualDistances);
-        assertArrayEquals("Incorrect Places", expectedPlaces, actualPlaces);
+
+        assertArrayEquals("Incorrect Distances", new long[] {0}, actualDistances);
+        assertArrayEquals("Incorrect Places", singleLocation, actualPlaces);
     }
 
     @Test
-    public void testNNTwoPlace() {
-        Optimizer nn = new NearestNeighbor(new Map[]{csu, boulder}, earthRadiusMiles);
+    public void testNN() {
+        Optimizer nn = new NearestNeighbor(locations, earthRadiusMiles);
 
-        long [] expectedDistances = {40,40};
-        Map[]  expectedPlaces = new Map[]{csu, boulder};
+        long[] expectedDistances = {202, 179, 74, 224, 16};
+        Map[] expectedLocations = { getLocation("Brighton", "39.87", "-104.33"),
+                                    getLocation("Springfield", "37.3", "-102.54"),
+                                    getLocation("Alamosa", "37.57", "-105.79"),
+                                    getLocation("Pagosa Springs", "37.2", "-107.05"),
+                                    getLocation("Littleton", "39.64", "-104.33")};
 
         long[] actualDistances = nn.getDistances();
         Map[] actualPlaces = nn.getPlaces();
-        assertArrayEquals("Incorrect Places", expectedPlaces, actualPlaces);
+
         assertArrayEquals("Incorrect Distances", expectedDistances, actualDistances);
+        assertArrayEquals("Incorrect Places", expectedLocations, actualPlaces);
     }
 }

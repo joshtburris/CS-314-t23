@@ -91,11 +91,11 @@ export default class ItineraryTable extends Component {
         }
         let key = this.props.itineraryPlan.places[index].id;
         let tag = 'editTable'+index;
-        markup.push(<td><div style={{width:'200px'}}><Button id={tag} type='submit' color="link" onClick={()=>{this.removeLocation(index);}} > <b>X</b> </Button>
+        markup.push(<td><div style={{width:'200px'}}><Button id={tag} type='submit' color="link" onClick={()=>{this.removeLocation(index, key);}} > <b>X</b> </Button>
             <Button id={tag} type='submit' color="link" size="lg" onClick={() => {this.rearrange(index, 1);}}> <b>↑</b> </Button>
             <Button id={tag} type='submit' color="link" size="lg" onClick={() => {this.rearrange(index, 0);}}> <b>↓</b> </Button>
             <Button id={tag} type='submit' color="link" size="lg" onClick={() => {this.moveTop(index);}}> <b>↑↑</b> </Button>
-            <CustomInput id={tag+"Marker"} checked={this.props.itineraryPlan.markers[key]} type="checkbox" label="Show Marker" onClick={() => {this.showMarkerPerLocation(index);}} />
+            <CustomInput id={tag+"Marker"} checked={this.props.itineraryPlan.markers[key]} type="checkbox" label="Show Marker" onClick={() => {this.showMarkerPerLocation(key);}} />
         </div></td>);
         return(markup);
     }
@@ -123,7 +123,7 @@ export default class ItineraryTable extends Component {
     }
 
     updateAndValidateNameInput(target) {
-        if (this.validateName(target.value)) {
+        if (Parsing.isNameValid(target.value)) {
             this.setState({
                 name: target.value
             });
@@ -131,10 +131,6 @@ export default class ItineraryTable extends Component {
         } else {
             target.style.borderColor = "red";
         }
-    }
-
-    validateName(name) {
-        return Parsing.matchExact(/[A-Za-z\\ ]+/, name);
     }
 
     updateAndValidateCoordinateInput(target) {
@@ -166,7 +162,7 @@ export default class ItineraryTable extends Component {
     }
 
     checkLocationInput(name, lat, lon) {
-        if (    Parsing.matchExact(/[A-Za-z\\ ]+/, name)
+        if (    Parsing.isNameValid(name)
             &&  Parsing.validateCoordinates(lat+" "+lon))
             return true;
         return false;
@@ -184,11 +180,17 @@ export default class ItineraryTable extends Component {
         return markup;
     }
 
-    removeLocation(index) {
-        let places = [];
+    removeLocation(index, key) {
+        let itin = {}, places = [], markers = {};
+        Object.assign(itin, this.props.itineraryPlan);
         Object.assign(places, this.props.itineraryPlan.places);
+        Object.assign(markers, this.props.itineraryPlan.markers);
         places.splice(index, 1);
-        this.props.updateStateVar('itineraryPlan', 'places', places);
+        delete markers[key];
+
+        itin["places"] = places;
+        itin["markers"] = markers;
+        this.props.setStateVar('itineraryPlan', itin);
     }
 
     //Function that moves an index in the itinerary up or down by one
@@ -239,13 +241,12 @@ export default class ItineraryTable extends Component {
         this.props.updateStateVar('itineraryPlan', 'places', copyPlaces);
     }
 
-    showMarkerPerLocation(index) {
+    showMarkerPerLocation(key) {
         let copyMarkers = {};
-        let key = this.props.itineraryPlan.places[index].id;
-        let copyMValues = Object.values(this.props.itineraryPlan.markers);
         Object.assign(copyMarkers, this.props.itineraryPlan.markers);
 
-        copyMarkers[key] = !copyMValues[index];
+        copyMarkers[key] = !copyMarkers[key];
         this.props.updateStateVar('itineraryPlan', 'markers', copyMarkers);
     }
+
 }

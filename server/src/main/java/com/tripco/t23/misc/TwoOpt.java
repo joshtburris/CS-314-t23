@@ -15,8 +15,7 @@ public class TwoOpt extends Optimizer {
         this.places = places;
         ordPlaces = new Map[places.length];
         ordDistances = new long[places.length];
-        if (places.length == 0)
-            return;
+        if (places.length == 0) return;
         generateDistances(earthRadius);
         int[] route = circleToStart(findOptimalRoute());
         order(route);

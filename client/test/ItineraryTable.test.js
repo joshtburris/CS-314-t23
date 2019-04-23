@@ -34,18 +34,22 @@ function testRemoveLocationButton() {
         settings={startProperties.settings}
         headerOptions={startProperties.headerOptions}
         itineraryPlan={startProperties.itineraryPlan}
-        updateStateVar={update}/>
+        setStateVar={update}
+        />
     );
 
     it.find('#editTable1').at(0).simulate('click');
-    let expected = [    {id: "do", name: "does", latitude: -12, longitude: -12},
-                        {id: "te", name: "test", latitude: 4, longitude: 2},
-                        {id: "wo", name: "work", latitude: 11, longitude: -2.5}];
+    let expected = {
+        places: [   {id: "do", name: "does", latitude: -12, longitude: -12},
+                    {id: "te", name: "test", latitude: 4, longitude: 2},
+                    {id: "wo", name: "work", latitude: 11, longitude: -2.5}],
+        distances:[14, 24, 6, 41],
+        markers: {do: false, te: false, wo: false}
+    };
 
     expect(update.mock.calls.length).toBe(1);
     expect(update.mock.calls[0][0]).toEqual("itineraryPlan");
-    expect(update.mock.calls[0][1]).toEqual("places");
-    expect(update.mock.calls[0][2]).toEqual(expected);
+    expect(update.mock.calls[0][1]).toEqual(expected);
 }
 
 test("Testing removeLocation function of itineraryTable", testRemoveLocationButton);
@@ -116,7 +120,7 @@ function testIndividualMarker(){
     ));
 
     let instance = itinerary.instance();
-    instance.showMarkerPerLocation(1);
+    instance.showMarkerPerLocation("th");
     expect(arrfunction.mock.calls.length).toEqual(1);
     expect(arrfunction.mock.calls[0][0]).toEqual("itineraryPlan");
     expect(arrfunction.mock.calls[0][1]).toEqual("markers");
