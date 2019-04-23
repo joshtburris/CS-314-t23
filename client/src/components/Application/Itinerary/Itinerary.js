@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import {CustomInput, Alert, Container, Row, Col, Button, Dropdown, DropdownMenu, DropdownToggle, DropdownItem} from 'reactstrap';
+import {Alert, Container, CustomInput, Row, Col, Button, Dropdown, DropdownMenu, DropdownToggle, DropdownItem} from 'reactstrap';
 import ItineraryTable from "./ItineraryTable";
 import Ajv from 'ajv';
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
 import schema from './TIPItinerarySchema';
-import schemaFind from './ItineraryTIPFindSchema';
 import Parsing from '../Parsing'
+import Search from "./Search";
 import Saver from './Saver';
 import Optimizations from './Optimizations';
 import ClassMap from '../ClassMap';
@@ -24,8 +24,6 @@ export default class Itinerary extends Component {
         this.addLocation = this.addLocation.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
         this.setMarkers = this.setMarkers.bind(this);
-        this.updateTipFindLocation = this.updateTipFindLocation.bind(this);
-        this.checkboxOnClick = this.checkboxOnClick.bind(this);
         this.calculateDistances();
         this.toggleSave = this.toggleSave.bind(this);
     }
@@ -54,7 +52,12 @@ export default class Itinerary extends Component {
 
                 </Col> </Row>
                 <Row> <Col xs={12} sm={12} md={12} lg={12} xl={12}>
-                    {this.searchLocationUsingTipFind()}
+                    <Search             updateStateVar={this.props.updateStateVar}
+                                        itineraryPlan={this.props.itineraryPlan}
+                                        settings={this.props.settings}
+                                        createErrorBanner={this.props.createErrorBanner}
+                                        addLocation={this.addLocation}
+                                        serverConfig={this.props.serverConfig}/>
                 </Col> </Row>
             </Container>
         );

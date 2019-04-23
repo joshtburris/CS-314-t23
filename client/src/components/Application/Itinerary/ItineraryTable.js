@@ -35,16 +35,15 @@ export default class ItineraryTable extends Component {
     renderTable() {
         return(
             <Pane header={'Your Itinerary'}>
-                {this.getTableOpts()}
-                <div style={this.getStyle()}> <Table hover>
-                    {this.generateItinerary()}
-                </Table> </div>
-                <thead><b>
-                    Add Location
-                </b></thead>
-                <tbody>
-                    {this.newLocationInput()}
-                </tbody>
+                <div style={this.getStyle()}>
+                    <Table hover>
+                        {this.generateItinerary()}
+                    </Table> </div>
+                    <div>
+                        <b>Add Location</b>
+                        {this.newLocationInput()}
+                    </div>
+
             </Pane>
         );
     }
@@ -140,7 +139,7 @@ export default class ItineraryTable extends Component {
                 else {
                     val = this.props.itineraryPlan.places[index][opt];
                 }
-                markup.push(<td>{val}</td>);
+                markup.push(<td key={"ITable_"+i+headers[i]+legDist}>{val}</td>);
             }
         }
 
