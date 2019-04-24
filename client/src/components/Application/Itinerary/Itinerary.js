@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import {Alert, Container, Row, Col, CustomInput, Button} from 'reactstrap';
+import {Alert, Container, Row, Col, CustomInput, Button, Dropdown, DropdownMenu, DropdownToggle, DropdownItem} from 'reactstrap';
 import {Map, TileLayer, Polyline, Marker, Popup} from "react-leaflet";
 import ItineraryTable from "./ItineraryTable";
 import Ajv from 'ajv';
-import { saveAs } from 'file-saver';
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
 import schema from './TIPItinerarySchema';
@@ -19,12 +18,14 @@ export default class Itinerary extends Component {
             'options': {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit].toString(),
                 optimizations: this.props.options.optimizations},
             errorMessage: null,
+            dropdownOpen: false,
         };
         this.loadFile = this.loadFile.bind(this);
         this.addLocation = this.addLocation.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
         this.setMarkers = this.setMarkers.bind(this);
         this.calculateDistances();
+        this.toggle = this.toggle.bind(this);
     }
 
     componentDidUpdate(prevProps) {
@@ -129,22 +130,28 @@ export default class Itinerary extends Component {
         this.props.updateStateVar('itineraryPlan', 'places', rPlaces);
     }
 
+    //used for dropDown toggle
+    toggle() {
+        this.setState(prevState => ({
+            dropdownOpen: !prevState.dropdownOpen
+        }));
+    }
+
     renderItinerary() {
         return(
             <Pane header={'Save/Upload Your Itinerary'}>
                 <Container>
-                    <Row>
-                        <input type="file" name="" id="loadButton" onChange={this.loadFile} />
-                        <form>
-                            <input type="submit" value="Save as JSON" id="saveButtonJSON" color="link" onClick={(e) => this.saveFile(e, "json")} />
-                        </form>
-                        <form>
-                            <input type="submit" value="Save as CSV" id="saveButtonCSV" color="link" onClick={(e) => this.saveFile(e, "csv")} />
-                        </form>
-                        <form>
-                             <input type="submit" value="Save as SVG" id="saveButtonSVG" color="link" onClick={(e) => this.saveFile(e, "svg")} />
-                        </form>
-                    </Row>
+                    <input type="file" name="" id="loadButton" onChange={this.loadFile} />
+                    <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                        <DropdownToggle caret>
+                            Save File
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem id="saveJSON" onClick={(e) => this.saveFile(e, "json")}>JSON</DropdownItem>
+                            <DropdownItem id="saveCSV" onClick={(e) => this.saveFile(e, "csv")}>CSV</DropdownItem>
+                            <DropdownItem id="saveSVG" onClick={(e) => this.saveFile(e, "svg")}>SVG</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
                 </Container>
             </Pane>
         );
