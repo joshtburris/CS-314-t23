@@ -1,9 +1,9 @@
-# Sprint 5 - *your team number* - *your team name*
+# Sprint 5 - *23* - *Byte Me*
 
 ## Goal
 
 ### A Beautiful User Experience!
-### Sprint Leader: *firstname lastname*
+### Sprint Leader: *Joshua Burris*
 
 ## Definition of Done
 
@@ -45,25 +45,29 @@ This sprint will complete the following Epics.
 * *#331 Make the application easier to use:*
   * Get feedback from other teams and people outside the class on your user experience.
   * Make improvements in your user experience so someone not familiar with it can use it with no help from team members.
-* *#332 Reduce technical debt:*
+* *#332 Reduce technical debt*
+* *#340 Fix bugs*
 
-***(Include a discussion of you plan with key diagrams here and remove this!)***
+![client](https://github.com/csucs314s19/t23/blob/master/sprints/sprint4_resources/clientDiagram.svg)
+![server](https://github.com/csucs314s19/t23/blob/master/sprints/sprint4_resources/server.svg)
+![itinerary](https://github.com/csucs314s19/t23/blob/master/sprints/sprint4_resources/itinerary.svg)
 
 
 ## Metrics
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *2* | *0* |
-| Tasks |  *5*   | *0* | 
-| Story Points |  *9*  | *0* | 
+| Epics | *3* | *0* |
+| Tasks |  *19*   | *3* | 
+| Story Points |  *30*  | *5* | 
 
 
 ## Scrums
 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
-| *4/22/2019* | *none* | *#104, #99* | *none* | 
+| *4/22/2019* | *none* | *#104, #339, #345, #346* | *none* | 
+| *4/24/2019* | *#250, #269, #345* | *#104, #330, #346* | *none* |
 
 
 ## Review (focus on solution and technology)
