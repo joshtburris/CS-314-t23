@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Alert, Container, Row, Col, CustomInput, Button, Input, Form, Table,
+import {Alert, Container, Row, Col, Button, Input, Form, Table,
     UncontrolledButtonDropdown, DropdownToggle, DropdownMenu , DropdownItem} from 'reactstrap';
 import Ajv from 'ajv';
 import schemaFind from './ItineraryTIPFindSchema';
@@ -19,7 +19,7 @@ export default class Itinerary extends Component {
     render(){
         return(
             <Pane header={'Search'}>
-                <Container> <Row>
+                <Container> { this.state.errorMessage } <Row>
                     <Col>
                         <div style={{width: '110px'}}>Insert keyword:</div>
                         {this.createInputFields('match', 'Search...')}
@@ -53,7 +53,6 @@ export default class Itinerary extends Component {
                 <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('airport'); this.checkState();}} active={this.state.narrow[0].values.includes('airport')}>Airport</DropdownItem>
                 <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('heliport');this.checkState();}} active={this.state.narrow[0].values.includes('heliport')}>Heliport</DropdownItem>
                 <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('balloonport');this.checkState();}} active={this.state.narrow[0].values.includes('balloonport')}>Balloonport</DropdownItem>
-
             </DropdownMenu>
         );
     }
@@ -101,7 +100,7 @@ export default class Itinerary extends Component {
         if(narrow.length === 1 && narrow[0].values.indexOf('none') > -1){
             narrow[0].values = ["airport", "heliport", "balloonport"]
         }
-        if(keyword === "" || limit < 0){
+        if(keyword.length === 0){
             this.setState({
                 errorMessage: <Alert className='bg-csu-canyon text-white font-weight-extrabold'>Error(0): Invalid input
                     found. Please enter a valid keyword for search.</Alert>
@@ -115,7 +114,7 @@ export default class Itinerary extends Component {
     }
 
     tipFindLocation(keyword, limit, narrow){
-        console.log(keyword, Number(limit), narrow);
+        if(keyword.length === 0) return;
         const tipFindConfigRequest = {
             'requestType'    : 'find',
             'requestVersion' : 4,
@@ -145,7 +144,6 @@ export default class Itinerary extends Component {
                         errorMessage: null
                     });
                     this.props.updateStateVar('itineraryPlan', 'placesFound', response.body.places);
-                    //this.props.updateStateVar('itineraryPlan', 'distances', response.body.distances);
                 }
                 else {
                     this.setState({

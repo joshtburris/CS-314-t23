@@ -85,11 +85,6 @@ export default class Itinerary extends Component {
     }
 
     addLocation(name, latitude, longitude) {
-        for(let temp in this.props.itineraryPlan.places){
-            if(this.props.itineraryPlan.places[temp].name === name){
-                return;
-            }
-        }
         name = name.trim();
         if (this.checkLocationInput(name, latitude, longitude)) {
             let newPlan = {};

@@ -59,9 +59,15 @@ function testAddLocation() {
         createErrorBanner={error}/>
     ));
 
-    let newItin = emptyItinerary;
+    let newItin = {};
+    Object.assign(newItin, emptyItinerary);
+    console.log(emptyItinerary);
     newItin["places"].push({id: "0", name: "name", latitude: "50.2", longitude: "80.4"});
     newItin["markers"]["0"] = false;
+    console.log(newItin);
+    console.log(emptyItinerary);
+    itinerary.instance().addLocation("name", "50.2", "80.4");
+    console.log(emptyItinerary);
     itinerary.instance().addLocation("name", "50.2", "80.4");
     expect(error.mock.calls.length).toEqual(0);
     expect(updatedState.mock.calls.length).toEqual(1);
