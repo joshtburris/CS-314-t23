@@ -83,12 +83,14 @@ export default class Application extends Component {
         }
     }
 
+    //Use to overwrite a sub-field of a stateVar
     updateStateVar(stateVar, option, value) {
         let copy = Object.assign({}, this.state[stateVar]);
         copy[option] = value;
         this.setState({[stateVar]: copy});
     }
 
+    //Use to overwrite an entire stateVar
     setStateVar(stateVar, value) {
         this.setState({[stateVar]: value});
     }

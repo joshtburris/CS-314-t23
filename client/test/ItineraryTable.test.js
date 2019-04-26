@@ -43,13 +43,12 @@ function testRemoveLocationButton() {
         places: [   {id: "do", name: "does", latitude: -12, longitude: -12},
                     {id: "te", name: "test", latitude: 4, longitude: 2},
                     {id: "wo", name: "work", latitude: 11, longitude: -2.5}],
-        distances:[14, 24, 6, 41],
+        distances:[],
         markers: {do: false, te: false, wo: false}
     };
 
     expect(update.mock.calls.length).toBe(1);
-    expect(update.mock.calls[0][0]).toEqual("itineraryPlan");
-    expect(update.mock.calls[0][1]).toEqual(expected);
+    expect(update.mock.calls[0]).toEqual(["itineraryPlan", expected]);
 }
 
 test("Testing removeLocation function of itineraryTable", testRemoveLocationButton);
@@ -62,21 +61,22 @@ function testRearrange() {
             settings={startProperties.settings}
             headerOptions={startProperties.headerOptions}
             itineraryPlan={startProperties.itineraryPlan}
-            updateStateVar={arrfunction}/>
+            setStateVar={arrfunction}/>
     ));
 
     let instance = itinerary.instance();
     instance.rearrange(1, 1);
 
-    expect(arrfunction.mock.calls.length).toEqual(1);
-    expect(arrfunction.mock.calls[0][0]).toEqual("itineraryPlan");
-    expect(arrfunction.mock.calls[0][1]).toEqual("places");
+    let itin = {};
+    Object.assign(itin, startProperties.itineraryPlan);
+    itin.distances = [];
+    itin.places = [   {id: "th", name: "this", latitude: -8.5, longitude: 4},
+        {id: "do", name: "does", latitude: -12, longitude: -12},
+        {id: "te", name: "test", latitude: 4, longitude: 2},
+        {id: "wo", name: "work", latitude: 11, longitude: -2.5}];
 
-    let arrPlaces = [   {id: "th", name: "this", latitude: -8.5, longitude: 4},
-                        {id: "do", name: "does", latitude: -12, longitude: -12},
-                        {id: "te", name: "test", latitude: 4, longitude: 2},
-                        {id: "wo", name: "work", latitude: 11, longitude: -2.5}];
-    expect(arrfunction.mock.calls[0][2]).toEqual(arrPlaces);
+    expect(arrfunction.mock.calls.length).toEqual(1);
+    expect(arrfunction.mock.calls[0]).toEqual(["itineraryPlan", itin]);
 }
 
 test("Testing rearrange function of itineraryTable", testRearrange);
@@ -89,21 +89,22 @@ function testNewStart() {
             settings={startProperties.settings}
             headerOptions={startProperties.headerOptions}
             itineraryPlan={startProperties.itineraryPlan}
-            updateStateVar={arrfunction}/>
+            setStateVar={arrfunction}/>
     ));
 
     let instance = itinerary.instance();
     instance.moveTop(2);
 
-    expect(arrfunction.mock.calls.length).toEqual(1);
-    expect(arrfunction.mock.calls[0][0]).toEqual("itineraryPlan");
-    expect(arrfunction.mock.calls[0][1]).toEqual("places");
+    let expected = {};
+    Object.assign(expected, startProperties.itineraryPlan);
+    expected.distances = [];
+    expected.places = [   {id: "te", name: "test", latitude: 4, longitude: 2},
+        {id: "do", name: "does", latitude: -12, longitude: -12},
+        {id: "th", name: "this", latitude: -8.5, longitude: 4},
+        {id: "wo", name: "work", latitude: 11, longitude: -2.5}];
 
-    let moveTopPlaces = [   {id: "te", name: "test", latitude: 4, longitude: 2},
-                        {id: "do", name: "does", latitude: -12, longitude: -12},
-                        {id: "th", name: "this", latitude: -8.5, longitude: 4},
-                        {id: "wo", name: "work", latitude: 11, longitude: -2.5}];
-    expect(arrfunction.mock.calls[0][2]).toEqual(moveTopPlaces);
+    expect(arrfunction.mock.calls.length).toEqual(1);
+    expect(arrfunction.mock.calls[0]).toEqual(["itineraryPlan", expected]);
 }
 
 test("Testing moveTop function of itineraryTable", testNewStart);

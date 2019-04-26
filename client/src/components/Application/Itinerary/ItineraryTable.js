@@ -77,6 +77,9 @@ export default class ItineraryTable extends Component {
 
     getLine(legDist, tDist, index) {
         let markup = [];
+        if (isNaN(tDist)){
+            tDist ='';
+        }
         let headers = [ this.props.itineraryPlan.places[index].name,
                         legDist,
                         tDist,
@@ -190,6 +193,7 @@ export default class ItineraryTable extends Component {
 
         itin["places"] = places;
         itin["markers"] = markers;
+        itin["distances"] = [];
         this.props.setStateVar('itineraryPlan', itin);
     }
 
@@ -198,8 +202,11 @@ export default class ItineraryTable extends Component {
     //direction: 0 for down, 1 for up
     rearrange(index, direction) {
         let itinLen = this.props.itineraryPlan.places.length;
-        let copyPlaces = [];
-        Object.assign(copyPlaces, this.props.itineraryPlan.places);
+        let copyItin = {};
+        Object.assign(copyItin, this.props.itineraryPlan);
+        //invalidate distances
+        copyItin.distances = [];
+        let copyPlaces = Object.assign([], copyItin.places);
 
         if (direction == 0) {
             //swap the selected index and the one below it
@@ -220,15 +227,19 @@ export default class ItineraryTable extends Component {
                 copyPlaces[index] = temp;
             }
         }
+        copyItin.places = copyPlaces;
         //put new array into the proper area
-        this.props.updateStateVar('itineraryPlan', 'places', copyPlaces);
+        this.props.setStateVar('itineraryPlan', copyItin);
     }
 
     //Function that moves the selected index to the top of the table
     //index: the index of the item to be moved
     moveTop(index) {
-        let copyPlaces = [];
-        Object.assign(copyPlaces, this.props.itineraryPlan.places);
+        let copyItin = {};
+        Object.assign(copyItin, this.props.itineraryPlan);
+        //invalidate distances
+        copyItin.distances = [];
+        let copyPlaces = copyItin.places;
         let temp = copyPlaces[index];
 
         //copy objects from 0-index down by 1, then replace index 0
@@ -238,7 +249,7 @@ export default class ItineraryTable extends Component {
         copyPlaces[0] = temp;
 
         //put new array into the proper area
-        this.props.updateStateVar('itineraryPlan', 'places', copyPlaces);
+        this.props.setStateVar('itineraryPlan', copyItin);
     }
 
     showMarkerPerLocation(key) {

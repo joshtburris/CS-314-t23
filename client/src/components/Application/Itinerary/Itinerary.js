@@ -28,39 +28,19 @@ export default class Itinerary extends Component {
         this.toggle = this.toggle.bind(this);
     }
 
-    componentDidUpdate(prevProps) {
-        //check if units have changed
-        if ((prevProps.activeUnit !== this.props.activeUnit)
-            || (prevProps.optimizations !== this.props.optimizations)) {
-            this.calculateDistances();
-            return;
-        }
-        //check if places has changed
-        let len = this.props.itineraryPlan.places.length,
-            prevLen = prevProps.itineraryPlan.places.length;
-        if (prevLen !== len) {
-            this.calculateDistances();
-            return;
-        }
-        for (let i = 0; i < prevLen && i < len; i++) {
-            if (prevProps.itineraryPlan.places[i].name !== this.props.itineraryPlan.places[i].name) { //this assumes all places have a name
-                this.calculateDistances();
-                return;
-            }
-        }
-        //nothing has changed
-    }
-
     render() {
         return(
             <Container>
                 { this.state.errorMessage }
-                <Row> <Col xs={12} sm={12} md={7} lg={8} xl={8}>
+                <Row>
+                    <Col xs={12} sm={12} md={7} lg={8} xl={8}>
                     {this.renderMap()}
-                </Col> <Col xs={12} sm={12} md={5} lg={4} xl={4}>
+                    </Col>
+                    <Col xs={12} sm={12} md={5} lg={4} xl={4}>
                     {this.renderItinerary()}
-                    {this.checkList()}
-                </Col> </Row>
+                    {this.tableOptions()}
+                    </Col>
+                </Row>
                 <Row> <Col xl={12}>
                     <ItineraryTable     itineraryPlan={this.props.itineraryPlan}
                                         headerOptions={this.props.headerOptions}
@@ -73,10 +53,15 @@ export default class Itinerary extends Component {
         );
     }
 
-    checkList() {
+    tableOptions() {
         return(
             <Pane header={'Header Options'}>
-                {<Container>{this.getCheckbox()}</Container>}
+                {<Container>
+                    {this.getCheckbox()}
+                    <Button type="submit" value="Reverse" id="reverseButton" onClick={(e) => this.reverseItinerary(e)}>Reverse</Button>
+                    <Button type="submit" value="ToggleAll" id="markerToggleAll" onClick={(e) => this.allMarkerToggle()}>Markers Toggle</Button>
+                    <Button type="submit" value="Update" id="update" onClick={(e) => this.calculateDistances()}>Update Distances</Button>
+                </Container>}
             </Pane>
         );
     }
@@ -88,14 +73,14 @@ export default class Itinerary extends Component {
         for (let detail in this.props.headerOptions) {
             list.push(<CustomInput
                 type="checkbox"
-                id={detail+i}
+                id={detail + i}
                 checked={this.props.headerOptions[detail]}
                 label={labels[i]}
-                onClick={() => {this.toggleCheckbox(detail, (!this.props.headerOptions[detail]))}}/>);
+                onClick={() => {
+                    this.toggleCheckbox(detail, (!this.props.headerOptions[detail]))
+                }}/>);
             i++;
         }
-        list.push(<Button type="submit" value="Reverse" id="reverseButton" onClick={(e) => this.reverseItinerary(e)}>Reverse</Button>);
-        list.push(<Button type="submit" value="ToggleAll" id="markerToggleAll" onClick={(e) => this.allMarkerToggle()}>Markers On/Off</Button>);
         return(list);
     }
 
@@ -124,10 +109,13 @@ export default class Itinerary extends Component {
     }
 
     reverseItinerary() {
+        let itin = {};
         let rPlaces = [];
+        Object.assign(itin, this.props.itineraryPlan);
         Object.assign(rPlaces, this.props.itineraryPlan.places);
-        rPlaces.reverse();
-        this.props.updateStateVar('itineraryPlan', 'places', rPlaces);
+        itin.places = rPlaces.reverse();
+        itin.distances = [];
+        this.props.setStateVar('itineraryPlan', itin);
     }
 
     //used for dropDown toggle

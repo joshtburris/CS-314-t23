@@ -138,26 +138,25 @@ function testUploadButton() {
 test("Testing upload button in itinerary", testUploadButton);
 
 function testReverseButton(){
-    let revfunction = jest.fn();
+    let updateState = jest.fn();
     const itinerary = shallow((
         <Itinerary   options={startProperties.options}
                      settings={startProperties.options}
                      itineraryPlan={startProperties.itineraryPlan}
                      headerOptions={startProperties.headerOptions}
-                     updateStateVar={revfunction}/>
+                     setStateVar={updateState}/>
     ));
 
     let e = startProperties.itineraryPlan.places;
     simulateReverseButtonPress(e, itinerary);
 
-    expect(revfunction.mock.calls.length).toEqual(1);
-    expect(revfunction.mock.calls[0][0]).toEqual("itineraryPlan");
-    expect(revfunction.mock.calls[0][1]).toEqual("places");
+    let revPlaces = {};
+    Object.assign(revPlaces, startProperties.itineraryPlan);
+    revPlaces.places.reverse();
+    revPlaces.distances = [];
 
-    let revPlaces = [];
-    Object.assign(revPlaces, startProperties.itineraryPlan.places);
-    revPlaces.reverse();
-    expect(revfunction.mock.calls[0][2]).toEqual(revPlaces);
+    expect(updateState.mock.calls.length).toEqual(1);
+    expect(updateState.mock.calls[0]).toEqual(["itineraryPlan", revPlaces]);
 }
 
 function simulateReverseButtonPress(e, reactWrapper) {
