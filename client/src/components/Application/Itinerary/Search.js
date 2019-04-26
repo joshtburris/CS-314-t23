@@ -24,10 +24,7 @@ export default class Itinerary extends Component {
                         <div style={{width: '110px'}}>Insert keyword:</div>
                         {this.createInputFields('match', 'Search...')}
                     </Col> <Col>
-                    <div style={{width: '100px'}}>Insert Limit:</div>
-                    {this.createInputFields('limit', 'i.e. 10')}
-                </Col> <Col>
-                    <div style={{width: '100px'}}>Input Filters: </div>
+                    <div style={{width: '110px'}}>Choose Filters: </div>
                     <UncontrolledButtonDropdown>
                         <DropdownToggle caret color="primary"> Filters </DropdownToggle>
                         {this.getDropdownItems()}
@@ -38,8 +35,6 @@ export default class Itinerary extends Component {
                         <Button outline  color="primary" > <b>Search</b> </Button>
                     </Form>
                 </Col></Row></Container>
-                {/*console.log(this.props.itineraryPlan)*/}
-                {/*console.log(this.state.filter)*/}
                 <Container><Row>
                     {this.TipFindTable()}
                 </Row> </Container>
@@ -61,9 +56,7 @@ export default class Itinerary extends Component {
         const index = this.state.narrow[0].values.indexOf(str);
         if (index < 0) {
             this.state.narrow[0].values.push(str);
-            this.state.narrow[0].values.push(str);
         } else {
-            this.state.narrow[0].values.splice(index, 1);
             this.state.narrow[0].values.splice(index, 1);
         }
         if(this.state.narrow[0].values.indexOf('none') > -1) {
@@ -76,9 +69,9 @@ export default class Itinerary extends Component {
     checkState(){
         if(this.state.narrow[0].values.length === 0){
             this.state.narrow[0].values.push("none");
+            this.setState({ narrow: [{name: "type", values: [...this.state.narrow[0].values]}] });
+            this.updateFindPlaces("narrow", this.state.narrow);
         }
-        this.setState({ narrow: [{name: "type", values: [...this.state.narrow[0].values]}] });
-        this.updateFindPlaces("narrow", this.state.narrow);
     }
 
     createInputFields(stateVar, placeHolder){

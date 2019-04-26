@@ -22,7 +22,7 @@ export default class ItineraryTable extends Component {
     }
 
     getStyle(){
-        if (this.props.places.length >= 3){
+        if (this.props.itineraryPlan.places.length >= 3){
             return({height: '400px', overflowX: 'scroll', overflowY: 'scroll'});
         }
         return({overflowX: 'scroll'});
@@ -86,7 +86,7 @@ export default class ItineraryTable extends Component {
         let myItinerary = [];
         myItinerary.push(<thead key={"itineraryHeader"}><tr key={"HeaderRow"}>{this.itineraryHeader()}</tr></thead>);
         if (this.props.itineraryPlan.places.length > 0) {
-            myItinerary.push(<tbody key={"itineraryBody"}>{this.getItineraryRows()}</tbody>);
+            myItinerary.push(<tbody key={"itineraryPlanBody"}>{this.getItineraryRows()}</tbody>);
         }
         return myItinerary;
     }
@@ -106,10 +106,8 @@ export default class ItineraryTable extends Component {
         dist = dist + this.props.itineraryPlan.distances[0];
         for (let place in this.props.itineraryPlan.places) {
             if (place == 0) continue;
-            list.push(<tr key={"TableRow_" + place-1}>{this.getLine(this.props.itineraryPlan.distances[place-1],
-                                            dist,
-                                            index+1)}</tr>);
-            list.push(<tr>{this.getLine(this.props.itineraryPlan.distances[place-1], dist, index+1)}</tr>);
+            list.push(<tr key={"TableRow_" + (Number(place)-1)}>
+                {this.getLine(this.props.itineraryPlan.distances[place-1], dist, index+1)}</tr>);
             dist = dist + this.props.itineraryPlan.distances[place];
             ++index;
         }
@@ -145,11 +143,12 @@ export default class ItineraryTable extends Component {
 
         let key = this.props.itineraryPlan.places[index].id;
         let tag = 'editTable'+index;
-        markup.push(<td><div style={{width:'200px'}}><Button id={tag} type='submit' color="link" onClick={()=>{this.removeLocation(index, key);}} > <b>X</b> </Button>
+        markup.push(<td key={"ITable_"+i+1+"options"}><div style={{width:'200px'}}>
+            <Button id={tag} type='submit' color="link" onClick={()=>{this.removeLocation(index, key);}} > <b>X</b> </Button>
             <Button id={tag} type='submit' color="link" size="lg" onClick={() => {this.rearrange(index, 1);}}> <b>↑</b> </Button>
             <Button id={tag} type='submit' color="link" size="lg" onClick={() => {this.rearrange(index, 0);}}> <b>↓</b> </Button>
             <Button id={tag} type='submit' color="link" size="lg" onClick={() => {this.moveTop(index);}}> <b>↑↑</b> </Button>
-            <CustomInput id={tag+"Marker"} checked={this.props.itineraryPlan.markers[key]} type="checkbox" label="Show Marker" onClick={() => {this.showMarkerPerLocation(key);}} />
+            <CustomInput id={tag+'marker'} checked={this.props.itineraryPlan.markers[key]} type="checkbox" label="Show Marker" onChange={() => {this.showMarkerPerLocation(key);}} />
         </div></td>);
         return(markup);
     }
