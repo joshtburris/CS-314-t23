@@ -4,7 +4,6 @@ export default class Saver{
     //prevent object from being created
 
     static save(plan, fileType){
-        console.log("saving", fileType);
         switch (fileType) {
             case "json":
                 Saver.saveJSON(plan);
@@ -29,9 +28,7 @@ export default class Saver{
     static saveCSV(places){
         //inefficient way of generating     file consider changing
         let CSV = "";
-        console.log("places: ", places);
         for(let i in places){
-            console.log("PLACE", places[i]);
             for(let attribute in places[i]){
                 CSV = CSV + places[i][attribute].toString() + ", ";
             }

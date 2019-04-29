@@ -8,8 +8,7 @@ import Pane from "../Pane";
 import schema from './TIPItinerarySchema';
 import Parsing from '../Parsing'
 import Saver from './Saver'
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import ClassMap from '../ClassMap';
 
 export default class Itinerary extends Component {
     constructor(props) {
@@ -23,7 +22,6 @@ export default class Itinerary extends Component {
         this.loadFile = this.loadFile.bind(this);
         this.addLocation = this.addLocation.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
-        this.setMarkers = this.setMarkers.bind(this);
         this.calculateDistances();
         this.toggle = this.toggle.bind(this);
     }
@@ -71,14 +69,15 @@ export default class Itinerary extends Component {
         let i = 0;
         let labels = ['Name', 'Leg Distance', 'Total Distance', 'Latitude', 'Longitude'];
         for (let detail in this.props.headerOptions) {
-            list.push(<CustomInput
-                type="checkbox"
-                id={detail + i}
-                checked={this.props.headerOptions[detail]}
-                label={labels[i]}
-                onClick={() => {
-                    this.toggleCheckbox(detail, (!this.props.headerOptions[detail]))
-                }}/>);
+            list.push(
+                <CustomInput
+                    type="checkbox"
+                    id={detail + i}
+                    checked={this.props.headerOptions[detail]}
+                    label={labels[i]}
+                    onClick={() => {this.toggleCheckbox(detail, (!this.props.headerOptions[detail]))}}
+                />
+            );
             i++;
         }
         return(list);
@@ -91,7 +90,6 @@ export default class Itinerary extends Component {
     addLocation(name, latitude, longitude) {
         name = name.trim();
         if (this.checkLocationInput(name, latitude, longitude)) {
-            console.log("Location added.");
             let newPlan = {};
             let nextID = this.props.getNextPlaceID();
             Object.assign(newPlan, this.props.itineraryPlan);
@@ -148,86 +146,13 @@ export default class Itinerary extends Component {
     renderMap() {
         return (
             <Pane header={'Itinerary'}>
-                {this.renderLeafletMap()}
+                <ClassMap   options={this.state.planOptions}
+                            places={this.props.itineraryPlan.places}
+                            markers={this.props.itineraryPlan.markers}
+                            headerOptions={this.props.headerOptions}
+                            setMarkers={this.setMarkers}/>
             </Pane>
         );
-    }
-
-    renderLeafletMap() {
-        // initial map placement can use either of these approaches:
-        // 1: bounds={this.coloradoGeographicBoundaries()}
-        // 2: center={this.csuOvalGeographicCoordinates()} zoom={10}
-
-        return (
-            <Map bounds={this.getBounds()}
-                 style={{height: 500, maxwidth: 700}}>
-                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                           attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-                />
-                <Polyline positions = {[this.getLL()]}/>
-                {this.renderMarkers(this.props.itineraryPlan.places)}
-            </Map>
-        )
-    }
-
-    renderMarkers(placeList) {
-        //Extract only true markers
-        let markerList = [];
-        for (let i=  0; i < placeList.length; i++) {
-            if (this.props.itineraryPlan.markers[placeList[i].id]) {
-                markerList.push(placeList[i]);
-            }
-        }
-
-        //Array.map() creates a new array with the results of calling a provided function on every element in the calling array.
-        return markerList.map((markerItem) =>
-            <Marker
-                position={L.latLng(markerItem.latitude, markerItem.longitude)}
-                id={markerItem.id}
-                title={markerItem.name}
-                icon={L.icon({iconUrl: icon, shadowUrl: iconShadow, iconAnchor: [12,40]})}>
-                <Popup className="font-weight-extrabold">
-                    {this.getMarkerInfo(markerItem)}
-                </Popup>
-            </Marker>
-        );
-    }
-
-    getBounds() {
-        if (this.props.itineraryPlan.places.length == 0) {
-            // northwest and southeast Itinerary-Map corners of the state of Colorado
-            return L.latLngBounds(L.latLng(41, -109), L.latLng(37, -102));
-        }
-        if (this.props.itineraryPlan.places.length == 1) {
-            return this.getSingleLoc();
-        }
-        let tLat = [];
-        let tLon = [];
-        for (let place in this.props.itineraryPlan.places) {
-            tLat.push(this.props.itineraryPlan.places[place].latitude);
-            tLon.push(this.props.itineraryPlan.places[place].longitude);
-        }
-        let maxLat = Math.max.apply(null, tLat); let maxLon = Math.max.apply(null, tLon);
-        let minLat = Math.min.apply(null, tLat); let minLon = Math.min.apply(null, tLon);
-
-        return L.latLngBounds(L.latLng(minLat, minLon), L.latLng(maxLat, maxLon));
-    }
-
-    getSingleLoc() {
-        let locLat = parseFloat(this.props.itineraryPlan.places[0].latitude);
-        let locLon = parseFloat(this.props.itineraryPlan.places[0].longitude);
-        return L.latLngBounds(L.latLng(locLat-0.05, locLon-0.05), L.latLng(locLat+0.05, locLon+0.05));
-    }
-
-    getLL() {
-        let LL = [];
-        for (let i in this.props.itineraryPlan.places) {
-            LL.push(L.latLng(parseFloat(this.props.itineraryPlan.places[i].latitude), parseFloat(this.props.itineraryPlan.places[i].longitude)))
-        }
-        if (this.props.itineraryPlan.places[0] != null) {
-            LL.push(L.latLng(parseFloat(this.props.itineraryPlan.places[0].latitude), parseFloat(this.props.itineraryPlan.places[0].longitude)));
-        }
-        return LL
     }
 
     saveFile(event, fileType) {
@@ -299,7 +224,6 @@ export default class Itinerary extends Component {
                     var ajv = new Ajv();
                     var valid = ajv.validate(schema, response.body);
                     if (!valid){
-                        console.log(ajv.errors);
                         this.setState({
                             errorMessage: this.props.createErrorBanner(
                                 "Invalid response from server"
@@ -325,31 +249,17 @@ export default class Itinerary extends Component {
             });
     }
 
-    getMarkerInfo(markerItem) {
-        let mInfo = "";
-        for (let i in markerItem) {
-            if (i !== 'id') {
-                mInfo += i.charAt(0).toUpperCase() + i.slice(1) + ": " + markerItem[i] + " ";
-            }
-        }
-        return mInfo;
-    }
-
-    allMarkerToggle() {
+    allMarkerToggle(){
         let markerList = {};
-        let len = Object.keys(this.props.itineraryPlan.markers).length;
-        if (len === 0) {
-            markerList = this.setMarkers();
-            console.log("Had to set markers.");
-        } else {
+        if(Object.keys(this.props.itineraryPlan.markers).length === 0){ markerList = this.setMarkers(); }
+        else{
             Object.assign(markerList, this.props.itineraryPlan.markers);
-            let containsTrue = (Object.values(markerList).indexOf(true) !== -1) ? true : false;
-            console.log("The list does "+((containsTrue)?"":"not")+" contain true");
+            let temp = Object.values(markerList);
             let key;
-            for (let i = 0; i < len; i++) {
+            for(let i=0; i < Object.keys(markerList).length; i++){
                 key = this.props.itineraryPlan.places[i].id;
-                if (containsTrue) markerList[key] = false;
-                else markerList[key] = true;
+                if(temp.indexOf(true) !== -1){ markerList[key] = false; }
+                else{ markerList[key] = !markerList[key]; }
             }
         }
         this.props.updateStateVar('itineraryPlan', 'markers', markerList);

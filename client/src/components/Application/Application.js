@@ -114,7 +114,9 @@ export default class Application extends Component {
                         }
                     });
                 });
-            return L.latLng(this.state.currentLocation.lat, this.state.currentLocation.lon);
+            //return L.latLng(this.state.currentLocation.lat, this.state.currentLocation.lon);
+            return (L.latLngBounds(L.latLng(((this.state.currentLocation.lat -0.05) * 100) /100, ((this.state.currentLocation.lon-0.05) * 100) / 100),
+                    L.latLng(((this.state.currentLocation.lat +0.05) * 100) /100, ((this.state.currentLocation.lon + 0.05) * 100) / 100)));
         }
     }
 
@@ -165,7 +167,8 @@ export default class Application extends Component {
 
             default:
                 return <Home  currentLocation={this.state.currentLocation}
-                              getUserLocation={this.getUserLocation}/>;
+                              getUserLocation={this.getUserLocation}
+                              itineraryPlan={this.state.itineraryPlan}/>;
         }
     }
 
