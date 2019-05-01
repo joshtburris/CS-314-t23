@@ -32,7 +32,7 @@ public class TIPConfig extends TIPHeader {
 
   public TIPConfig() {
     this.requestType = "config";
-    this.requestVersion = 4;
+    this.requestVersion = 5;
     this.serverName = "t23 Byte Me";
     this.placeAttributes = Arrays.asList("latitude", "longitude", "name", "id", "municipality", "altitude", "type");
     this.optimizations = Arrays.asList("none", "short", "shorter");
