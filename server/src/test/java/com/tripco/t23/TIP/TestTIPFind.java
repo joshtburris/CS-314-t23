@@ -31,8 +31,8 @@ public class TestTIPFind {
         expect.put("name", "Dtc North Heliport");
         expect.put("municipality","Denver");
         expect.put("type", "heliport");
-        expect.put("latitude", 39.6349983215);
-        expect.put("longitude", -104.898002625);
+        expect.put("latitude", "39.6349983215");
+        expect.put("longitude", "-104.898002625");
         Map actual = dtc.getPlaces().get(0);
         assertEquals("maps are equal", expect, actual);
     }
@@ -56,16 +56,16 @@ public class TestTIPFind {
         expectItem.put("name", "Capri Heliport");
         expectItem.put("municipality", "Denver");
         expectItem.put("type", "heliport");
-        expectItem.put("latitude", 39.85279846191406);
-        expectItem.put("longitude", -104.97699737548828);
+        expectItem.put("latitude", "39.85279846191406");
+        expectItem.put("longitude", "-104.97699737548828");
         expect.add(expectItem);
         Map expectItem2 = new HashMap();
         expectItem2.put("id", "AR-0133");
         expectItem2.put("name", "El Capricho Heliport");
         expectItem2.put("municipality","Chenaut");
         expectItem2.put("type", "heliport");
-        expectItem2.put("latitude", -34.2325);
-        expectItem2.put("longitude", -59.3158);
+        expectItem2.put("latitude", "-34.2325");
+        expectItem2.put("longitude", "-59.3158");
         expect.add(expectItem2);
 
         ArrayList<Map> actual = dtc.getPlaces();
