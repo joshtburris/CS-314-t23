@@ -39,8 +39,8 @@ export default class Application extends Component {
                 name:true,
                 legDistance:true,
                 totalDistance:true,
-                lat:false,
-                lon:false
+                latitude:false,
+                longitude:false
             },
             clientSettings: {
                 serverPort: getOriginalServerPort()
@@ -192,7 +192,7 @@ export default class Application extends Component {
             this.setState({
                 serverConfig: config.body,
                 errorMessage: null
-            });
+            }, this.processPlaceAttributes);
         }
         else {
             this.setState({
@@ -204,5 +204,16 @@ export default class Application extends Component {
                     </Container>
             });
         }
+    }
+
+    processPlaceAttributes(){
+        if (this.state.serverConfig == null) return; //what to do?
+        let attributes = {};
+        for (let att of this.state.serverConfig.placeAttributes) {
+            let key = att.toString()
+            Object.assign(attributes, {[att.toString()]:false})
+        }
+        Object.assign(attributes, this.state.headerOptions);
+        this.setState({headerOptions: attributes});
     }
 }

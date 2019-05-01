@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Dropdown, DropdownMenu, DropdownToggle, DropdownItem} from 'reactstrap';
 import Pane from "../Pane";
 import {Button, CustomInput, Input, Table} from 'reactstrap';
 import Parsing from '../Parsing';
@@ -17,6 +18,7 @@ export default class ItineraryTable extends Component {
 
         this.addNewLocation = this.addNewLocation.bind(this);
         this.showMarkerPerLocation = this.showMarkerPerLocation.bind(this);
+        this.toggleTable = this.toggleTable.bind(this);
     }
 
     getStyle(){
@@ -33,6 +35,7 @@ export default class ItineraryTable extends Component {
     renderTable() {
         return(
             <Pane header={'Your Itinerary'}>
+                {this.getTableOpts()}
                 <div style={this.getStyle()}> <Table hover>
                     {this.generateItinerary()}
                 </Table> </div>
@@ -46,6 +49,40 @@ export default class ItineraryTable extends Component {
         );
     }
 
+    getTableOpts() {
+        let list =[];
+        let i = 0;
+        for (let detail in this.props.headerOptions) {
+            list.push(
+                <DropdownItem
+                    active={this.props.headerOptions[detail]}
+                    onClick={() => {this.toggleCheckbox(detail, (!this.props.headerOptions[detail]))}}
+                    id={detail}
+                >{detail}</DropdownItem>
+            );
+            i++;
+        }
+        return(<Dropdown isOpen={this.state.tableDropdownOpen} toggle={this.toggleTable}>
+            <DropdownToggle caret>
+                Modify Table
+            </DropdownToggle>
+            <DropdownMenu>
+                {list}
+            </DropdownMenu>
+        </Dropdown>);
+    }
+
+    //used for dropDown toggle
+    toggleTable() {
+        this.setState(prevState => ({
+            tableDropdownOpen: !prevState.tableDropdownOpen
+        }));
+    }
+
+    toggleCheckbox(option, value) {
+        this.props.updateStateVar('headerOptions', option, value);
+    }
+
     generateItinerary() {
         let myItinerary = [];
         myItinerary.push(<thead><tr>{this.itineraryHeader()}</tr></thead>);
@@ -55,22 +92,29 @@ export default class ItineraryTable extends Component {
         return myItinerary;
     }
 
+    itineraryHeader() {
+        let markup = [];
+        for (let detail in this.props.headerOptions) {
+            if (this.props.headerOptions[detail] === true)
+                markup.push(<th><b>{detail.substring(0,1).toUpperCase() + detail.substring(1)}</b></th>);
+        }
+        return markup;
+    }
+
     getItineraryRows() {
         let list = [], dist = 0, index = 0;
         list.push(<tr>{this.getLine(0, dist, index)}</tr>);
         dist = dist + this.props.itineraryPlan.distances[0];
         for (let place in this.props.itineraryPlan.places) {
             if (place == 0) continue;
-            list.push(<tr>{this.getLine(    this.props.itineraryPlan.distances[place-1],
-                                            dist,
-                                            index+1)}</tr>);
+            list.push(<tr>{this.getLine(this.props.itineraryPlan.distances[place-1], dist, index+1)}</tr>);
             dist = dist + this.props.itineraryPlan.distances[place];
-            ++index;
         }
+        //Push a copy of first places to end the trip
         if (this.props.itineraryPlan.places.length > 1) {
-            list.push(<tr>{this.getLine(    this.props.itineraryPlan.distances[this.props.itineraryPlan.distances.length-1],
-                                            dist,
-                                            0)}</tr>);
+            list.push(<tr>{
+                this.getLine(this.props.itineraryPlan.distances[this.props.itineraryPlan.distances.length-1],dist,0)
+            }</tr>);
         }
         return list;
     }
@@ -80,18 +124,22 @@ export default class ItineraryTable extends Component {
         if (isNaN(tDist)){
             tDist ='';
         }
-        let headers = [ this.props.itineraryPlan.places[index].name,
-                        legDist,
-                        tDist,
-                        this.props.itineraryPlan.places[index].latitude,
-                        this.props.itineraryPlan.places[index].longitude];
-        let i = 0;
         for (let opt in this.props.headerOptions) {
             if (this.props.headerOptions[opt]) {
-                markup.push(<td>{headers[i]}</td>);
+                let val = null;
+                if (opt == "legDistance"){
+                    val = legDist;
+                }
+                else if (opt == "totalDistance"){
+                    val = tDist;
+                }
+                else {
+                    val = this.props.itineraryPlan.places[index][opt];
+                }
+                markup.push(<td>{val}</td>);
             }
-            ++i;
         }
+
         let key = this.props.itineraryPlan.places[index].id;
         let tag = 'editTable'+index;
         markup.push(<td><div style={{width:'200px'}}><Button id={tag} type='submit' color="link" onClick={()=>{this.removeLocation(index, key);}} > <b>X</b> </Button>
@@ -169,18 +217,6 @@ export default class ItineraryTable extends Component {
             &&  Parsing.validateCoordinates(lat+" "+lon))
             return true;
         return false;
-    }
-
-    itineraryHeader() {
-        let markup = [];
-        let labels = ['Name', 'Leg Distance', 'Total Distance', 'Latitude', 'Longitude'];
-        let i = 0;
-        for (let detail in this.props.headerOptions) {
-            if (this.props.headerOptions[detail] === true)
-                markup.push(<th><b>{labels[i]}</b></th>);
-            ++i;
-        }
-        return markup;
     }
 
     removeLocation(index, key) {

@@ -130,3 +130,28 @@ function testIndividualMarker(){
 }
 
 test("Testing individual marker toggle", testIndividualMarker);
+
+function testHeaderOptions() {
+    let updatedItin = jest.fn();
+    const itinerary = shallow((<ItineraryTable
+            options={startProperties.options}
+            settings={startProperties.options}
+            itineraryPlan={startProperties.itineraryPlan}
+            headerOptions={startProperties.headerOptions}
+            updateStateVar={updatedItin}/>
+    ));
+
+    itinerary.instance().toggleCheckbox('name', (!startProperties.headerOptions.name));
+    expect(updatedItin.mock.calls.length).toEqual(1);
+    expect(updatedItin.mock.calls[0][0]).toEqual('headerOptions');
+    expect(updatedItin.mock.calls[0][1]).toEqual('name');
+    expect(updatedItin.mock.calls[0][2]).toEqual(false);
+
+    itinerary.instance().toggleCheckbox('lat', (!startProperties.headerOptions.lat));
+    expect(updatedItin.mock.calls.length).toEqual(2);
+    expect(updatedItin.mock.calls[1][0]).toEqual('headerOptions');
+    expect(updatedItin.mock.calls[1][1]).toEqual('lat');
+    expect(updatedItin.mock.calls[1][2]).toEqual(true);
+}
+
+test("Testing toggleCheckbox function of itinerary", testHeaderOptions);

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import {Alert, Container, Row, Col, CustomInput, Button,
-    Dropdown, DropdownMenu, DropdownToggle, DropdownItem} from 'reactstrap';
+import {Alert, Container, Row, Col, Button, Dropdown, DropdownMenu, DropdownToggle, DropdownItem} from 'reactstrap';
 import ItineraryTable from "./ItineraryTable";
 import Ajv from 'ajv';
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
@@ -17,13 +16,13 @@ export default class Itinerary extends Component {
         this.state={
             errorMessage: null,
             dropdownOpen: false,
+            tableDropdownOpen: false,
         };
         this.loadFile = this.loadFile.bind(this);
         this.addLocation = this.addLocation.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
         this.calculateDistances();
-        this.toggle = this.toggle.bind(this);
-        this.toggle = this.toggle.bind(this);
+        this.toggleSave = this.toggleSave.bind(this);
     }
 
     render() {
@@ -45,7 +44,9 @@ export default class Itinerary extends Component {
                                         updateStateVar={this.props.updateStateVar}
                                         setStateVar={this.props.setStateVar}
                                         addLocation={this.addLocation}
-                                        getNextPlaceID={this.props.getNextPlaceID}/>
+                                        getNextPlaceID={this.props.getNextPlaceID}
+                                        getTableOpts={this.getTableOpts}/>
+
                 </Col> </Row>
             </Container>
         );
@@ -63,7 +64,6 @@ export default class Itinerary extends Component {
         return(
             <Pane header={'Header Options'}>
                 {<Container>
-                    {this.getCheckbox()}
                     <Button type="submit" value="Reverse" id="reverseButton" onClick={(e) => this.reverseItinerary(e)}>Reverse</Button>
                     <Button type="submit" value="ToggleAll" id="markerToggleAll" onClick={(e) => this.allMarkerToggle()}>Markers Toggle</Button>
                     <Button type="submit" value="Update" id="updateButton" onClick={(e) => this.calculateDistances()}>Update Distances</Button>
@@ -71,29 +71,6 @@ export default class Itinerary extends Component {
                 </Container>}
             </Pane>
         );
-    }
-
-    getCheckbox() {
-        let list =[];
-        let i = 0;
-        let labels = ['Name', 'Leg Distance', 'Total Distance', 'Latitude', 'Longitude'];
-        for (let detail in this.props.headerOptions) {
-            list.push(
-                <CustomInput
-                    type="checkbox"
-                    id={detail + i}
-                    checked={this.props.headerOptions[detail]}
-                    label={labels[i]}
-                    onClick={() => {this.toggleCheckbox(detail, (!this.props.headerOptions[detail]))}}
-                />
-            );
-            i++;
-        }
-        return(list);
-    }
-
-    toggleCheckbox(option, value) {
-        this.props.updateStateVar('headerOptions', option, value);
     }
 
     addLocation(name, latitude, longitude) {
@@ -126,18 +103,20 @@ export default class Itinerary extends Component {
     }
 
     //used for dropDown toggle
-    toggle() {
+    toggleSave() {
         this.setState(prevState => ({
             dropdownOpen: !prevState.dropdownOpen
         }));
     }
+
+
 
     renderItinerary() {
         return(
             <Pane header={'Save/Upload Your Itinerary'}>
                 <Container>
                     <input type="file" name="" id="loadButton" onChange={this.loadFile} />
-                    <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                    <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleSave}>
                         <DropdownToggle caret>
                             Save File
                         </DropdownToggle>
