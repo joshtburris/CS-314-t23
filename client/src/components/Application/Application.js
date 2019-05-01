@@ -24,7 +24,7 @@ export default class Application extends Component {
             planOptions: {
                 units: {'miles':3959,'Nautical Miles':3440, 'kilometers':6371},
                 activeUnit: 'miles',
-                optimizations: 'none'
+                optimization: 'none'
             },
             calculatorInput: {
                 origin:'',
@@ -156,6 +156,7 @@ export default class Application extends Component {
                 return <About/>;
             case 'itinerary':
                 return <Itinerary options={this.state.planOptions}
+                                  config={this.state.serverConfig}
                                   settings={this.state.clientSettings}
                                   serverConfig={this.state.serverConfig}
                                   createErrorBanner={this.createErrorBanner}

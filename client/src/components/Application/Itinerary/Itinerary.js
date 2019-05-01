@@ -1,21 +1,20 @@
 import React, { Component } from 'react';
-import {Alert, Container, Row, Col, CustomInput, Button, Dropdown, DropdownMenu, DropdownToggle, DropdownItem} from 'reactstrap';
-import {Map, TileLayer, Polyline, Marker, Popup} from "react-leaflet";
+import {Alert, Container, Row, Col, CustomInput, Button,
+    Dropdown, DropdownMenu, DropdownToggle, DropdownItem} from 'reactstrap';
 import ItineraryTable from "./ItineraryTable";
 import Ajv from 'ajv';
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
 import schema from './TIPItinerarySchema';
 import Parsing from '../Parsing'
-import Saver from './Saver'
+import Saver from './Saver';
+import Optimizations from './Optimizations';
 import ClassMap from '../ClassMap';
 
 export default class Itinerary extends Component {
     constructor(props) {
         super(props);
         this.state={
-            'options': {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit].toString(),
-                optimizations: this.props.options.optimizations},
             errorMessage: null,
             dropdownOpen: false,
         };
@@ -23,6 +22,7 @@ export default class Itinerary extends Component {
         this.addLocation = this.addLocation.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
         this.calculateDistances();
+        this.toggle = this.toggle.bind(this);
         this.toggle = this.toggle.bind(this);
     }
 
@@ -51,6 +51,14 @@ export default class Itinerary extends Component {
         );
     }
 
+    renderOptimizations() {
+        return(
+            <Optimizations optimizations={this.props.config.optimizations}
+                           activeOpt={this.props.options.optimization}
+                           updateStateVar={this.props.updateStateVar}/>
+        );
+    }
+
     tableOptions() {
         return(
             <Pane header={'Header Options'}>
@@ -58,7 +66,8 @@ export default class Itinerary extends Component {
                     {this.getCheckbox()}
                     <Button type="submit" value="Reverse" id="reverseButton" onClick={(e) => this.reverseItinerary(e)}>Reverse</Button>
                     <Button type="submit" value="ToggleAll" id="markerToggleAll" onClick={(e) => this.allMarkerToggle()}>Markers Toggle</Button>
-                    <Button type="submit" value="Update" id="update" onClick={(e) => this.calculateDistances()}>Update Distances</Button>
+                    <Button type="submit" value="Update" id="updateButton" onClick={(e) => this.calculateDistances()}>Update Distances</Button>
+                    {this.renderOptimizations()}
                 </Container>}
             </Pane>
         );
@@ -212,8 +221,9 @@ export default class Itinerary extends Component {
     calculateDistances() {
         const tipConfigRequest = {
             'requestType'        : 'itinerary',
-            'requestVersion'     : 5,
-            'options'            : this.state.options,
+            'requestVersion'     : 5,  
+            'options'            : {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit].toString(),
+                                    optimization: this.props.options.optimization},
             'places'             : this.props.itineraryPlan.places,
         };
 

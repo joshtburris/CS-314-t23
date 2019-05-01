@@ -3,6 +3,7 @@ import './enzyme.config.js'
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 import Itinerary from '../src/components/Application/Itinerary/Itinerary'
+import Optimizations from '../src/components/Application/Itinerary/Optimizations'
 
 
 const startProperties = {
@@ -27,8 +28,10 @@ const startProperties = {
         'totalDistance':true,
         'lat':false,
         'lon':false
-    }
-
+    },
+    'config': {'optimizations': ['none', 'short']},
+    'updateStateVar' : () => {},
+    'updateItineraryState' : () => {}
 };
 
 const emptyItinerary = {
@@ -44,6 +47,7 @@ function testAddLocation() {
     function getNextPlaceID() { return "0"; }
     const itinerary = shallow((<Itinerary
         options={startProperties.options}
+        config={startProperties.options}
         settings={startProperties.options}
         itineraryPlan={emptyItinerary}
         headerOptions={startProperties.headerOptions}
@@ -83,6 +87,7 @@ function testHeaderOptions() {
     let updatedItin = jest.fn();
     const itinerary = shallow((<Itinerary
         options={startProperties.options}
+        config={startProperties.options}
         settings={startProperties.options}
         itineraryPlan={startProperties.itineraryPlan}
         headerOptions={startProperties.headerOptions}
@@ -107,6 +112,7 @@ test("Testing toggleCheckbox function of itinerary", testHeaderOptions);
 function testSaveButton() {
     const itinerary = shallow((
         <Itinerary   options={startProperties.options}
+                     config={startProperties.options}
                      settings={startProperties.options}
                      itineraryPlan={startProperties.itineraryPlan}
                      headerOptions={startProperties.headerOptions}
@@ -125,6 +131,7 @@ test("Testing save button in itinerary", testSaveButton);
 function testUploadButton() {
     const itinerary = shallow((
         <Itinerary   options={startProperties.options}
+                     config={startProperties.options}
                      settings={startProperties.options}
                      itineraryPlan={startProperties.itineraryPlan}
                      headerOptions={startProperties.headerOptions}
@@ -137,10 +144,26 @@ function testUploadButton() {
 
 test("Testing upload button in itinerary", testUploadButton);
 
+function testUpdateButton() {
+    const itinerary = shallow((
+        <Itinerary   options={startProperties.options}
+                     config={startProperties.options}
+                     settings={startProperties.options}
+                     itineraryPlan={startProperties.itineraryPlan}
+                     headerOptions={startProperties.headerOptions}
+                     updateItineraryPlan={jest.fn()}/>
+    ));
+
+    expect(itinerary.contains('#updateButton'));
+}
+
+test("Testing update button exists in itinerary", testUpdateButton);
+
 function testReverseButton(){
     let updateState = jest.fn();
     const itinerary = shallow((
         <Itinerary   options={startProperties.options}
+                     config={startProperties.options}
                      settings={startProperties.options}
                      itineraryPlan={startProperties.itineraryPlan}
                      headerOptions={startProperties.headerOptions}
@@ -165,27 +188,6 @@ function simulateReverseButtonPress(e, reactWrapper) {
 }
 
 test("Testing reverse button", testReverseButton);
-
-function testMarkerToggle() {
-    let markTog = jest.fn();
-    const itinerary = shallow((
-        <Itinerary   options={startProperties.options}
-                     settings={startProperties.options}
-                     itineraryPlan={startProperties.itineraryPlan}
-                     headerOptions={startProperties.headerOptions}
-                     updateStateVar={markTog}/>
-    ));
-
-    let e = startProperties.itineraryPlan.markers;
-    simulateMarkerTogglePress(e, itinerary);
-
-    expect(markTog.mock.calls.length).toEqual(1);
-    expect(markTog.mock.calls[0][0]).toEqual("itineraryPlan");
-    expect(markTog.mock.calls[0][1]).toEqual("markers");
-
-    let markerSet = {do: true, th: true, te: true, wo: true}
-    expect(markTog.mock.calls[0][2]).toEqual(markerSet);
-}
 
 function simulateMarkerTogglePress(e, reactWrapper) {
     reactWrapper.find('#markerToggleAll').at(0).simulate('click');
@@ -214,6 +216,7 @@ function testAllMarkerToggleOn(){
     let markTog = jest.fn();
     const itinerary = shallow((
         <Itinerary   options={startProperties.options}
+                     config={startProperties.options}
                      settings={startProperties.options}
                      itineraryPlan={markersSetItinerary1}
                      headerOptions={startProperties.headerOptions}
@@ -235,6 +238,7 @@ function testAllMarkerToggleOff(){
     let markTog = jest.fn();
     const itinerary = shallow((
         <Itinerary   options={startProperties.options}
+                     config={startProperties.options}
                      settings={startProperties.options}
                      itineraryPlan={markersSetItinerary2}
                      headerOptions={startProperties.headerOptions}
@@ -251,3 +255,21 @@ function testAllMarkerToggleOff(){
 }
 
 test("Testing All Markers OFF toggle in itinerary", testAllMarkerToggleOff);
+
+function testOptimizationsRender(){
+    const itinerary = shallow((
+        <Itinerary   options={startProperties.options}
+                     config={startProperties.config}
+                     settings={startProperties.options}
+                     itineraryPlan={startProperties.itineraryPlan}
+                     headerOptions={startProperties.headerOptions}
+                     updateStateVar={startProperties.updateStateVar}/>
+    ));
+
+    expect(itinerary.contains(<Optimizations  optimizations={startProperties.config.optimizations}
+                                              activeOpt={startProperties.options.optimization}
+                                              updateStateVar={startProperties.updateStateVar}
+                                              updateItineraryState={itinerary.instance().updateItineraryState}/>)).toEqual(true);
+}
+
+test("Testing optimization button group is rendering", testOptimizationsRender);

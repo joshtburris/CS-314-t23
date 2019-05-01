@@ -2,13 +2,14 @@
 import './enzyme.config.js'
 import React from 'react'
 import { mount } from 'enzyme'
-import Optimizations from '../src/components/Application/Options/Optimizations'
+import Optimizations from '../src/components/Application/Itinerary/Optimizations'
 
 
 const startProperties = {
     'optimizations': ['none', 'short'],
     'activeOpt': 'none'
 };
+
 
 function testButtonValues() {
     const opts = mount((
@@ -27,7 +28,7 @@ function testButtonValues() {
 /* Deep render (mount) Units to be able to test the properties of the Buttons
  * that get rendered inside of it.
  */
-test('Check to see if a Button is rendered for each optimizations', testButtonValues);
+test('Check to see if a Button is rendered for each optimization', testButtonValues);
 
 
 function testInitialActiveButton() {
@@ -52,3 +53,4 @@ function testInitialActiveButton() {
 }
 
 test('Check to see if the correct button is initially made active', testInitialActiveButton);
+
