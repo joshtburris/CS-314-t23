@@ -1,10 +1,6 @@
 package com.tripco.t23.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -122,6 +118,10 @@ public class database {
     }
 
     private static Map[] printJSON(ResultSet count, ResultSet query) throws SQLException {
+        // get the number of columns
+        ResultSetMetaData meta = query.getMetaData();
+        int columns = meta.getColumnCount();
+
         // determine the number of results that match the query
         count.next();
         int results = count.getInt(1);
@@ -131,13 +131,9 @@ public class database {
 
         while(query.next()){
             Map tempMap = new HashMap();
-            tempMap.put("id", query.getString("id"));
-            tempMap.put("name", query.getString("name"));
-            tempMap.put("municipality", query.getString("municipality"));
-            tempMap.put("type", query.getString("type"));
-            //Latitude and Longitude can also use query.getString if needed
-            tempMap.put("latitude", query.getDouble("latitude"));
-            tempMap.put("longitude", query.getDouble("longitude"));
+            for(int i = 1; i <= columns; ++i){
+                tempMap.put(meta.getColumnName(i), query.getObject(i));
+            }
             values[results - index] = tempMap;
             --index;
         }
