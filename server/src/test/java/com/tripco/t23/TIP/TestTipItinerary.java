@@ -42,7 +42,7 @@ public class TestTipItinerary {
         options = new HashMap<>();
         options.put("title", "itinerary");
         options.put("earthRadius", "3958.761316");
-        options.put("optimizations", "none");
+        options.put("optimization", "none");
     }
 
 
