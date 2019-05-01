@@ -17,7 +17,7 @@ public class TIPFind extends TIPHeader {
 
     TIPFind(String match, int limit, ArrayList<Map> filter){
         this();
-        this.requestVersion = 4;
+        this.requestVersion = 5;
         this.match = match;
         this.narrow = filter;
         this.limit = limit;
