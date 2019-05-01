@@ -124,6 +124,7 @@ export default class Itinerary extends Component {
                     console.log(response);
                     var ajv = new Ajv();
                     var valid = ajv.validate(schemaFind, response.body);
+                    console.log(valid);
                     if (!valid) {
                         console.log(ajv.errors);
                         this.setState({
