@@ -21,7 +21,8 @@ export default class Saver{
     }
 
     static saveJSON(plan){
-        let file = new Blob([JSON.stringify(plan)], {type: "text/plain;charset=utf-8"});  // Source="https://www.npmjs.com/package/file-saver/v/1.3.2"
+        let places = {"places": plan};
+        let file = new Blob([JSON.stringify(places)], {type: "text/plain;charset=utf-8"});  // Source="https://www.npmjs.com/package/file-saver/v/1.3.2"
         saveAs(file, "MyItinerary.json");
     }
 
