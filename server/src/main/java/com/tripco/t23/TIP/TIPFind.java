@@ -15,8 +15,6 @@ public class TIPFind extends TIPHeader {
 
     private final transient Logger log = LoggerFactory.getLogger(TIPFind.class);
 
-    //Should include "version" variable for requestversion?
-
     TIPFind(String match, int limit, ArrayList<Map> filter){
         this();
         this.requestVersion = 4;
