@@ -25,7 +25,7 @@ export default class classMap extends Component{
         else {c_location = this.props.getUserLocation()}
         return (
             <Map bounds={this.checkForBounds(c_location)}
-                 style={{height: 500, maxwidth: 700}}
+                 style={{height: 400, maxwidth: 700}}
                  id={'map'}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                            attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import {Alert, Container, Row, Col, Button, Dropdown, DropdownMenu, DropdownToggle, DropdownItem} from 'reactstrap';
+import {Alert, Container, CustomInput, Row, Col, Button, Dropdown, DropdownMenu, DropdownToggle, DropdownItem} from 'reactstrap';
 import ItineraryTable from "./ItineraryTable";
 import Ajv from 'ajv';
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
 import schema from './TIPItinerarySchema';
 import Parsing from '../Parsing'
+import Search from "./Search";
 import Saver from './Saver';
 import Optimizations from './Optimizations';
 import ClassMap from '../ClassMap';
@@ -17,10 +18,12 @@ export default class Itinerary extends Component {
             errorMessage: null,
             dropdownOpen: false,
             tableDropdownOpen: false,
+            narrow: [{name: "type", values: ['none']}]
         };
         this.loadFile = this.loadFile.bind(this);
         this.addLocation = this.addLocation.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
+        this.setMarkers = this.setMarkers.bind(this);
         this.calculateDistances();
         this.toggleSave = this.toggleSave.bind(this);
     }
@@ -47,6 +50,15 @@ export default class Itinerary extends Component {
                                         getNextPlaceID={this.props.getNextPlaceID}
                                         getTableOpts={this.getTableOpts}/>
 
+                </Col> </Row>
+                <Row> <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <Search             updateStateVar={this.props.updateStateVar}
+                                        itineraryPlan={this.props.itineraryPlan}
+                                        settings={this.props.settings}
+                                        createErrorBanner={this.props.createErrorBanner}
+                                        addLocation={this.addLocation}
+                                        serverConfig={this.props.serverConfig}
+                                        placeAttributes={this.props.config.placeAttributes}/>
                 </Col> </Row>
             </Container>
         );
@@ -108,8 +120,6 @@ export default class Itinerary extends Component {
             dropdownOpen: !prevState.dropdownOpen
         }));
     }
-
-
 
     renderItinerary() {
         return(
@@ -200,7 +210,7 @@ export default class Itinerary extends Component {
     calculateDistances() {
         const tipConfigRequest = {
             'requestType'        : 'itinerary',
-            'requestVersion'     : 5,  
+            'requestVersion'     : 5,
             'options'            : {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit].toString(),
                                     optimization: this.props.options.optimization},
             'places'             : this.props.itineraryPlan.places,
@@ -213,6 +223,7 @@ export default class Itinerary extends Component {
                     var ajv = new Ajv();
                     var valid = ajv.validate(schema, response.body);
                     if (!valid){
+                        console.log(ajv.errors);
                         this.setState({
                             errorMessage: this.props.createErrorBanner(
                                 "Invalid response from server"

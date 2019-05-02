@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Dropdown, DropdownMenu, DropdownToggle, DropdownItem} from 'reactstrap';
 import Pane from "../Pane";
-import {Button, CustomInput, Input, Table} from 'reactstrap';
+import {Button, CustomInput, Input, Table, Row, Col} from 'reactstrap';
 import Parsing from '../Parsing';
 
 export default class ItineraryTable extends Component {
@@ -35,16 +35,15 @@ export default class ItineraryTable extends Component {
     renderTable() {
         return(
             <Pane header={'Your Itinerary'}>
-                {this.getTableOpts()}
-                <div style={this.getStyle()}> <Table hover>
-                    {this.generateItinerary()}
-                </Table> </div>
-                <thead><b>
-                    Add Location
-                </b></thead>
-                <tbody>
-                    {this.newLocationInput()}
-                </tbody>
+                <div style={this.getStyle()}>
+                    <Table hover>
+                        {this.generateItinerary()}
+                    </Table> </div>
+                    <div>
+                        <b>Add Location</b>
+                        {this.newLocationInput()}
+                    </div>
+
             </Pane>
         );
     }
@@ -85,9 +84,9 @@ export default class ItineraryTable extends Component {
 
     generateItinerary() {
         let myItinerary = [];
-        myItinerary.push(<thead><tr>{this.itineraryHeader()}</tr></thead>);
+        myItinerary.push(<thead key={"itineraryHeader"}><tr key={"HeaderRow"}>{this.itineraryHeader()}</tr></thead>);
         if (this.props.itineraryPlan.places.length > 0) {
-            myItinerary.push(<tbody>{this.getItineraryRows()}</tbody>);
+            myItinerary.push(<tbody key={"itineraryPlanBody"}>{this.getItineraryRows()}</tbody>);
         }
         return myItinerary;
     }
@@ -96,23 +95,25 @@ export default class ItineraryTable extends Component {
         let markup = [];
         for (let detail in this.props.headerOptions) {
             if (this.props.headerOptions[detail] === true)
-                markup.push(<th><b>{detail.substring(0,1).toUpperCase() + detail.substring(1)}</b></th>);
+                markup.push(<th key={"HeaderName" + detail}><b>{detail.substring(0,1).toUpperCase() + detail.substring(1)}</b></th>);
         }
         return markup;
     }
 
     getItineraryRows() {
         let list = [], dist = 0, index = 0;
-        list.push(<tr>{this.getLine(0, dist, index)}</tr>);
+        list.push(<tr key={"TableRow_0_top"}>{this.getLine(0, dist, index)}</tr>);
         dist = dist + this.props.itineraryPlan.distances[0];
         for (let place in this.props.itineraryPlan.places) {
             if (place == 0) continue;
-            list.push(<tr>{this.getLine(this.props.itineraryPlan.distances[place-1], dist, index+1)}</tr>);
+            list.push(<tr key={"TableRow_" + (Number(place)-1)}>
+                {this.getLine(this.props.itineraryPlan.distances[place-1], dist, index+1)}</tr>);
             dist = dist + this.props.itineraryPlan.distances[place];
+            ++index;
         }
         //Push a copy of first places to end the trip
         if (this.props.itineraryPlan.places.length > 1) {
-            list.push(<tr>{
+            list.push(<tr key={"TableRow_0_bottom"}>{
                 this.getLine(this.props.itineraryPlan.distances[this.props.itineraryPlan.distances.length-1],dist,0)
             }</tr>);
         }
@@ -136,40 +137,43 @@ export default class ItineraryTable extends Component {
                 else {
                     val = this.props.itineraryPlan.places[index][opt];
                 }
-                markup.push(<td>{val}</td>);
+                markup.push(<td key={"ITable_" + opt}>{val}</td>);
             }
         }
 
         let key = this.props.itineraryPlan.places[index].id;
         let tag = 'editTable'+index;
-        markup.push(<td><div style={{width:'200px'}}><Button id={tag} type='submit' color="link" onClick={()=>{this.removeLocation(index, key);}} > <b>X</b> </Button>
+        markup.push(<td key={"ITable_options"}><div style={{width:'200px'}}>
+            <Button id={tag} type='submit' color="link" onClick={()=>{this.removeLocation(index, key);}} > <b>X</b> </Button>
             <Button id={tag} type='submit' color="link" size="lg" onClick={() => {this.rearrange(index, 1);}}> <b>↑</b> </Button>
             <Button id={tag} type='submit' color="link" size="lg" onClick={() => {this.rearrange(index, 0);}}> <b>↓</b> </Button>
             <Button id={tag} type='submit' color="link" size="lg" onClick={() => {this.moveTop(index);}}> <b>↑↑</b> </Button>
-            <CustomInput id={tag+"Marker"} checked={this.props.itineraryPlan.markers[key]} type="checkbox" label="Show Marker" onClick={() => {this.showMarkerPerLocation(key);}} />
+            <CustomInput id={tag+'marker'} checked={this.props.itineraryPlan.markers[key]} type="checkbox" label="Show Marker" onChange={() => {this.showMarkerPerLocation(key);}} />
         </div></td>);
         return(markup);
     }
 
     newLocationInput() {
         let list = [];
-        list.push(<td>
-            <Input
-                id={"newLocationName"}
-                placeholder={"Name"}
-                style={{width: "100%", borderColor: "black"}}
-                onChange={(e) => (this.updateAndValidateNameInput(e.target))}
-            /></td>
+        list.push(
+            <Row key={"newLocationInsert"}><Col>
+                <Input
+                    id={"newLocationName"}
+                    placeholder={"Name"}
+                    style={{width: "100%", borderColor: "black"}}
+                    onChange={(e) => (this.updateAndValidateNameInput(e.target))}
+                />
+            </Col><Col>
+                <Input
+                    id={"newLocationLL"}
+                    placeholder={"Latitude, Longitude"}
+                    style={{width: "100%", borderColor: "black"}}
+                    onChange={(e) => (this.updateAndValidateCoordinateInput(e.target))}
+                />
+            </Col><Col>
+                <Button type='submit' color="link" onClick={()=>{this.addNewLocation();}}> <b>+</b> </Button>
+            </Col></Row>
         );
-        list.push(<td>
-            <Input
-                id={"newLocationLL"}
-                placeholder={"Latitude, Longitude"}
-                style={{width: "100%", borderColor: "black"}}
-                onChange={(e) => (this.updateAndValidateCoordinateInput(e.target))}
-            /></td>
-        );
-        list.push(<td><Button type='submit' color="link" onClick={()=>{this.addNewLocation();}}> <b>+</b> </Button></td>);
         return list;
     }
 

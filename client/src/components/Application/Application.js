@@ -32,8 +32,12 @@ export default class Application extends Component {
             },
             itineraryPlan: {
                 places:[],
+                placesFound: [],
                 distances:[],
-                markers:{}
+                markers:{},
+                match: '',
+                limit: 0,
+                narrow: [{name: "type", values: ["none"]}]
             },
             headerOptions: {
                 name:true,
@@ -178,6 +182,7 @@ export default class Application extends Component {
             //validate response
             var ajv = new Ajv();
             var valid = ajv.validate(schema, config.body);
+            console.log(config);
             if (!valid) {
                 this.setState({
                     serverConfig: null,
