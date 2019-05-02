@@ -10,6 +10,7 @@ export default class Itinerary extends Component {
     constructor(props){
         super(props);
         this.state={
+            header: null,
             narrow: [{name: "type", values: ['none']}]
         };
         this.updateTipFindLocation = this.updateTipFindLocation.bind(this);
@@ -91,7 +92,7 @@ export default class Itinerary extends Component {
         unit.preventDefault();
         let flag = true, keyword = this.props.itineraryPlan.match, limit = this.props.itineraryPlan.limit, narrow = Object.assign(this.props.itineraryPlan.narrow);
         if(narrow.length === 1 && narrow[0].values.indexOf('none') > -1){
-            narrow[0].values = ["airport", "heliport", "balloonport"]
+            narrow = []
         }
         if(keyword.length === 0){
             this.setState({
@@ -109,22 +110,22 @@ export default class Itinerary extends Component {
     tipFindLocation(keyword, limit, narrow){
         if(keyword.length === 0) return;
         const tipFindConfigRequest = {
-            'requestType'    : 'find',
-            'requestVersion' : 4,
-            'match'          : keyword,
-            'narrow'         : narrow,
-            'limit'          : Number(limit),
-            'found'          : 0,
-            'places'         : []
+            "requestType"    : "find",
+            "requestVersion" : 4,
+            "match"          : String(keyword),
+            "narrow"         : narrow,
+            "limit"          : Number(limit),
+            "found"          : 0,
+            "places"         : []
         };
         sendServerRequestWithBody('find', tipFindConfigRequest, this.props.settings.serverPort)
             .then((response) => {
                 if (response.statusCode >= 200 && response.statusCode <= 299) {
                     //validate response
-                    console.log(response);
+                    console.log(response.body);
                     var ajv = new Ajv();
                     var valid = ajv.validate(schemaFind, response.body);
-                    console.log(valid);
+                    console.log(schemaFind);
                     if (!valid) {
                         console.log(ajv.errors);
                         this.setState({
@@ -162,11 +163,12 @@ export default class Itinerary extends Component {
     }
 
     generateFindLocationsHeaders(){
-        let header = ["Name", "Latitude", "Municipality", "Type", "Longitude", "Options"];
-        let list = [];
+        let list = [], header = this.getAttributes();
         for (let i in header){
+            header[i] = header[i].charAt(0).toUpperCase() + header[i].slice(1);
             list.push(<th key={"findHeader_"+ i}>{header[i]}</th>)
         }
+        list.push(<th key={"findHeader_Options"}>{"Options"}</th>)
         return list;
     }
 
@@ -179,19 +181,29 @@ export default class Itinerary extends Component {
     }
 
     findLocationsCol(places, i){
-        let tempList = [];
-        let temp;
+        let tempList = [], temp, attributes = this.getAttributes();
         let name = places[i].name;
         tempList.push(<td key={"placesFound_" + name}>{name}</td>);
-        for(let j in places[i]){
-            if(j !== "name" && j !== "id"){
-                temp = places[i][j];
-                tempList.push(<td key={"placesFound_"+i+"_"+temp}>{temp}</td>);
+        for(let j in attributes){
+            if(attributes[j] !== "name" && attributes[j] !== "id"){
+                temp = places[i][attributes[j]];
+                tempList.push(<td key={"placesFound_"+i+"_"+j}>{temp}</td>);
             }
         }
         console.log(places[i].id, places[i].name, places[i].latitude, places[i].longitude);
         tempList.push(<td key={"placesFoundButton_"+i+temp}><Button type='submit'  color="link" onClick={()=>{this.props.addLocation(places[i].name, Number(places[i].latitude), Number(places[i].longitude))} }> <b>+</b> </Button></td>)
         return tempList;
+    }
+
+    getAttributes(){
+        let temp = Object.assign({},this.props.placeAttributes), header = [];
+        header.push("name");
+        for (let i in temp){
+            if (temp[i] !== "name" && temp[i] !== "id") {
+                header.push(temp[i]);
+            }
+        }
+        return header;
     }
 
     getStyle(){

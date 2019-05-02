@@ -95,7 +95,7 @@ export default class ItineraryTable extends Component {
         let markup = [];
         for (let detail in this.props.headerOptions) {
             if (this.props.headerOptions[detail] === true)
-                markup.push(<th><b>{detail.substring(0,1).toUpperCase() + detail.substring(1)}</b></th>);
+                markup.push(<th key={"HeaderName" + detail}><b>{detail.substring(0,1).toUpperCase() + detail.substring(1)}</b></th>);
         }
         return markup;
     }
@@ -137,13 +137,13 @@ export default class ItineraryTable extends Component {
                 else {
                     val = this.props.itineraryPlan.places[index][opt];
                 }
-                markup.push(<td key={"ITable_"+i+headers[i]+legDist}>{val}</td>);
+                markup.push(<td key={"ITable_" + opt}>{val}</td>);
             }
         }
 
         let key = this.props.itineraryPlan.places[index].id;
         let tag = 'editTable'+index;
-        markup.push(<td key={"ITable_"+i+1+"options"}><div style={{width:'200px'}}>
+        markup.push(<td key={"ITable_options"}><div style={{width:'200px'}}>
             <Button id={tag} type='submit' color="link" onClick={()=>{this.removeLocation(index, key);}} > <b>X</b> </Button>
             <Button id={tag} type='submit' color="link" size="lg" onClick={() => {this.rearrange(index, 1);}}> <b>↑</b> </Button>
             <Button id={tag} type='submit' color="link" size="lg" onClick={() => {this.rearrange(index, 0);}}> <b>↓</b> </Button>

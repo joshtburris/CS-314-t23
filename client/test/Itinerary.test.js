@@ -67,8 +67,6 @@ function testAddLocation() {
     console.log(newItin);
     console.log(emptyItinerary);
     itinerary.instance().addLocation("name", "50.2", "80.4");
-    console.log(emptyItinerary);
-    itinerary.instance().addLocation("name", "50.2", "80.4");
     expect(error.mock.calls.length).toEqual(0);
     expect(updatedState.mock.calls.length).toEqual(1);
     expect(updatedState.mock.calls[0][0]).toEqual("itineraryPlan");

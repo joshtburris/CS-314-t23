@@ -57,7 +57,8 @@ export default class Itinerary extends Component {
                                         settings={this.props.settings}
                                         createErrorBanner={this.props.createErrorBanner}
                                         addLocation={this.addLocation}
-                                        serverConfig={this.props.serverConfig}/>
+                                        serverConfig={this.props.serverConfig}
+                                        placeAttributes={this.props.config.placeAttributes}/>
                 </Col> </Row>
             </Container>
         );
@@ -75,7 +76,6 @@ export default class Itinerary extends Component {
         return(
             <Pane header={'Header Options'}>
                 {<Container>
-                    {this.getCheckbox()}
                     <Button type="submit" value="Reverse" id="reverseButton" onClick={(e) => this.reverseItinerary(e)}>Reverse</Button>
                     <Button type="submit" value="ToggleAll" id="markerToggleAll" onClick={(e) => this.allMarkerToggle()}>Markers Toggle</Button>
                     <Button type="submit" value="Update" id="updateButton" onClick={(e) => this.calculateDistances()}>Update Distances</Button>
