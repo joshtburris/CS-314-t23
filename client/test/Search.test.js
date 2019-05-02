@@ -156,3 +156,54 @@ function testDropDownButton(){
 }
 
 test("Testing dropDownButton function", testDropDownButton);
+
+const properties = {
+    'options': {
+        'serverPort': 'black-bottle.cs.colostate.edu:31400'
+    },
+    'itineraryPlan': {
+        'places':[],
+        'placesFound': [],
+        'distances':[],
+        'markers':{},
+        'match': '',
+        'limit': 0,
+        'narrow': [{'name': "type", 'values': ["none"]}]
+    },
+    'attributes': ["latitude", "longitude", "name", "id", "municipality", "altitude", "type"]
+};
+
+function testGetAttributes() {
+    const itineraryPlanMock = jest.fn();
+    const search = mount((
+        <Search   settings={properties.options}
+                  itineraryPlan={properties.itineraryPlan}
+                  placeAttributes={properties.attributes}
+                  updateStateVar={itineraryPlanMock}/>
+    ));
+    console.log(search.props().placeAttributes);
+    const attr = search.instance().getAttributes();
+    expect(attr).toEqual(["name", "latitude", "longitude", "municipality", "altitude", "type"]);
+
+}
+
+test("Testing function getAttributes", testGetAttributes);
+
+function testCreateInputField(){
+    const itineraryPlanMock = jest.fn();
+    const search = mount((
+        <Search   settings={properties.options}
+                  itineraryPlan={properties.itineraryPlan}
+                  placeAttributes={properties.attributes}
+                  updateStateVar={itineraryPlanMock}/>
+    ));
+
+    let numberOfInputs = search.find('Input').length;
+    expect(numberOfInputs).toEqual(1);
+    let actualInputs = [];
+    search.find('Input').map((input) => actualInputs.push(input.prop('placeholder')));
+
+    expect(actualInputs).toEqual(['Search...']);
+}
+
+test("Testing createInputField", testCreateInputField);

@@ -10,7 +10,6 @@ export default class Itinerary extends Component {
     constructor(props){
         super(props);
         this.state={
-            header: null,
             narrow: [{name: "type", values: ['none']}]
         };
         this.updateTipFindLocation = this.updateTipFindLocation.bind(this);
@@ -30,12 +29,12 @@ export default class Itinerary extends Component {
                         <DropdownToggle caret color="primary"> Filters </DropdownToggle>
                         {this.getDropdownItems()}
                     </UncontrolledButtonDropdown>
-                </Col> <Col>
+                    </Col> <Col>
                     <div style={{height: '20px'}}/>
                     <Form onSubmit={this.updateTipFindLocation}>
                         <Button outline  color="primary" > <b>Search</b> </Button>
-                    </Form>
-                </Col></Row></Container>
+                    </Form></Col>
+                </Row></Container>
                 <Container><Row>
                     {this.TipFindTable()}
                 </Row> </Container>
@@ -196,7 +195,7 @@ export default class Itinerary extends Component {
     }
 
     getAttributes(){
-        let temp = Object.assign({},this.props.placeAttributes), header = [];
+        let temp = Object.assign({}, this.props.placeAttributes), header = [];
         header.push("name");
         for (let i in temp){
             if (temp[i] !== "name" && temp[i] !== "id") {

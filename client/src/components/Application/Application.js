@@ -182,6 +182,7 @@ export default class Application extends Component {
             //validate response
             var ajv = new Ajv();
             var valid = ajv.validate(schema, config.body);
+            console.log(config);
             if (!valid) {
                 this.setState({
                     serverConfig: null,
