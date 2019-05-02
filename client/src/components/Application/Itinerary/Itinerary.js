@@ -14,7 +14,7 @@ import ClassMap from '../ClassMap';
 export default class Itinerary extends Component {
     constructor(props) {
         super(props);
-        this.state={
+        this.state = {
             errorMessage: null,
             dropdownOpen: false,
             tableDropdownOpen: false,
@@ -175,7 +175,8 @@ export default class Itinerary extends Component {
                 this.props.updateStateVar('itineraryPlan', 'distances', []);
             }
         };
-        try {e.preventDefault();
+        try {
+            e.preventDefault();
             fileReader = new FileReader();
             fileReader.onloadend = handleFileRead;
             //read the first file in
@@ -249,17 +250,19 @@ export default class Itinerary extends Component {
             });
     }
 
-    allMarkerToggle(){
+    allMarkerToggle() {
         let markerList = {};
-        if(Object.keys(this.props.itineraryPlan.markers).length === 0){ markerList = this.setMarkers(); }
-        else{
+        let len = Object.keys(this.props.itineraryPlan.markers).length;
+        if (len === 0) {
+            markerList = this.setMarkers();
+        } else {
             Object.assign(markerList, this.props.itineraryPlan.markers);
-            let temp = Object.values(markerList);
+            let containsTrue = (Object.values(markerList).indexOf(true) !== -1) ? true : false;
             let key;
-            for(let i=0; i < Object.keys(markerList).length; i++){
+            for (let i = 0; i < len; i++) {
                 key = this.props.itineraryPlan.places[i].id;
-                if(temp.indexOf(true) !== -1){ markerList[key] = false; }
-                else{ markerList[key] = !markerList[key]; }
+                if (containsTrue) markerList[key] = false;
+                else markerList[key] = true;
             }
         }
         this.props.updateStateVar('itineraryPlan', 'markers', markerList);

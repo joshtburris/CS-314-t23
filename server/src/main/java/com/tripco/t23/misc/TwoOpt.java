@@ -29,33 +29,44 @@ public class TwoOpt extends Optimizer {
 
     private int[] findOptimalRoute() {
 
-        int len = places.length;
-        int[] bestRoute = null;
-        for (int plc = 0; plc < len; ++plc) {
+        int[] bestRoute = new int[places.length];
+        long bestRouteDist = Long.MAX_VALUE;
+
+        for (int plc = 0; plc < places.length; ++plc) {
             int[] route = getNNRoute(plc);
-            boolean improvement = true;
-            while (improvement) {
-                improvement = false;
-                if (len <= 4) return route;
-                for (int i = 0; i < len-2; ++i) {
-                    for (int k = i + 2; k < len; ++k) {
-                        long delta =    -distance(route, i, i+1) - distance(route, k, k+1)
-                                        + distance(route, i, k) + distance(route, i+1, k+1);
-                        if (delta < 0) { //improvement?
-                            reverse(route, i+1, k);
-                            improvement = true;
-                        }
-                    }
-                }
-                if (bestRoute == null || distance(route, 0, len-1) < distance(bestRoute, 0, len-1))
-                    bestRoute = route;
+            int n = route.length;
+            if (n <= 4) return route;
+            route = twoOpt(route, n);
+            if (distance(route, 0, n) < bestRouteDist) {
+                bestRoute = Arrays.copyOf(route, n);
+                bestRouteDist = distance(bestRoute, 0, n);
             }
         }
-
         return bestRoute;
     }
 
-    private void reverse(int[] route, int beg, int end) { // reverse in place
+    private int[] twoOpt(int[] route, int n) {
+        boolean improvement = true;
+        while (improvement) {
+            improvement = false;
+            for (int i = 0; i <= n-3; i++) {
+                for (int k = i+2; k <= n-1; k++) {
+                    long delta =
+                            - dis(route, i, i+1)
+                            - dis(route, k, k+1)
+                            + dis(route, i, k)
+                            + dis(route, i+1, k+1);
+                    if (delta < 0) { //improvement?
+                        reverse(route, i+1, k);
+                        improvement = true;
+                    }
+                }
+            }
+        }
+        return route;
+    }
+
+    private int[] reverse(int[] route, int beg, int end) { // reverse in place
         while (beg < end) {
             int temp = route[beg];
             route[beg] = route[end];
@@ -63,12 +74,18 @@ public class TwoOpt extends Optimizer {
             ++beg;
             --end;
         }
+        return route;
+    }
+
+    private long dis(int[] route, int beg, int end) {
+        return distances[route[beg%route.length]][route[end%route.length]];
     }
 
     private long distance(int[] route, int beg, int end) {
         long dist = 0;
-        for (int i = beg; i < end; i++) {
-            dist += distances[ route[i] ][ route[(i+1)%route.length] ];
+        while (beg != end) {
+            dist += distances[route[beg%route.length]][route[(beg+1)%route.length]];
+            ++beg;
         }
         return dist;
     }

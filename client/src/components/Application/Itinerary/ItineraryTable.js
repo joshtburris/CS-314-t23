@@ -295,7 +295,6 @@ export default class ItineraryTable extends Component {
     showMarkerPerLocation(key) {
         let copyMarkers = {};
         Object.assign(copyMarkers, this.props.itineraryPlan.markers);
-
         copyMarkers[key] = !copyMarkers[key];
         this.props.updateStateVar('itineraryPlan', 'markers', copyMarkers);
     }

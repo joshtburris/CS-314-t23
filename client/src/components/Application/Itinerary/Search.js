@@ -9,8 +9,9 @@ import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 export default class Itinerary extends Component {
     constructor(props){
         super(props);
-        this.state={
-            narrow: [{name: "type", values: ['none']}]
+        this.state = {
+            narrow: [{name: "type", values: ['none']}],
+            searchResultNumber: 0
         };
         this.updateTipFindLocation = this.updateTipFindLocation.bind(this);
         this.checkboxOnClick = this.checkboxOnClick.bind(this);
@@ -33,6 +34,7 @@ export default class Itinerary extends Component {
                     <div style={{height: '20px'}}/>
                     <Form onSubmit={this.updateTipFindLocation}>
                         <Button outline  color="primary" > <b>Search</b> </Button>
+                        <b>{this.getSearchResultNumber()}</b>
                     </Form></Col>
                 </Row></Container>
                 <Container><Row>
@@ -107,7 +109,7 @@ export default class Itinerary extends Component {
     }
 
     tipFindLocation(keyword, limit, narrow){
-        if(keyword.length === 0) return;
+        if (keyword.length === 0) return;
         const tipFindConfigRequest = {
             "requestType"    : "find",
             "requestVersion" : 4,
@@ -135,7 +137,8 @@ export default class Itinerary extends Component {
                         return;
                     }
                     this.setState({
-                        errorMessage: null
+                        errorMessage: null,
+                        searchResultNumber: response.body.places.length
                     });
                     this.props.updateStateVar('itineraryPlan', 'placesFound', response.body.places);
                 }
@@ -149,6 +152,10 @@ export default class Itinerary extends Component {
                     });
                 }
             });
+    }
+
+    getSearchResultNumber() {
+        return "\t" + this.state.searchResultNumber.toString() + " results";
     }
 
     TipFindTable(){

@@ -6,13 +6,14 @@ import java.util.Map;
 
 import java.lang.Math;
 
-/** Determines the distance between geographic coordinates.
+/*
+ * Determines the distance between geographic coordinates.
  */
 public class GreatCircleDistance {
     public static long HaversineFormula(double lat_1, double lon_1, double lat_2, double lon_2, double earthRadius){
         /*
-        * Code from: https://rosettacode.org/wiki/Haversine_formula#Java
-        */
+         * Code from: https://rosettacode.org/wiki/Haversine_formula#Java
+         */
         double diff_lat = Math.toRadians(lat_2 - lat_1);
         double diff_lon = Math.toRadians(lon_2 - lon_1);
         lat_1 = Math.toRadians(lat_1);
@@ -22,7 +23,7 @@ public class GreatCircleDistance {
         long finalValue = Math.round(earthRadius * theta);
 
         Logger log = LoggerFactory.getLogger(GreatCircleDistance.class);
-        log.trace("Haversine result ->{}",finalValue);
+        log.trace("Haversine result -> {}", finalValue);
 
         return finalValue;
     }

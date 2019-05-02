@@ -61,7 +61,7 @@ public abstract class Optimizer {
     }
 
     protected int[] circleToStart(int[] route) {
-        int i = 0, len = places.length;
+        int i = 0, len = route.length;
         //find starting location
         while (route[i] != 0)
             ++i;

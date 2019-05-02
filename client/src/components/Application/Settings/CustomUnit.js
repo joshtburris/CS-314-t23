@@ -16,7 +16,7 @@ export default class CustomUnit extends Component{
         this.updateUnits = this.updateUnits.bind(this);
     }
 
-    render(){
+    render() {
         return(
             <Pane header={'Units'}>
                 {this.state.errorMessage}
@@ -36,7 +36,7 @@ export default class CustomUnit extends Component{
         );
     }
 
-    listCreateRow(name, radius){
+    listCreateRow(name, radius) {
         return(
             <Container> <Row>
                 <Col xs="5" sm="5" md="5" lg="5" xl="5">
@@ -49,15 +49,15 @@ export default class CustomUnit extends Component{
         );
     }
 
-    header(){
+    header() {
         return this.listCreateRow(<b>Unit Name</b>, <b>Earth Radius</b>);
     }
 
-    example(){
+    example() {
         return this.listCreateRow("Miles", "3959");
     }
 
-    addUnits(){
+    addUnits() {
         return(
             <Container> <Row> <Col xs="5" sm="5" md="5" lg="5" xl="5">
                 <Input onChange={this.updateInputText}
@@ -77,7 +77,7 @@ export default class CustomUnit extends Component{
         );
     }
 
-    generateList(){
+    generateList() {
         var mylist = [];
         var unit = '';
         for(unit in this.props.planOptions.units){
@@ -99,7 +99,7 @@ export default class CustomUnit extends Component{
         return(mylist);
     }
 
-    deleteUnits(unit){
+    deleteUnits(unit) {
         let temp = this.props.planOptions.units;
         for (let key in this.props.planOptions.units) {
             if (key === unit) {
