@@ -10,7 +10,7 @@ export default class Itinerary extends Component {
     constructor(props){
         super(props);
         this.state = {
-            narrow: [{name: "type", values: ['none']}],
+            narrow: [{name: "type", values: ['none']}, {name: "iso_country", values: ['none']}],
             searchResultNumber: 0
         };
         this.updateTipFindLocation = this.updateTipFindLocation.bind(this);
@@ -27,8 +27,12 @@ export default class Itinerary extends Component {
                     </Col> <Col>
                     <div style={{width: '110px'}}>Choose Filters: </div>
                     <UncontrolledButtonDropdown>
-                        <DropdownToggle caret color="primary"> Filters </DropdownToggle>
+                        <DropdownToggle caret color="primary"> Location Type </DropdownToggle>
                         {this.getDropdownItems()}
+                    </UncontrolledButtonDropdown>
+                    <UncontrolledButtonDropdown>
+                        <DropdownToggle caret color="primary"> Country </DropdownToggle>
+                        {this.getDropdownItemsCountry()}
                     </UncontrolledButtonDropdown>
                     </Col> <Col>
                     <div style={{height: '20px'}}/>
@@ -50,6 +54,39 @@ export default class Itinerary extends Component {
                 <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('airport'); this.checkState();}} active={this.state.narrow[0].values.includes('airport')}>Airport</DropdownItem>
                 <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('heliport');this.checkState();}} active={this.state.narrow[0].values.includes('heliport')}>Heliport</DropdownItem>
                 <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('balloonport');this.checkState();}} active={this.state.narrow[0].values.includes('balloonport')}>Balloonport</DropdownItem>
+            </DropdownMenu>
+        );
+    }
+
+    getDropdownItemsCountry(){
+        //TODO: Replace smaller list for testing purposes with full list
+        //TODO: try to get this to read from the config response
+        let countryList = ["AD", "AE", "AF"];
+        /*["AD","AE","AF","AG","AI","AL","AM","AO","AQ","AR","AS","AT","AU","AW","AZ",
+            "BA","BB","BD","BE","BF","BG","BH","BI","BJ","BL","BM","BN","BO","BQ","BR","BS","BT","BW","BY","BZ",
+            "CA","CC","CD","CF","CG","CH","CI","CK","CL","CM","CN","CO","CR","CU","CV","CW","CX","CY","CZ",
+            "DE","DJ","DK", "DM","DO","DZ","EC","EE","EG","EH","ER","ES","ET","FI","FJ","FK","FM","FO","FR",
+            "GA","GB","GD","GE","GF","GG","GH","GI","GL","GM","GN","GP","GQ","GR","GT","GU","GW","GY",
+            "HK","HN","HR","HT","HU","ID","IE","IL","IM","IN","IO","IQ","IR","IS","IT","JE","JM","JO","JP",
+            "KE","KG","KH","KI","KM","KN","KP","KR","KW","KY","KZ","LA","LB","LC","LI","LK","LR","LS","LT","LU","LV","LY",
+            "MA","MC","MD","ME","MF","MG","MH","MK","ML","MM","MN","MO","MP","MQ","MS","MT","MU","MV","MW","MX","MY","MZ",
+            "NA","NC","NE","NF","NG","NI","NL","NO","NP","NR","NU","NZ","OM",
+            "PA","PE","PF","PG","PH","PK","PL","PM","PR","PS","PT","PW","PY","QA","RE","RO","RS","RU","RW",
+            "SA","SB","SC","SD","SE","SG","SH","SI","SK","SL","SM","SN","SO","SR","SS","ST","SV","SX","SY","SZ",
+            "TC","TD","TF","TG","TH","TJ","TL","TM","TN","TO","TR","TT","TV","TW","TZ",
+            "UA","UG","UM","US","UY","UZ","VA","VC","VE","VG","VI","VN","VU","WF","WS","XK","YE","YT","ZA","ZM","ZW"];*/
+
+        //TODO: set this.state.narrow to second index ([1]) once the second half of the response stops getting deleted
+        return(
+            <DropdownMenu>
+                {countryList.map((countryItem) =>
+                    <DropdownItem
+                        color="primary"
+                        onClick={()=> {this.checkboxOnClick(countryItem); this.checkState();}}
+                        active={this.state.narrow[0].values.includes(countryItem)}>
+                        {countryItem}
+                    </DropdownItem>
+                )}
             </DropdownMenu>
         );
     }
@@ -124,6 +161,7 @@ export default class Itinerary extends Component {
                 if (response.statusCode >= 200 && response.statusCode <= 299) {
                     //validate response
                     console.log(response.body);
+                    console.log(this.state.narrow);
                     var ajv = new Ajv();
                     var valid = ajv.validate(schemaFind, response.body);
                     console.log(schemaFind);

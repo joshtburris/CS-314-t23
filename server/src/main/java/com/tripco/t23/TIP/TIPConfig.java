@@ -29,7 +29,7 @@ public class TIPConfig extends TIPHeader {
 
   private final transient Logger log = LoggerFactory.getLogger(TIPConfig.class);
 
-  //TODO: check this.filters is getting two separate Objects and make a new hashmap in the array if not
+
   public TIPConfig() {
     this.requestType = "config";
     this.requestVersion = 5;
@@ -52,6 +52,7 @@ public class TIPConfig extends TIPHeader {
                     "TC","TD","TF","TG","TH","TJ","TL","TM","TN","TO","TR","TT","TV","TW","TZ",
                     "UA","UG","UM","US","UY","UZ","VA","VC","VE","VG","VI","VN","VU","WF","WS","XK","YE","YT","ZA","ZM","ZW"));}}));
   }
+
 
   @Override
   public void buildResponse() {
