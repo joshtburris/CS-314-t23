@@ -83,8 +83,8 @@ public class TestTIPFind {
         expectItem.put("name", "Aviosuperficie Coraine");
         expectItem.put("municipality", "Caprino Veronese (VR)");
         expectItem.put("type", "closed");
-        expectItem.put("latitude", 45.588562);
-        expectItem.put("longitude", 10.755719);
+        expectItem.put("latitude", "45.588562");
+        expectItem.put("longitude", "10.755719");
         expectArray.add(expectItem);
 
         String expect = String.format("com.tripco.t23.TIP.TIPFind\tMatch: %s\tLimit: %d\tFound: %d\tPlaces: %s","Capri",1,4,expectArray);

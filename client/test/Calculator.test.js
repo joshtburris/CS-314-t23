@@ -52,26 +52,27 @@ function testCreateInputFields() {
 test('Testing the createForm() function in Calculator', testCreateInputFields);
 
 function testInputsOnChange() {
-  let updateCalc = jest.fn();
-  const calculator = mount((
-      <Calculator options={startProperties.options}
-                  calculatorInput={startInput.calculatorInput}
-                  settings={startProperties.options}
-                  updateStateVar={updateCalc}/>
-  ));
+    let updateCalc = jest.fn();
+    const calculator = mount((
+        <Calculator options={startProperties.options}
+                    calculatorInput={startInput.calculatorInput}
+                    settings={startProperties.options}
+                    updateStateVar={updateCalc}/>
+    ));
 
-  simulateOnChangeEvent("0, 0", calculator);
+    simulateOnChangeEvent("0, 0", calculator);
 
-  expect(updateCalc.mock.calls.length).toBe(2);
-  expect(updateCalc.mock.calls[0][1]).toBe("origin");
-  expect(updateCalc.mock.calls[0][2]).toBe("0, 0");
-  expect(updateCalc.mock.calls[1][1]).toBe("destination");
-  expect(updateCalc.mock.calls[1][2]).toBe("0, 0");
+    expect(updateCalc.mock.calls.length).toBe(2);
+    expect(updateCalc.mock.calls[0][0]).toBe("calculatorInput");
+    expect(updateCalc.mock.calls[0][1]).toBe("origin");
+    expect(updateCalc.mock.calls[0][2]).toBe("0, 0");
+    expect(updateCalc.mock.calls[1][1]).toBe("destination");
+    expect(updateCalc.mock.calls[1][2]).toBe("0, 0");
 
 }
 
 function simulateOnChangeEvent(input, reactWrapper) {
-  let event = {target: {value: `${input}`}};
+  let event = {target: {value: `${input}`, style: {borderColor: "black"}}};
   reactWrapper.find('#originOrigin').at(0).simulate('change', event);
   reactWrapper.find('#destinationDestination').at(0).simulate('change', event);
   reactWrapper.update();

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import {Alert, Container, Row, Col, Button, Dropdown, DropdownMenu, DropdownToggle, DropdownItem} from 'reactstrap';
+import {Alert, Container, CustomInput, Row, Col, Button, Dropdown, DropdownMenu, DropdownToggle, DropdownItem} from 'reactstrap';
 import ItineraryTable from "./ItineraryTable";
 import Ajv from 'ajv';
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 import Pane from "../Pane";
 import schema from './TIPItinerarySchema';
 import Parsing from '../Parsing'
+import Search from "./Search";
 import Saver from './Saver';
 import Optimizations from './Optimizations';
 import ClassMap from '../ClassMap';
@@ -13,14 +14,16 @@ import ClassMap from '../ClassMap';
 export default class Itinerary extends Component {
     constructor(props) {
         super(props);
-        this.state={
+        this.state = {
             errorMessage: null,
             dropdownOpen: false,
             tableDropdownOpen: false,
+            narrow: [{name: "type", values: ['none']}]
         };
         this.loadFile = this.loadFile.bind(this);
         this.addLocation = this.addLocation.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
+        this.setMarkers = this.setMarkers.bind(this);
         this.calculateDistances();
         this.toggleSave = this.toggleSave.bind(this);
     }
@@ -47,6 +50,15 @@ export default class Itinerary extends Component {
                                         getNextPlaceID={this.props.getNextPlaceID}
                                         getTableOpts={this.getTableOpts}/>
 
+                </Col> </Row>
+                <Row> <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <Search             updateStateVar={this.props.updateStateVar}
+                                        itineraryPlan={this.props.itineraryPlan}
+                                        settings={this.props.settings}
+                                        createErrorBanner={this.props.createErrorBanner}
+                                        addLocation={this.addLocation}
+                                        serverConfig={this.props.serverConfig}
+                                        placeAttributes={this.props.config.placeAttributes}/>
                 </Col> </Row>
             </Container>
         );
@@ -109,8 +121,6 @@ export default class Itinerary extends Component {
         }));
     }
 
-
-
     renderItinerary() {
         return(
             <Pane header={'Save/Upload Your Itinerary'}>
@@ -165,7 +175,8 @@ export default class Itinerary extends Component {
                 this.props.updateStateVar('itineraryPlan', 'distances', []);
             }
         };
-        try {e.preventDefault();
+        try {
+            e.preventDefault();
             fileReader = new FileReader();
             fileReader.onloadend = handleFileRead;
             //read the first file in
@@ -200,7 +211,7 @@ export default class Itinerary extends Component {
     calculateDistances() {
         const tipConfigRequest = {
             'requestType'        : 'itinerary',
-            'requestVersion'     : 5,  
+            'requestVersion'     : 5,
             'options'            : {title: "null", earthRadius: this.props.options.units[this.props.options.activeUnit].toString(),
                                     optimization: this.props.options.optimization},
             'places'             : this.props.itineraryPlan.places,
@@ -213,6 +224,7 @@ export default class Itinerary extends Component {
                     var ajv = new Ajv();
                     var valid = ajv.validate(schema, response.body);
                     if (!valid){
+                        console.log(ajv.errors);
                         this.setState({
                             errorMessage: this.props.createErrorBanner(
                                 "Invalid response from server"
@@ -238,17 +250,19 @@ export default class Itinerary extends Component {
             });
     }
 
-    allMarkerToggle(){
+    allMarkerToggle() {
         let markerList = {};
-        if(Object.keys(this.props.itineraryPlan.markers).length === 0){ markerList = this.setMarkers(); }
-        else{
+        let len = Object.keys(this.props.itineraryPlan.markers).length;
+        if (len === 0) {
+            markerList = this.setMarkers();
+        } else {
             Object.assign(markerList, this.props.itineraryPlan.markers);
-            let temp = Object.values(markerList);
+            let containsTrue = (Object.values(markerList).indexOf(true) !== -1) ? true : false;
             let key;
-            for(let i=0; i < Object.keys(markerList).length; i++){
+            for (let i = 0; i < len; i++) {
                 key = this.props.itineraryPlan.places[i].id;
-                if(temp.indexOf(true) !== -1){ markerList[key] = false; }
-                else{ markerList[key] = !markerList[key]; }
+                if (containsTrue) markerList[key] = false;
+                else markerList[key] = true;
             }
         }
         this.props.updateStateVar('itineraryPlan', 'markers', markerList);

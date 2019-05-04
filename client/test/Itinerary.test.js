@@ -38,7 +38,9 @@ const emptyItinerary = {
     'places':[],
     'distances':[],
     'markers':{},
-    'boundaries':null
+    'match': '',
+    'limit': 0,
+    'narrow': []
 };
 
 //jest.mock('../src/api/restfulAPI');
@@ -59,11 +61,17 @@ function testAddLocation() {
         createErrorBanner={error}/>
     ));
 
-    let newItin = emptyItinerary;
+    let newItin = {};
+    Object.assign(newItin, emptyItinerary);
+    console.log(emptyItinerary);
     newItin["places"].push({id: "0", name: "name", latitude: "50.2", longitude: "80.4"});
     newItin["markers"]["0"] = false;
+    console.log(newItin);
+    console.log(emptyItinerary);
     itinerary.instance().addLocation("name", "50.2", "80.4");
+    console.log(emptyItinerary);
     expect(error.mock.calls.length).toEqual(0);
+    console.log(updatedState.mock.calls);
     expect(updatedState.mock.calls.length).toEqual(1);
     expect(updatedState.mock.calls[0][0]).toEqual("itineraryPlan");
     expect(updatedState.mock.calls[0][1]).toEqual(newItin);
