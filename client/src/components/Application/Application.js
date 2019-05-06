@@ -61,7 +61,7 @@ export default class Application extends Component {
         this.setStateVar = this.setStateVar.bind(this);
         this.getNextPlaceID = this.getNextPlaceID.bind(this);
         this.updateClientSetting = this.updateClientSetting.bind(this);
-        this.getUserLocation = this.getUserLocation.bind(this);
+        this.getUserLocationBounds = this.getUserLocationBounds.bind(this);
 
         this.updateServerConfig();
         this.getUserLocation();
@@ -107,7 +107,7 @@ export default class Application extends Component {
         return nextID;
     }
 
-    getUserLocation() {
+    getUserLocation(){
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 loc => {
@@ -118,10 +118,12 @@ export default class Application extends Component {
                         }
                     });
                 });
-            //return L.latLng(this.state.currentLocation.lat, this.state.currentLocation.lon);
+        }
+    }
+
+    getUserLocationBounds() {
             return (L.latLngBounds(L.latLng(((this.state.currentLocation.lat -0.05) * 100) /100, ((this.state.currentLocation.lon-0.05) * 100) / 100),
                     L.latLng(((this.state.currentLocation.lat +0.05) * 100) /100, ((this.state.currentLocation.lon + 0.05) * 100) / 100)));
-        }
     }
 
     updateServerConfig() {
@@ -172,7 +174,7 @@ export default class Application extends Component {
 
             default:
                 return <Home  currentLocation={this.state.currentLocation}
-                              getUserLocation={this.getUserLocation}
+                              getUserLocationBounds={this.getUserLocationBounds}
                               itineraryPlan={this.state.itineraryPlan}/>;
         }
     }
