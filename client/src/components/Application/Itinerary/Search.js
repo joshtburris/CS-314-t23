@@ -10,7 +10,8 @@ export default class Itinerary extends Component {
     constructor(props){
         super(props);
         this.state = {
-            narrow: [{name: "type", values: ['none']}, {name: "iso_country", values: ['none']}],
+            //Shouldn't [] work better than ["none"]?
+            narrow: [{name: "type", values: ["none"]}, {name: "iso_country", values: []}],
             searchResultNumber: 0
         };
         this.updateTipFindLocation = this.updateTipFindLocation.bind(this);
@@ -48,6 +49,7 @@ export default class Itinerary extends Component {
         );
     }
 
+    //TODO: check why this format for "closed" does not work
     getDropdownItems(){
         return(
             <DropdownMenu>
@@ -61,7 +63,7 @@ export default class Itinerary extends Component {
     getDropdownItemsCountry(){
         //TODO: Replace smaller list for testing purposes with full list
         //TODO: try to get this to read from the config response
-        let countryList = ["AD", "AE", "AF"];
+        let countryList = ["AD", "AE", "AF", "US"];
         /*["AD","AE","AF","AG","AI","AL","AM","AO","AQ","AR","AS","AT","AU","AW","AZ",
             "BA","BB","BD","BE","BF","BG","BH","BI","BJ","BL","BM","BN","BO","BQ","BR","BS","BT","BW","BY","BZ",
             "CA","CC","CD","CF","CG","CH","CI","CK","CL","CM","CN","CO","CR","CU","CV","CW","CX","CY","CZ",
@@ -101,7 +103,8 @@ export default class Itinerary extends Component {
         if(this.state.narrow[0].values.indexOf('none') > -1) {
             this.state.narrow[0].values.splice(this.state.narrow[0].values.indexOf('none'), 1);
         }
-        this.setState({ narrow: [{name: "type", values: [...this.state.narrow[0].values]}] });
+        //TODO: add the following once the second value stops getting deleted: , {name: "iso_country", values: [...this.state.narrow[1].values]}
+        this.setState({ narrow: [{name: "type", values: [...this.state.narrow[0].values]}]});
         this.updateFindPlaces("narrow", this.state.narrow);
     }
 
@@ -149,7 +152,7 @@ export default class Itinerary extends Component {
         if (keyword.length === 0) return;
         const tipFindConfigRequest = {
             "requestType"    : "find",
-            "requestVersion" : 4,
+            "requestVersion" : 5,
             "match"          : String(keyword),
             "narrow"         : narrow,
             "limit"          : Number(limit),

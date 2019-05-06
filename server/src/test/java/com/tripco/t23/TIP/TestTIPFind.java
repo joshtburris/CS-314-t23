@@ -73,6 +73,39 @@ public class TestTIPFind {
     }
 
     @Test
+    public void FindWithFilterMulti(){
+        ArrayList<Map> filter = new ArrayList<>();
+        Map filterEntry = new HashMap();
+        ArrayList<String> valuesEntry = new ArrayList<>();
+        filterEntry.put("name", "type");
+        valuesEntry.add("heliport");
+        filterEntry.put("values", valuesEntry);
+        filter.add(filterEntry);
+        Map filterEntry2 = new HashMap();
+        ArrayList<String> valuesEntry2 = new ArrayList<>();
+        filterEntry2.put("name", "iso_country");
+        valuesEntry2.add("US");
+        filterEntry2.put("values", valuesEntry2);
+        filter.add(filterEntry2);
+
+        TIPFind dtc = new TIPFind("Capri", 0, filter);
+        dtc.buildResponse();
+
+        ArrayList<Map> expect = new ArrayList<>();
+        Map expectItem = new HashMap();
+        expectItem.put("id", "CO32");
+        expectItem.put("name", "Capri Heliport");
+        expectItem.put("municipality", "Denver");
+        expectItem.put("type", "heliport");
+        expectItem.put("latitude", "39.85279846191406");
+        expectItem.put("longitude", "-104.97699737548828");
+        expect.add(expectItem);
+
+        ArrayList<Map> actual = dtc.getPlaces();
+        assertEquals("find capri heliport with multiple filters", expect, actual);
+    }
+
+    @Test
     public void testToString(){
         TIPFind findFour = new TIPFind("Capri", 1);
         findFour.buildResponse();

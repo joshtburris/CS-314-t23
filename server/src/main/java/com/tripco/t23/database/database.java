@@ -83,8 +83,10 @@ public class database {
                 }
             }
             //build the end of the string
-            finalFilter += ") order by name;";
+            finalFilter += ")";
         }
+        //build the end of the string
+        finalFilter += " order by name;";
 
         //temporary copy of calLoginAll while tools to build final string are constructed
         String countString = "select count(id) from world where (id like \'%" + match + "%\' or name like \'%" + match
