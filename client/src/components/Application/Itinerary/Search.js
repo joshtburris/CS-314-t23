@@ -117,11 +117,6 @@ export default class Itinerary extends Component {
     updateTipFindLocation(unit){
         unit.preventDefault();
         let flag = true, keyword = this.props.itineraryPlan.match, limit = this.props.itineraryPlan.limit, narrow = Object.assign(this.props.itineraryPlan.narrow);
-        /*
-        if(narrow.length === 1 && narrow[0].values.indexOf('none') > -1){
-            narrow = []
-        }
-        */
         if(keyword.length === 0){
             this.setState({
                 errorMessage: <Alert className='bg-csu-canyon text-white font-weight-extrabold'>Error(0): Invalid input
@@ -150,11 +145,8 @@ export default class Itinerary extends Component {
             .then((response) => {
                 if (response.statusCode >= 200 && response.statusCode <= 299) {
                     //validate response
-                    console.log(response.body);
-                    console.log(this.state.narrow);
                     var ajv = new Ajv();
                     var valid = ajv.validate(schemaFind, response.body);
-                    console.log(schemaFind);
                     if (!valid) {
                         console.log(ajv.errors);
                         this.setState({
