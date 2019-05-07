@@ -10,7 +10,7 @@ export default class Itinerary extends Component {
     constructor(props){
         super(props);
         this.state = {
-            narrow: [{name: "type", values: []}, {name: "iso_country", values: []}],
+            narrow: [{name: "type", values: ['none']}],
             searchResultNumber: 0
         };
         this.updateTipFindLocation = this.updateTipFindLocation.bind(this);
@@ -27,12 +27,8 @@ export default class Itinerary extends Component {
                     </Col> <Col>
                     <div style={{width: '110px'}}>Choose Filters: </div>
                     <UncontrolledButtonDropdown>
-                        <DropdownToggle caret color="primary"> Location Type </DropdownToggle>
+                        <DropdownToggle caret color="primary"> Filters </DropdownToggle>
                         {this.getDropdownItems()}
-                    </UncontrolledButtonDropdown>
-                    <UncontrolledButtonDropdown>
-                        <DropdownToggle caret color="primary"> Country </DropdownToggle>
-                        {this.getDropdownItemsCountry()}
                     </UncontrolledButtonDropdown>
                     </Col> <Col>
                     <div style={{height: '20px'}}/>
@@ -51,54 +47,33 @@ export default class Itinerary extends Component {
     getDropdownItems(){
         return(
             <DropdownMenu>
-                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('airport', 0);}} active={this.state.narrow[0].values.includes('airport')}>Airport</DropdownItem>
-                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('heliport', 0);}} active={this.state.narrow[0].values.includes('heliport')}>Heliport</DropdownItem>
-                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('balloonport', 0);}} active={this.state.narrow[0].values.includes('balloonport')}>Balloonport</DropdownItem>
-                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('closed', 0);}} active={this.state.narrow[0].values.includes('closed')}>Closed</DropdownItem>
+                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('airport'); this.checkState();}} active={this.state.narrow[0].values.includes('airport')}>Airport</DropdownItem>
+                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('heliport');this.checkState();}} active={this.state.narrow[0].values.includes('heliport')}>Heliport</DropdownItem>
+                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('balloonport');this.checkState();}} active={this.state.narrow[0].values.includes('balloonport')}>Balloonport</DropdownItem>
             </DropdownMenu>
         );
     }
 
-    getDropdownItemsCountry(){
-        let countryList = ["AD","AE","AF","AG","AI","AL","AM","AO","AQ","AR","AS","AT","AU","AW","AZ",
-            "BA","BB","BD","BE","BF","BG","BH","BI","BJ","BL","BM","BN","BO","BQ","BR","BS","BT","BW","BY","BZ",
-            "CA","CC","CD","CF","CG","CH","CI","CK","CL","CM","CN","CO","CR","CU","CV","CW","CX","CY","CZ",
-            "DE","DJ","DK", "DM","DO","DZ","EC","EE","EG","EH","ER","ES","ET","FI","FJ","FK","FM","FO","FR",
-            "GA","GB","GD","GE","GF","GG","GH","GI","GL","GM","GN","GP","GQ","GR","GT","GU","GW","GY",
-            "HK","HN","HR","HT","HU","ID","IE","IL","IM","IN","IO","IQ","IR","IS","IT","JE","JM","JO","JP",
-            "KE","KG","KH","KI","KM","KN","KP","KR","KW","KY","KZ","LA","LB","LC","LI","LK","LR","LS","LT","LU","LV","LY",
-            "MA","MC","MD","ME","MF","MG","MH","MK","ML","MM","MN","MO","MP","MQ","MS","MT","MU","MV","MW","MX","MY","MZ",
-            "NA","NC","NE","NF","NG","NI","NL","NO","NP","NR","NU","NZ","OM",
-            "PA","PE","PF","PG","PH","PK","PL","PM","PR","PS","PT","PW","PY","QA","RE","RO","RS","RU","RW",
-            "SA","SB","SC","SD","SE","SG","SH","SI","SK","SL","SM","SN","SO","SR","SS","ST","SV","SX","SY","SZ",
-            "TC","TD","TF","TG","TH","TJ","TL","TM","TN","TO","TR","TT","TV","TW","TZ",
-            "UA","UG","UM","US","UY","UZ","VA","VC","VE","VG","VI","VN","VU","WF","WS","XK","YE","YT","ZA","ZM","ZW"];
-
-        return(
-            <DropdownMenu>
-                <div style={{height: '200px', width: '150px', overflowY: 'scroll'}}>
-                {countryList.map((countryItem) =>
-                    <DropdownItem
-                        color="primary"
-                        onClick={()=> {this.checkboxOnClick(countryItem, 1);}}
-                        active={this.state.narrow[1].values.includes(countryItem)}>
-                        {countryItem}
-                    </DropdownItem>
-                )}
-                </div>
-            </DropdownMenu>
-        );
-    }
-
-    checkboxOnClick(str, i){
-        const index = this.state.narrow[i].values.indexOf(str);
+    checkboxOnClick(str){
+        const index = this.state.narrow[0].values.indexOf(str);
         if (index < 0) {
-            this.state.narrow[i].values.push(str);
+            this.state.narrow[0].values.push(str);
         } else {
-            this.state.narrow[i].values.splice(index, 1);
+            this.state.narrow[0].values.splice(index, 1);
         }
-        this.setState({ narrow: [{name: "type", values: [...this.state.narrow[0].values]}, {name: "iso_country", values: [...this.state.narrow[1].values]}]});
+        if(this.state.narrow[0].values.indexOf('none') > -1) {
+            this.state.narrow[0].values.splice(this.state.narrow[0].values.indexOf('none'), 1);
+        }
+        this.setState({ narrow: [{name: "type", values: [...this.state.narrow[0].values]}] });
         this.updateFindPlaces("narrow", this.state.narrow);
+    }
+
+    checkState(){
+        if(this.state.narrow[0].values.length === 0){
+            this.state.narrow[0].values.push("none");
+            this.setState({ narrow: [{name: "type", values: [...this.state.narrow[0].values]}] });
+            this.updateFindPlaces("narrow", this.state.narrow);
+        }
     }
 
     createInputFields(stateVar, placeHolder){
@@ -117,6 +92,9 @@ export default class Itinerary extends Component {
     updateTipFindLocation(unit){
         unit.preventDefault();
         let flag = true, keyword = this.props.itineraryPlan.match, limit = this.props.itineraryPlan.limit, narrow = Object.assign(this.props.itineraryPlan.narrow);
+        if(narrow.length === 1 && narrow[0].values.indexOf('none') > -1){
+            narrow = []
+        }
         if(keyword.length === 0){
             this.setState({
                 errorMessage: <Alert className='bg-csu-canyon text-white font-weight-extrabold'>Error(0): Invalid input
@@ -134,7 +112,7 @@ export default class Itinerary extends Component {
         if (keyword.length === 0) return;
         const tipFindConfigRequest = {
             "requestType"    : "find",
-            "requestVersion" : 5,
+            "requestVersion" : 4,
             "match"          : String(keyword),
             "narrow"         : narrow,
             "limit"          : Number(limit),
@@ -145,8 +123,10 @@ export default class Itinerary extends Component {
             .then((response) => {
                 if (response.statusCode >= 200 && response.statusCode <= 299) {
                     //validate response
+                    console.log(response.body);
                     var ajv = new Ajv();
                     var valid = ajv.validate(schemaFind, response.body);
+                    console.log(schemaFind);
                     if (!valid) {
                         console.log(ajv.errors);
                         this.setState({
