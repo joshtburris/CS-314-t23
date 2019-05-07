@@ -38,6 +38,26 @@ public class TestTIPFind {
     }
 
     @Test
+    public void testFindFilterEmpty(){
+        ArrayList<Map> filter = new ArrayList<>();
+        Map filterEntry = new HashMap();
+        ArrayList<String> valuesEntry = new ArrayList<>();
+        filterEntry.put("name", "type");
+        filterEntry.put("values", valuesEntry);
+        filter.add(filterEntry);
+        Map filterEntry2 = new HashMap();
+        ArrayList<String> valuesEntry2 = new ArrayList<>();
+        filterEntry2.put("name", "iso_country");
+        filterEntry2.put("values", valuesEntry2);
+        filter.add(filterEntry2);
+        TIPFind findAll = new TIPFind("Capri", 0, filter);
+        findAll.buildResponse();
+        long expect = 4;
+        long actual = findAll.getFound();
+        assertEquals("Finding four objects with empty filters", expect, actual);
+    }
+
+    @Test
     public void FindWithFilter(){
         ArrayList<Map> filter = new ArrayList<>();
         Map filterEntry = new HashMap();

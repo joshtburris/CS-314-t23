@@ -10,8 +10,7 @@ export default class Itinerary extends Component {
     constructor(props){
         super(props);
         this.state = {
-            //Shouldn't [] work better than ["none"]?
-            narrow: [{name: "type", values: ["none"]}, {name: "iso_country", values: []}],
+            narrow: [{name: "type", values: []}, {name: "iso_country", values: []}],
             searchResultNumber: 0
         };
         this.updateTipFindLocation = this.updateTipFindLocation.bind(this);
@@ -49,22 +48,19 @@ export default class Itinerary extends Component {
         );
     }
 
-    //TODO: check why this format for "closed" does not work
     getDropdownItems(){
         return(
             <DropdownMenu>
-                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('airport'); this.checkState();}} active={this.state.narrow[0].values.includes('airport')}>Airport</DropdownItem>
-                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('heliport');this.checkState();}} active={this.state.narrow[0].values.includes('heliport')}>Heliport</DropdownItem>
-                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('balloonport');this.checkState();}} active={this.state.narrow[0].values.includes('balloonport')}>Balloonport</DropdownItem>
+                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('airport', 0);}} active={this.state.narrow[0].values.includes('airport')}>Airport</DropdownItem>
+                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('heliport', 0);}} active={this.state.narrow[0].values.includes('heliport')}>Heliport</DropdownItem>
+                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('balloonport', 0);}} active={this.state.narrow[0].values.includes('balloonport')}>Balloonport</DropdownItem>
+                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('closed', 0);}} active={this.state.narrow[0].values.includes('closed')}>Closed</DropdownItem>
             </DropdownMenu>
         );
     }
 
     getDropdownItemsCountry(){
-        //TODO: Replace smaller list for testing purposes with full list
-        //TODO: try to get this to read from the config response
-        let countryList = ["AD", "AE", "AF", "US"];
-        /*["AD","AE","AF","AG","AI","AL","AM","AO","AQ","AR","AS","AT","AU","AW","AZ",
+        let countryList = ["AD","AE","AF","AG","AI","AL","AM","AO","AQ","AR","AS","AT","AU","AW","AZ",
             "BA","BB","BD","BE","BF","BG","BH","BI","BJ","BL","BM","BN","BO","BQ","BR","BS","BT","BW","BY","BZ",
             "CA","CC","CD","CF","CG","CH","CI","CK","CL","CM","CN","CO","CR","CU","CV","CW","CX","CY","CZ",
             "DE","DJ","DK", "DM","DO","DZ","EC","EE","EG","EH","ER","ES","ET","FI","FJ","FK","FM","FO","FR",
@@ -76,44 +72,33 @@ export default class Itinerary extends Component {
             "PA","PE","PF","PG","PH","PK","PL","PM","PR","PS","PT","PW","PY","QA","RE","RO","RS","RU","RW",
             "SA","SB","SC","SD","SE","SG","SH","SI","SK","SL","SM","SN","SO","SR","SS","ST","SV","SX","SY","SZ",
             "TC","TD","TF","TG","TH","TJ","TL","TM","TN","TO","TR","TT","TV","TW","TZ",
-            "UA","UG","UM","US","UY","UZ","VA","VC","VE","VG","VI","VN","VU","WF","WS","XK","YE","YT","ZA","ZM","ZW"];*/
+            "UA","UG","UM","US","UY","UZ","VA","VC","VE","VG","VI","VN","VU","WF","WS","XK","YE","YT","ZA","ZM","ZW"];
 
-        //TODO: set this.state.narrow to second index ([1]) once the second half of the response stops getting deleted
         return(
             <DropdownMenu>
+                <div style={{height: '200px', width: '150px', overflowY: 'scroll'}}>
                 {countryList.map((countryItem) =>
                     <DropdownItem
                         color="primary"
-                        onClick={()=> {this.checkboxOnClick(countryItem); this.checkState();}}
-                        active={this.state.narrow[0].values.includes(countryItem)}>
+                        onClick={()=> {this.checkboxOnClick(countryItem, 1);}}
+                        active={this.state.narrow[1].values.includes(countryItem)}>
                         {countryItem}
                     </DropdownItem>
                 )}
+                </div>
             </DropdownMenu>
         );
     }
 
-    checkboxOnClick(str){
-        const index = this.state.narrow[0].values.indexOf(str);
+    checkboxOnClick(str, i){
+        const index = this.state.narrow[i].values.indexOf(str);
         if (index < 0) {
-            this.state.narrow[0].values.push(str);
+            this.state.narrow[i].values.push(str);
         } else {
-            this.state.narrow[0].values.splice(index, 1);
+            this.state.narrow[i].values.splice(index, 1);
         }
-        if(this.state.narrow[0].values.indexOf('none') > -1) {
-            this.state.narrow[0].values.splice(this.state.narrow[0].values.indexOf('none'), 1);
-        }
-        //TODO: add the following once the second value stops getting deleted: , {name: "iso_country", values: [...this.state.narrow[1].values]}
-        this.setState({ narrow: [{name: "type", values: [...this.state.narrow[0].values]}]});
+        this.setState({ narrow: [{name: "type", values: [...this.state.narrow[0].values]}, {name: "iso_country", values: [...this.state.narrow[1].values]}]});
         this.updateFindPlaces("narrow", this.state.narrow);
-    }
-
-    checkState(){
-        if(this.state.narrow[0].values.length === 0){
-            this.state.narrow[0].values.push("none");
-            this.setState({ narrow: [{name: "type", values: [...this.state.narrow[0].values]}] });
-            this.updateFindPlaces("narrow", this.state.narrow);
-        }
     }
 
     createInputFields(stateVar, placeHolder){
@@ -132,9 +117,11 @@ export default class Itinerary extends Component {
     updateTipFindLocation(unit){
         unit.preventDefault();
         let flag = true, keyword = this.props.itineraryPlan.match, limit = this.props.itineraryPlan.limit, narrow = Object.assign(this.props.itineraryPlan.narrow);
+        /*
         if(narrow.length === 1 && narrow[0].values.indexOf('none') > -1){
             narrow = []
         }
+        */
         if(keyword.length === 0){
             this.setState({
                 errorMessage: <Alert className='bg-csu-canyon text-white font-weight-extrabold'>Error(0): Invalid input

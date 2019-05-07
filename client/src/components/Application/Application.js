@@ -37,7 +37,7 @@ export default class Application extends Component {
                 markers:{},
                 match: '',
                 limit: 0,
-                narrow: [{name: "type", values: ["none"]}]
+                narrow: [{name: "type", values: []}, {name: "iso_country", values: []}]
             },
             headerOptions: {
                 name:true,
