@@ -21,8 +21,8 @@ export default class classMap extends Component{
         let corner1 = L.latLng(40.076179, -105.580773),
             corner2 = L.latLng(41.076179, -104.580773),
             c_location;
-        if (this.props.getUserLocation === undefined) {c_location = L.latLngBounds([corner1, corner2]);}
-        else {c_location = this.props.getUserLocation()}
+        if (this.props.getUserLocationBounds === undefined) {c_location = L.latLngBounds([corner1, corner2]);}
+        else {c_location = this.props.getUserLocationBounds()}
         return (
             <Map bounds={this.checkForBounds(c_location)}
                  style={{height: 400, maxwidth: 700}}
@@ -101,7 +101,7 @@ export default class classMap extends Component{
     renderHomeMarker(){
         if(this.props.currentLocation !== undefined){
             let loc = L.latLng(40.576179, -105.080773);
-            if (this.props.getUserLocation() !== undefined){loc = L.latLng(this.props.currentLocation.lat, this.props.currentLocation.lon);}
+            if (this.props.getUserLocationBounds() !== undefined){loc = L.latLng(this.props.currentLocation.lat, this.props.currentLocation.lon);}
             return (
                 <Marker position={loc}
                         icon={this.markerIcon()}
