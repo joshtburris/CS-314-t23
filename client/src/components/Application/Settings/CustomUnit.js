@@ -79,8 +79,7 @@ export default class CustomUnit extends Component{
 
     generateList() {
         var mylist = [];
-        var unit = '';
-        for(unit in this.props.planOptions.units){
+        for(let unit in this.props.planOptions.units){
             if(unit != 'miles' && unit != 'Nautical Miles' && unit != 'kilometers'){
                 mylist.push(
                     <div key={"units_"+unit}>
@@ -92,7 +91,7 @@ export default class CustomUnit extends Component{
                                 {this.props.planOptions.units[unit]}
                             </Col>
                             <Col xs="2" sm="2" md="2" lg="2" xl="2">
-                                <Button type='submit' color="link" onClick={()=>{this.deleteUnits(unit);}} > <b>X</b> </Button>
+                                <Button type='submit' color="link"  onClick={()=>{this.deleteUnits(unit);}} > <b>X</b> </Button>
                     </Col> </Row> </div>);
             }
         }
@@ -100,14 +99,14 @@ export default class CustomUnit extends Component{
     }
 
     deleteUnits(unit) {
-        let temp = this.props.planOptions.units;
+        let temp = Object.assign({}, this.props.planOptions.units);
         for (let key in this.props.planOptions.units) {
             if (key === unit) {
                 delete temp[key];
             }
         }
         this.props.updateStateVar('planOptions', 'units', temp);
-        if (temp[unit] === temp[this.props.planOptions.activeUnit]){
+        if (unit === this.props.planOptions.activeUnit){
             this.props.updateStateVar('planOptions', 'activeUnit', 'miles');
         }
     }
@@ -135,7 +134,6 @@ export default class CustomUnit extends Component{
         let updatedUnits = Object.assign({}, this.props.planOptions.units);
         updatedUnits[this.state.inputText] = temp;
         this.setState({inputText: '', inputNum: ''});
-        console.log(this.state);
         if(flag) {
             this.setState({errorMessage: ''});
             this.props.updateStateVar('planOptions', 'units', updatedUnits);
