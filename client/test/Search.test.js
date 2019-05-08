@@ -17,6 +17,18 @@ const startProperties = {
         'match': '',
         'limit': 0,
         'narrow': [{'name': "type", 'values': []}]
+    },
+    'config': {
+        "requestType"        : "config",
+        "requestVersion"     : 5,
+        "serverName"         : "t## name",
+        "placeAttributes"    : ["name", "latitude", "longitude", "id", "municipality", "region", "country", "continent", "altitude"],
+        "optimizations"      : ["none", "short", "shorter", "shortest"],
+        "filters"            : [{"name": "type",
+            "values": ["airport","heliport","balloonport","closed"]},
+            {"name": "country",
+                "values": ["AD", "AE", "AF"]}
+        ]
     }
 };
 
@@ -30,7 +42,8 @@ function testServerCalledTrue() {
 
     const search = mount((
         <Search     settings={startProperties.options}
-                    itineraryPlan={startProperties.itineraryPlan}/>
+                    itineraryPlan={startProperties.itineraryPlan}
+                    serverConfig={startProperties.config}/>
     ));
 
     search.instance().tipFindLocation("fort collins", 0, ["airport", "heliport", "balloonport"]);
@@ -44,7 +57,8 @@ function testServerCalledFalse() {
 
     const search = mount((
         <Search     settings={startProperties.options}
-                    itineraryPlan={startProperties.itineraryPlan}/>
+                    itineraryPlan={startProperties.itineraryPlan}
+                    serverConfig={startProperties.config}/>
     ));
 
     search.instance().tipFindLocation("", 0, []);
@@ -58,7 +72,8 @@ function testAddValidFoundLocation(){
     const search = mount((
         <Search   settings={startProperties.options}
                   itineraryPlan={startProperties.itineraryPlan}
-                  updateStateVar={itineraryPlanMock}/>
+                  updateStateVar={itineraryPlanMock}
+                  serverConfig={startProperties.config}/>
     ));
     //console.log(search.state().narrow);
     expect(search.state().narrow[0].name).toEqual('type');
@@ -89,7 +104,8 @@ function testUpdateFindPlaces(){
     const search = mount((
         <Search   settings={startProperties.options}
                   itineraryPlan={startProperties.itineraryPlan}
-                  updateStateVar={itineraryPlanMock}/>
+                  updateStateVar={itineraryPlanMock}
+                  serverConfig={startProperties.config}/>
     ));
 
     search.instance().updateFindPlaces('narrow', []);
@@ -122,7 +138,8 @@ function testTipFindTable() {
     const search = mount((
         <Search   settings={startProperties.options}
                   itineraryPlan={startProperties.itineraryPlan}
-                  updateStateVar={itineraryPlanMock}/>
+                  updateStateVar={itineraryPlanMock}
+                  serverConfig={startProperties.config}/>
     ));
     let tempProps = search.props().itineraryPlan.placesFound;
     tempProps.push(
@@ -144,7 +161,8 @@ function testDropDownButton(){
     const search = mount((
         <Search   settings={startProperties.options}
                   itineraryPlan={startProperties.itineraryPlan}
-                  updateStateVar={itineraryPlanMock}/>
+                  updateStateVar={itineraryPlanMock}
+                  serverConfig={startProperties.config}/>
     ));
     expect(search.state().narrow[0].values).toEqual([]);
     search.find('DropdownItem').at(0).simulate('click');
@@ -166,7 +184,8 @@ function testDropDownButtonCountry(){
     const search = mount((
         <Search   settings={startProperties.options}
                   itineraryPlan={startProperties.itineraryPlan}
-                  updateStateVar={itineraryPlanMock}/>
+                  updateStateVar={itineraryPlanMock}
+                  serverConfig={startProperties.config}/>
     ));
     expect(search.state().narrow[1].values).toEqual([]);
     search.find('DropdownItem').at(4).simulate('click');
@@ -205,12 +224,12 @@ function testGetAttributes() {
         <Search   settings={properties.options}
                   itineraryPlan={properties.itineraryPlan}
                   placeAttributes={properties.attributes}
-                  updateStateVar={itineraryPlanMock}/>
+                  updateStateVar={itineraryPlanMock}
+                  serverConfig={startProperties.config}/>
     ));
     console.log(search.props().placeAttributes);
     const attr = search.instance().getAttributes();
     expect(attr).toEqual(["name", "latitude", "longitude", "municipality", "altitude", "type"]);
-
 }
 
 test("Testing function getAttributes", testGetAttributes);
@@ -221,7 +240,8 @@ function testCreateInputField(){
         <Search   settings={properties.options}
                   itineraryPlan={properties.itineraryPlan}
                   placeAttributes={properties.attributes}
-                  updateStateVar={itineraryPlanMock}/>
+                  updateStateVar={itineraryPlanMock}
+                  serverConfig={startProperties.config}/>
     ));
 
     let numberOfInputs = search.find('Input').length;
