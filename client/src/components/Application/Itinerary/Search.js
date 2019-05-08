@@ -10,7 +10,7 @@ export default class Itinerary extends Component {
     constructor(props){
         super(props);
         this.state = {
-            narrow: [{name: "type", values: []}, {name: "iso_country", values: []}],
+            narrow: [{name: "type", values: []}, {name: "country", values: []}],
             searchResultNumber: 0
         };
         this.updateTipFindLocation = this.updateTipFindLocation.bind(this);
