@@ -19,17 +19,17 @@ const startProperties = {
         'narrow': [{'name': "type", 'values': []}]
     },
     'config': {
-        "requestType"        : "config",
-        "requestVersion"     : 5,
-        "serverName"         : "t## name",
-        "placeAttributes"    : ["name", "latitude", "longitude", "id", "municipality", "region", "country", "continent", "altitude"],
-        "optimizations"      : ["none", "short", "shorter", "shortest"],
-        "filters"            : [{"name": "type",
-            "values": ["airport","heliport","balloonport","closed"]},
-            {"name": "country",
-                "values": ["AD", "AE", "AF"]}
-        ]
-    }
+                "requestType"        : "config",
+                "requestVersion"     : 5,
+                "serverName"         : "t## name",
+                "placeAttributes"    : ["name", "latitude", "longitude", "id", "municipality", "region", "country", "continent", "altitude"],
+                "optimizations"      : ["none", "short", "shorter", "shortest"],
+                "filters"            : [{"name": "type",
+                                        "values": ["airport","heliport","balloonport","closed"]},
+                                        {"name": "country",
+                                        "values": ["AD", "AE", "AF"]}
+                                       ]
+              }
 };
 
 jest.mock('../src/api/restfulAPI');
