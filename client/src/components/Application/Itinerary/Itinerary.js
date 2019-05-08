@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Alert, Container, CustomInput, Row, Col, Button, Dropdown, DropdownMenu, DropdownToggle, DropdownItem} from 'reactstrap';
+import {Alert, Container, Row, Col, Button, Dropdown, DropdownMenu, DropdownToggle, DropdownItem} from 'reactstrap';
 import ItineraryTable from "./ItineraryTable";
 import Ajv from 'ajv';
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
@@ -18,7 +18,7 @@ export default class Itinerary extends Component {
             errorMessage: null,
             dropdownOpen: false,
             tableDropdownOpen: false,
-            narrow: [{name: "type", values: ['none']}]
+            narrow: [{name: "type", values: ['none']}],
         };
         this.loadFile = this.loadFile.bind(this);
         this.addLocation = this.addLocation.bind(this);

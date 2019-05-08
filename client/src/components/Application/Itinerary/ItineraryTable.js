@@ -35,6 +35,7 @@ export default class ItineraryTable extends Component {
     renderTable() {
         return(
             <Pane header={'Your Itinerary'}>
+                {this.getTableOpts()}
                 <div style={this.getStyle()}>
                     <Table hover>
                         {this.generateItinerary()}
@@ -43,7 +44,6 @@ export default class ItineraryTable extends Component {
                         <b>Add Location</b>
                         {this.newLocationInput()}
                     </div>
-
             </Pane>
         );
     }
@@ -109,7 +109,6 @@ export default class ItineraryTable extends Component {
             list.push(<tr key={"TableRow_" + (Number(place)-1)}>
                 {this.getLine(this.props.itineraryPlan.distances[place-1], dist, index+1)}</tr>);
             dist = dist + this.props.itineraryPlan.distances[place];
-            ++index;
         }
         //Push a copy of first places to end the trip
         if (this.props.itineraryPlan.places.length > 1) {
