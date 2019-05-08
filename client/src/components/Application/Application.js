@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, CardBody, CardHeader, Container} from 'reactstrap';
+import {Container} from 'reactstrap';
 import {getOriginalServerPort, sendServerRequest} from '../../api/restfulAPI';
 import Home from './Home';
 import Options from './Options/Options';
@@ -81,9 +81,7 @@ export default class Application extends Component {
         if (field === 'serverPort')
             this.setState({clientSettings: {serverPort: value}}, this.updateServerConfig);
         else {
-            let newSettings = Object.assign({}, this.state.planOptions);
-            newSettings[field] = value;
-            this.setState({clientSettings: newSettings});
+            this.updateStateVar("planOptions", field, value);
         }
     }
 
