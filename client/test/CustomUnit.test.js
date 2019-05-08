@@ -80,30 +80,23 @@ function simulateOnChangeEvent(inputText, inputNum, reactWrapper) {
 test('Testing the addUnits() function in CustomUnit', testCustomUnitAdd);
 
 const planOptions = {
-    'units': {'Glorks': 3003},
-    'activeUnit': '',
+    'units': {'Glorks': 1},
+    'activeUnit': 'miles',
 };
 
 function testCustomUnitDelete() {
-    const mockPlanOptions = jest.fn();
-
+    const mockUpdate = jest.fn();
     const customunit = mount((
         <CustomUnit planOptions={planOptions}
                     customUnitInput={startInput.customUnitInput}
-                    updateStateVar={mockPlanOptions}/>
+                    updateStateVar={mockUpdate}/>
     ));
-
-    //Custom unit from previous test is still stored
-    expect(mockPlanOptions.mock.calls.length).toEqual(0);
-    expect(customunit.props().planOptions.units).toEqual({'Glorks': 3003});
 
     //Presses button, deleting
     simulateButtonPress(customunit);
-    expect(mockPlanOptions.mock.calls.length).toEqual(2);
-    expect(mockPlanOptions.mock.calls[0][0]).toEqual('planOptions');
-    expect(mockPlanOptions.mock.calls[0][1]).toEqual('units');
-    expect(mockPlanOptions.mock.calls[0][2]).toEqual({});
-    expect(customunit.props().planOptions.units).toEqual({});
+    console.log("DEBUG: ", mockUpdate.mock.calls);
+    expect(mockUpdate.mock.calls.length).toEqual(1);
+    expect(mockUpdate.mock.calls[0]).toEqual(['planOptions',"units",{}]);
 }
 
 function simulateButtonPress(reactWrapper) {

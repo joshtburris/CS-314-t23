@@ -30,7 +30,7 @@ export default class Home extends Component {
         return (
             <Pane header={'Where Am I?'}>
                 <ClassMap   currentLocation={this.props.currentLocation}
-                            getUserLocation={this.props.getUserLocation}
+                            getUserLocationBounds={this.props.getUserLocationBounds}
                             places={this.props.itineraryPlan.places}/>
             </Pane>
         );

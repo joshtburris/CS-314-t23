@@ -21,7 +21,7 @@ const properties = {
 function testMap() {
     const map = mount((
         <ClassMap   currentLocation={properties.currentLocation}
-                    getUserLocation={getUserLocation}
+                    getUserLocationBounds={getUserLocation}
                     places={properties.itineraryPlan.places}/>
     ));
 
