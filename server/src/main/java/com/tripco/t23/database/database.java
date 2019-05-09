@@ -48,7 +48,7 @@ public class database {
         String countString = "select count(id) from world where id like \'%" + match + "%\' or name like \'%" + match
                                 + "%\' or municipality like \'%" + match +"%\' or type like \'%" + match + "%\' or latitude like \'%"
                                 + match + "%\' or longitude like \'%" + match + "%\' order by name;";
-        String searchString = "select id,name,municipality,type,latitude,longitude from world where id like \'%" + match + "%\' or name like \'%" + match
+        String searchString = "select id,name,municipality,type,latitude,longitude,altitude from world where id like \'%" + match + "%\' or name like \'%" + match
                                 + "%\' or municipality like \'%" + match +"%\' or type like \'%" + match + "%\' or latitude like \'%"
                                 + match + "%\' or longitude like \'%" + match + "%\' order by name;";
         return login(countString, searchString);
@@ -96,7 +96,7 @@ public class database {
         String countString = "select count(id) from world where (id like \'%" + match + "%\' or name like \'%" + match
                 + "%\' or municipality like \'%" + match +"%\' or type like \'%" + match + "%\' or latitude like \'%"
                 + match + "%\' or longitude like \'%" + match + "%\')" + finalFilter;
-        String searchString = "select id,name,municipality,type,latitude,longitude from world where (id like \'%" + match + "%\' or name like \'%" + match
+        String searchString = "select id,name,municipality,type,latitude,longitude,altitude from world where (id like \'%" + match + "%\' or name like \'%" + match
                 + "%\' or municipality like \'%" + match +"%\' or type like \'%" + match + "%\' or latitude like \'%"
                 + match + "%\' or longitude like \'%" + match + "%\')" + finalFilter;
         return login(countString, searchString);

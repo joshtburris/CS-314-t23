@@ -108,6 +108,7 @@ export default class Parsing{
     }
 
     static isNameValid(name) {
+        if (name == null) return false;
         return this.matchExact(/[A-Za-z\\ \\-]+/, name);
     }
 
