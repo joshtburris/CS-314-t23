@@ -253,3 +253,26 @@ function testCreateInputField(){
 }
 
 test("Testing createInputField", testCreateInputField);
+
+function testClearFilters(){
+    const itineraryPlanMock = jest.fn();
+    const search = mount((
+        <Search   settings={properties.options}
+                  itineraryPlan={properties.itineraryPlan}
+                  placeAttributes={properties.attributes}
+                  updateStateVar={itineraryPlanMock}
+                  serverConfig={startProperties.config}/>
+    ));
+
+    expect(search.state().narrow[0].values).toEqual([]);
+    expect(search.state().narrow[1].values).toEqual([]);
+    search.find('DropdownItem').at(0).simulate('click');
+    search.find('DropdownItem').at(4).simulate('click');
+    expect(search.state().narrow[0].values[0]).toEqual('airport');
+    expect(search.state().narrow[1].values[0]).toEqual('AD');
+    search.find('#clearFilters').at(0).simulate('click');
+    expect(search.state().narrow[0].values).toEqual([]);
+    expect(search.state().narrow[1].values).toEqual([]);
+}
+
+test("Testing Clear Filters button", testClearFilters);
