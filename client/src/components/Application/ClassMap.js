@@ -112,11 +112,15 @@ export default class classMap extends Component{
                 <Marker position={loc}
                         icon={this.markerIcon()}
                         id={'mapMarker'}>
-                    <Popup className="font-weight-extrabold">Colorado State University</Popup>
+                    <Popup className="font-weight-extrabold">Latitude: {this.getHomePin(loc.lat)}, Longitude: {this.getHomePin(loc.lng)}</Popup>
                 </Marker>
             );
         }
         return undefined;
+    }
+
+    getHomePin(loc){
+        return loc.toString();
     }
 
     renderMarkers(placeList) {
