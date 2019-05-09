@@ -43,7 +43,7 @@ const emptyItinerary = {
     'narrow': []
 };
 
-function testAddLocation() {
+function testAddLocationManual() {
     let updatedState = jest.fn();
     let error = jest.fn();
     function getNextPlaceID() { return "0"; }
@@ -84,7 +84,34 @@ function testAddLocation() {
     expect(updatedState.mock.calls.length).toEqual(2);
 }
 
-//TODO: add test for addPlaces
+test("Testing addLocationManual function of itinerary", testAddLocationManual);
+
+function testAddLocation() {
+    let updatedState = jest.fn();
+    let error = jest.fn();
+    function getNextPlaceID() {return "0";}
+    const itinerary = shallow((<Itinerary
+            options={startProperties.options}
+            config={startProperties.options}
+            settings={startProperties.options}
+            itineraryPlan={emptyItinerary}
+            headerOptions={startProperties.headerOptions}
+            updateStateVar={jest.fn()}
+            setStateVar={updatedState}
+            getNextPlaceID={getNextPlaceID}
+            createErrorBanner={error}/>
+    ));
+
+    let newItin = {};
+    Object.assign(newItin, emptyItinerary);
+    newItin["places"].push({id: "0", name: "name", latitude: "50.2", longitude: "80.4"});
+    newItin["markers"]["0"] = false;
+    itinerary.instance().addLocation({name: "name", latitude: "50.2", longitude: "80.4"});
+    expect(error.mock.calls.length).toEqual(0);
+    expect(updatedState.mock.calls.length).toEqual(1);
+    expect(updatedState.mock.calls[0][0]).toEqual("itineraryPlan");
+    expect(updatedState.mock.calls[0][1]).toEqual(newItin);
+}
 
 test("Testing addLocation function of itinerary", testAddLocation);
 

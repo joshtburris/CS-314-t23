@@ -137,7 +137,6 @@ export default class Itinerary extends Component {
         };
         sendServerRequestWithBody('find', tipFindConfigRequest, this.props.settings.serverPort)
             .then((response) => {
-                console.log(response.body);
                 if (response.statusCode >= 200 && response.statusCode <= 299) {
                     //validate response
                     var ajv = new Ajv();
