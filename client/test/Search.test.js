@@ -78,7 +78,7 @@ function testAddValidFoundLocation(){
     //console.log(search.state().narrow);
     expect(search.state().narrow[0].name).toEqual('type');
     expect(search.state().narrow[0].values).toEqual([]);
-    expect(search.state().narrow[1].name).toEqual('iso_country');
+    expect(search.state().narrow[1].name).toEqual('country');
     expect(search.state().narrow[1].values).toEqual([]);
     simulateOnChangeEvent('fort collins', search);
 

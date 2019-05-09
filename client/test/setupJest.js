@@ -11,4 +11,4 @@
 
 global.fetch = require('jest-fetch-mock');
 
-//console.log = jest.fn(); // Subdue console logs in the testing environment.
+console.log = jest.fn(); // Subdue console logs in the testing environment.
