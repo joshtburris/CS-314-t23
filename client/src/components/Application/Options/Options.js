@@ -37,7 +37,8 @@ export default class Options extends Component{
   heading() {
     return (
         <Pane header={'Options'}>
-            {'Select ...'}
+            <p>Select a preferred distance unit.</p>
+            <p>To make a custom unit (e.g. millimeters), got to the <b>⚙</b> page.</p>
         </Pane>
     );
   }
