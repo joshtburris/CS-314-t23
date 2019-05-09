@@ -21,6 +21,7 @@ export default class Itinerary extends Component {
             narrow: [{name: "type", values: ['none']}],
         };
         this.loadFile = this.loadFile.bind(this);
+        this.addLocationManual = this.addLocationManual.bind(this);
         this.addLocation = this.addLocation.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
         this.setMarkers = this.setMarkers.bind(this);
@@ -46,7 +47,7 @@ export default class Itinerary extends Component {
                                         headerOptions={this.props.headerOptions}
                                         updateStateVar={this.props.updateStateVar}
                                         setStateVar={this.props.setStateVar}
-                                        addLocation={this.addLocation}
+                                        addLocation={this.addLocationManual}
                                         getNextPlaceID={this.props.getNextPlaceID}
                                         getTableOpts={this.getTableOpts}/>
 
@@ -85,7 +86,9 @@ export default class Itinerary extends Component {
         );
     }
 
-    addLocation(name, latitude, longitude) {
+    addLocationManual(name, latitude, longitude) {
+        console.log("Another thing.");
+        console.log(this);
         name = name.trim();
         if (this.checkLocationInput(name, latitude, longitude)) {
             let newPlan = {};
@@ -93,6 +96,16 @@ export default class Itinerary extends Component {
             Object.assign(newPlan, this.props.itineraryPlan);
             newPlan["places"].push({id: nextID, name: name, latitude: latitude.toString(), longitude: longitude.toString()});
             newPlan["markers"][nextID] = false;
+            this.props.setStateVar("itineraryPlan", newPlan);
+        }
+    }
+
+    addLocation(place){
+        if (this.checkLocationInput(place.name, place.latitude, place.longitude)) {
+            let newPlan = {};
+            Object.assign(newPlan, this.props.itineraryPlan);
+            newPlan["places"].push(place);
+            newPlan["markers"][place.id] = false;
             this.props.setStateVar("itineraryPlan", newPlan);
         }
     }

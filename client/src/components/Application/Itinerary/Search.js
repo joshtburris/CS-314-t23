@@ -137,6 +137,7 @@ export default class Itinerary extends Component {
         };
         sendServerRequestWithBody('find', tipFindConfigRequest, this.props.settings.serverPort)
             .then((response) => {
+                console.log(response.body);
                 if (response.statusCode >= 200 && response.statusCode <= 299) {
                     //validate response
                     var ajv = new Ajv();
@@ -210,7 +211,7 @@ export default class Itinerary extends Component {
                 tempList.push(<td key={"placesFound_"+i+"_"+j}>{temp}</td>);
             }
         }
-        tempList.push(<td key={"placesFoundButton_"+i+temp}><Button type='submit'  color="link" onClick={()=>{this.props.addLocation(places[i].name, Number(places[i].latitude), Number(places[i].longitude))} }> <b>+</b> </Button></td>)
+        tempList.push(<td key={"placesFoundButton_"+i+temp}><Button type='submit'  color="link" onClick={()=>{this.props.addLocation(places[i])} }> <b>+</b> </Button></td>)
         return tempList;
     }
 

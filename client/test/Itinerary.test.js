@@ -63,7 +63,7 @@ function testAddLocation() {
     Object.assign(newItin, emptyItinerary);
     newItin["places"].push({id: "0", name: "name", latitude: "50.2", longitude: "80.4"});
     newItin["markers"]["0"] = false;
-    itinerary.instance().addLocation("name", "50.2", "80.4");
+    itinerary.instance().addLocationManual("name", "50.2", "80.4");
     expect(error.mock.calls.length).toEqual(0);
     expect(updatedState.mock.calls.length).toEqual(1);
     expect(updatedState.mock.calls[0][0]).toEqual("itineraryPlan");
@@ -71,18 +71,20 @@ function testAddLocation() {
 
     newItin["places"].push({id: "1", name: "name", latitude: "50.2", longitude: "80.4"});
     newItin["markers"]["1"] = false;
-    itinerary.instance().addLocation("name", 50.2, 80.4);
+    itinerary.instance().addLocationManual("name", 50.2, 80.4);
     expect(updatedState.mock.calls[1][1]).toEqual(newItin);
 
-    itinerary.instance().addLocation("name", "50364.02a", "80.4");
+    itinerary.instance().addLocationManual("name", "50364.02a", "80.4");
     expect(updatedState.mock.calls.length).toEqual(2);
-    itinerary.instance().addLocation("name", "50.2", "45a.f");
+    itinerary.instance().addLocationManual("name", "50.2", "45a.f");
     expect(updatedState.mock.calls.length).toEqual(2);
-    itinerary.instance().addLocation("123", "50.2", "80.4");
+    itinerary.instance().addLocationManual("123", "50.2", "80.4");
     expect(updatedState.mock.calls.length).toEqual(2);
-    itinerary.instance().addLocation("name", "50.2.5", "80.4");
+    itinerary.instance().addLocationManual("name", "50.2.5", "80.4");
     expect(updatedState.mock.calls.length).toEqual(2);
 }
+
+//TODO: add test for addPlaces
 
 test("Testing addLocation function of itinerary", testAddLocation);
 
