@@ -62,17 +62,13 @@ export default class ItineraryTable extends Component {
             i++;
         }
         return(
-            <Row><Col sm={{size: 'auto'}}><Dropdown isOpen={this.state.tableDropdownOpen} toggle={this.toggleTable}>
+            <Dropdown isOpen={this.state.tableDropdownOpen} toggle={this.toggleTable}>
                 <DropdownToggle caret>
                     Modify Table
                 </DropdownToggle><DropdownMenu>
                     {list}
                 </DropdownMenu>
-            </Dropdown></Col><Col sm={{size: 'auto'}}>
-                <Button type="submit" value="Reverse" id="reverseButton" onClick={(e) => this.props.reverseItinerary(e)}><b>🔄</b></Button>
-                <Button type="submit" value="ToggleAll" id="markerToggleAll" onClick={(e) => this.props.allMarkerToggle()}><b>📍</b></Button>
-                <Button type="submit" value="Update" id="updateButton" onClick={(e) => this.props.calculateDistances()}><b>⟳</b></Button>
-            </Col></Row>
+            </Dropdown>
         );
     }
 
