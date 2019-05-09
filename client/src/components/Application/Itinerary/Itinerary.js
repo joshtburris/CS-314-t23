@@ -24,8 +24,10 @@ export default class Itinerary extends Component {
         this.addLocationManual = this.addLocationManual.bind(this);
         this.addLocation = this.addLocation.bind(this);
         this.calculateDistances = this.calculateDistances.bind(this);
+        this.allMarkerToggle = this.allMarkerToggle.bind(this);
+        this.reverseItinerary = this.reverseItinerary.bind(this);
         this.setMarkers = this.setMarkers.bind(this);
-        this.calculateDistances();
+        this.calculateDistances(); this.allMarkerToggle(); this.reverseItinerary();
         this.toggleSave = this.toggleSave.bind(this);
     }
 
@@ -49,6 +51,9 @@ export default class Itinerary extends Component {
                                         setStateVar={this.props.setStateVar}
                                         addLocation={this.addLocationManual}
                                         getNextPlaceID={this.props.getNextPlaceID}
+                                        reverseItinerary={this.reverseItinerary}
+                                        allMarkerToggle={this.allMarkerToggle}
+                                        calculateDistances={this.calculateDistances}
                                         getTableOpts={this.getTableOpts}/>
 
                 </Col> </Row>
@@ -64,6 +69,11 @@ export default class Itinerary extends Component {
             </Container>
         );
     }
+/*
+<Button type="submit" value="Reverse" id="reverseButton" onClick={(e) => this.reverseItinerary(e)}>Reverse</Button>
+<Button type="submit" value="ToggleAll" id="markerToggleAll" onClick={(e) => this.allMarkerToggle()}>Toggle Markers</Button>
+<Button type="submit" value="Update" id="updateButton" onClick={(e) => this.calculateDistances()}>Update Distances</Button>
+*/
 
     renderOptimizations() {
         return(
@@ -75,12 +85,8 @@ export default class Itinerary extends Component {
 
     tableOptions() {
         return(
-            <Pane header={'Itinerary Options'}>
+            <Pane header={'Make your route shorter'}>
                 {<Container>
-                    <Button type="submit" value="Reverse" id="reverseButton" onClick={(e) => this.reverseItinerary(e)}>Reverse</Button>
-                    <Button type="submit" value="ToggleAll" id="markerToggleAll" onClick={(e) => this.allMarkerToggle()}>Toggle Markers</Button>
-                    <Button type="submit" value="Update" id="updateButton" onClick={(e) => this.calculateDistances()}>Update Distances</Button>
-                    <Row>Optimize your route:</Row>
                     {this.renderOptimizations()}
                 </Container>}
             </Pane>
