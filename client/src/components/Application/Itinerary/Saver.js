@@ -40,14 +40,21 @@ export default class Saver{
     }
 
     static saveSVG(places){
-        let SVG = "<svg width=\"1024\" height=\"512\">\n<polyline points=\"";
-        for(let i in places) {
-            let width = (parseFloat(places[i].longitude) + 180) / 360 * 1024;
-            let height = 512 - (parseFloat(places[i].latitude) + 90) / 180 * 512;
-            SVG = SVG + width + "," + height + " ";
+        let SVG = "";
+        places = this.wrapLoc(places);
+        console.log(places);
+        for(let arr =0; arr < places.length; arr++){
+             SVG = SVG + "<svg width=\"1024\" height=\"512\">\n<polyline points=\"";
+            for(let i = 0; i < places[arr].length; i++) {
+                let width = (parseFloat(places[arr][i].lng) + 180) / 360 * 1024;
+                let height = 512 - (parseFloat(places[arr][i].lat) + 90) / 180 * 512;
+                console.log("DEBUG: ", width, height, places[arr][i])
+                SVG = SVG + width + "," + height + " ";
+            }
+            SVG = SVG + "\"\nstyle=\"fill:none;stroke:black;stroke-width:3\" />\n</svg>\n)";
         }
         //super hacky solution world_map.svg is not actually a valid svg file it needs a close tag at the end
-        SVG = SVG + "\"\nstyle=\"fill:none;stroke:black;stroke-width:3\" />\n</svg>\n</svg>";
+        SVG = SVG + "</svg>";
         let file = new Blob([Saver.getWorldMap(), SVG],{type: "text/plain;charset=utf-8"});
         saveAs(file, "MyItinerary.svg");
     }
