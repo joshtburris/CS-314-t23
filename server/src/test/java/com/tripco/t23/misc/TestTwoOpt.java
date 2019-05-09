@@ -2,10 +2,9 @@ package com.tripco.t23.misc;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertArrayEquals;
-import java.util.HashMap;
-import java.util.Map;
+import static org.junit.Assert.*;
+import java.util.*;
+import java.io.*;
 
 public class TestTwoOpt {
     private Map[] singleLocation = new Map[1];
@@ -32,7 +31,18 @@ public class TestTwoOpt {
     }
 
     @Test
-    public void testTwoOptSinglePlace() {
+    public void testNoPlaces() {
+        Optimizer twoOpt = new TwoOpt(new Map[] {}, earthRadiusMiles);
+
+        long[] actualDistances = twoOpt.getDistances();
+        Map[] actualPlaces = twoOpt.getPlaces();
+
+        assertArrayEquals("Incorrect Distances", new long[] {}, actualDistances);
+        assertArrayEquals("Incorrect Places", new Map[] {}, actualPlaces);
+    }
+
+    @Test
+    public void testSinglePlace() {
         Optimizer twoOpt = new TwoOpt(singleLocation, earthRadiusMiles);
 
         long[] actualDistances = twoOpt.getDistances();
@@ -59,6 +69,48 @@ public class TestTwoOpt {
 
         assertArrayEquals("Incorrect Distances", expectedDistances, actualDistances);
         assertArrayEquals("Incorrect Places", expectedLocations, actualPlaces);
+    }
+
+    @Test
+    public void testNNTimeLong() {
+        try {
+
+            ArrayList<Map> locs = new ArrayList<>();
+            FileReader fr = new FileReader("TestDataLong.txt");
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                locs.add(getLocation(data[0], data[1], data[2]));
+            }
+            long start = System.currentTimeMillis();
+            Optimizer twoOpt = new TwoOpt((Map[])locs.toArray(), earthRadiusMiles);
+            long end = System.currentTimeMillis();
+
+            assertEquals(true, ((end-start) < 1000) ? true : false);
+
+        } catch (Exception e ) {}
+    }
+
+    @Test
+    public void testOrderedData() {
+        Map[] locations = {
+                getLocation("Brighton", "39.87", "-104.33"),
+                getLocation("Littleton", "39.64", "-104.33"),
+                getLocation("Springfield", "37.3", "-102.54"),
+                getLocation("Alamosa", "37.57", "-105.79"),
+                getLocation("Pagosa Springs", "37.2", "-107.05")
+        };
+
+        Optimizer twoOpt = new TwoOpt(locations, earthRadiusMiles);
+
+        long[] expectedDistances = {16, 188, 179, 74, 236};
+
+        long[] actualDistances = twoOpt.getDistances();
+        Map[] actualPlaces = twoOpt.getPlaces();
+
+        assertArrayEquals("Incorrect Distances", expectedDistances, actualDistances);
+        assertArrayEquals("Incorrect Places", locations, actualPlaces);
     }
 
 }

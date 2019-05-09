@@ -37,7 +37,7 @@ public class TIPConfig extends TIPHeader {
     this.placeAttributes = Arrays.asList("latitude", "longitude", "name", "id", "municipality", "altitude", "type");
     this.optimizations = Arrays.asList("none", "short", "shorter");
     this.filters = Arrays.asList((new HashMap<String, Object>() {{put("name", "type"); put("values", Arrays.asList("airport","heliport","balloonport","closed"));}}),
-            (new HashMap<String, Object>() {{put("name", "iso_country");
+            (new HashMap<String, Object>() {{put("name", "country");
             put("values", Arrays.asList("AD","AE","AF","AG","AI","AL","AM","AO","AQ","AR","AS","AT","AU","AW","AZ",
                     "BA","BB","BD","BE","BF","BG","BH","BI","BJ","BL","BM","BN","BO","BQ","BR","BS","BT","BW","BY","BZ",
                     "CA","CC","CD","CF","CG","CH","CI","CK","CL","CM","CN","CO","CR","CU","CV","CW","CX","CY","CZ",

@@ -66,7 +66,9 @@ public class database {
         for(Map filter : narrow){
             //get each name variable
             filterName = filter.get("name").toString();
-
+            if (filterName.equals("country")){
+                filterName = "iso_country";
+            }
             //get the values variable corresponding to the names variable
             filterValues = (ArrayList) filter.get("values");
 
