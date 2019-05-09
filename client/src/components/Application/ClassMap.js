@@ -61,7 +61,9 @@ export default class classMap extends Component{
         }
         let maxLat = Math.max.apply(null, tLat);let maxLon = Math.max.apply(null, tLon);
         let minLat = Math.min.apply(null, tLat);let minLon = Math.min.apply(null, tLon);
-
+        if (maxLat == minLat){
+            return this.getSingleLoc();
+        }
         return L.latLngBounds(L.latLng(minLat, minLon), L.latLng(maxLat, maxLon));
     }
 
