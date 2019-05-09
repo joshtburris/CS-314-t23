@@ -30,7 +30,6 @@ export default class Settings extends Component {
           </Col>
           <Col xs="12" sm="12" md="10" lg="8" xl="6">
               <CustomUnit updateStateVar={this.props.updateStateVar}
-                          updateSetting={this.props.updateSetting}
                           planOptions={this.props.planOptions}/>
           </Col>
         </Row>
