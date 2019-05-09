@@ -51,10 +51,10 @@ export default class Itinerary extends Component {
     getDropdownItems(){
         return(
             <DropdownMenu>
-                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('airport', 0);}} active={this.state.narrow[0].values.includes('airport')}>Airport</DropdownItem>
-                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('heliport', 0);}} active={this.state.narrow[0].values.includes('heliport')}>Heliport</DropdownItem>
-                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('balloonport', 0);}} active={this.state.narrow[0].values.includes('balloonport')}>Balloonport</DropdownItem>
-                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('closed', 0);}} active={this.state.narrow[0].values.includes('closed')}>Closed</DropdownItem>
+                <DropdownItem key={"filter_airport"} color="primary" onClick={()=> {this.checkboxOnClick('airport', 0);}} active={this.state.narrow[0].values.includes('airport')}>Airport</DropdownItem>
+                <DropdownItem key={"filter_heliport"} color="primary" onClick={()=> {this.checkboxOnClick('heliport', 0);}} active={this.state.narrow[0].values.includes('heliport')}>Heliport</DropdownItem>
+                <DropdownItem key={"filter_balloonport"} color="primary" onClick={()=> {this.checkboxOnClick('balloonport', 0);}} active={this.state.narrow[0].values.includes('balloonport')}>Balloonport</DropdownItem>
+                <DropdownItem key={"filter_closed"} color="primary" onClick={()=> {this.checkboxOnClick('closed', 0);}} active={this.state.narrow[0].values.includes('closed')}>Closed</DropdownItem>
             </DropdownMenu>
         );
     }
@@ -62,7 +62,7 @@ export default class Itinerary extends Component {
     getDropdownItemsCountry(){
         let countryList = [];
         for (let i = 0; i <this.props.serverConfig.filters.length; i++){
-            if (this.props.serverConfig.filters[i].name == "country") {
+            if (this.props.serverConfig.filters[i].name === "country") {
                 countryList = this.props.serverConfig.filters[i].values;
                 break;
             }
@@ -73,7 +73,7 @@ export default class Itinerary extends Component {
                 <div style={{height: '200px', width: '150px', overflowY: 'scroll'}}>
                 {countryList.map((countryItem) =>
                     <DropdownItem
-                        color="primary"
+                        color="primary" key={"country_" + countryItem}
                         onClick={()=> {this.checkboxOnClick(countryItem, 1);}}
                         active={this.state.narrow[1].values.includes(countryItem)}>
                         {countryItem}

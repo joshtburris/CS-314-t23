@@ -56,7 +56,7 @@ export default class ItineraryTable extends Component {
                 <DropdownItem
                     active={this.props.headerOptions[detail]}
                     onClick={() => {this.toggleCheckbox(detail, (!this.props.headerOptions[detail]))}}
-                    id={detail}
+                    id={detail} key={"key"+detail}
                 >{detail}</DropdownItem>
             );
             i++;

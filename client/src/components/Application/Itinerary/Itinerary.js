@@ -142,9 +142,9 @@ export default class Itinerary extends Component {
                             Save File
                         </DropdownToggle>
                         <DropdownMenu>
-                            <DropdownItem id="saveJSON" onClick={(e) => this.saveFile(e, "json")}>JSON</DropdownItem>
-                            <DropdownItem id="saveCSV" onClick={(e) => this.saveFile(e, "csv")}>CSV</DropdownItem>
-                            <DropdownItem id="saveSVG" onClick={(e) => this.saveFile(e, "svg")}>SVG</DropdownItem>
+                            <DropdownItem id="saveJSON" key={"key_saveJSON"} onClick={(e) => this.saveFile(e, "json")}>JSON</DropdownItem>
+                            <DropdownItem id="saveCSV" key={"key_saveCSV"} onClick={(e) => this.saveFile(e, "csv")}>CSV</DropdownItem>
+                            <DropdownItem id="saveSVG" key={"key_saveSVG"} onClick={(e) => this.saveFile(e, "svg")}>SVG</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                 </Container>
