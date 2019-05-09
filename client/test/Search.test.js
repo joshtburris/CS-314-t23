@@ -16,8 +16,20 @@ const startProperties = {
         'markers':{},
         'match': '',
         'limit': 0,
-        'narrow': [{'name': "type", 'values': ["none"]}]
-    }
+        'narrow': [{'name': "type", 'values': []}]
+    },
+    'config': {
+                "requestType"        : "config",
+                "requestVersion"     : 5,
+                "serverName"         : "t## name",
+                "placeAttributes"    : ["name", "latitude", "longitude", "id", "municipality", "region", "country", "continent", "altitude"],
+                "optimizations"      : ["none", "short", "shorter", "shortest"],
+                "filters"            : [{"name": "type",
+                                        "values": ["airport","heliport","balloonport","closed"]},
+                                        {"name": "country",
+                                        "values": ["AD", "AE", "AF"]}
+                                       ]
+              }
 };
 
 jest.mock('../src/api/restfulAPI');
@@ -30,7 +42,8 @@ function testServerCalledTrue() {
 
     const search = mount((
         <Search     settings={startProperties.options}
-                    itineraryPlan={startProperties.itineraryPlan}/>
+                    itineraryPlan={startProperties.itineraryPlan}
+                    serverConfig={startProperties.config}/>
     ));
 
     search.instance().tipFindLocation("fort collins", 0, ["airport", "heliport", "balloonport"]);
@@ -44,7 +57,8 @@ function testServerCalledFalse() {
 
     const search = mount((
         <Search     settings={startProperties.options}
-                    itineraryPlan={startProperties.itineraryPlan}/>
+                    itineraryPlan={startProperties.itineraryPlan}
+                    serverConfig={startProperties.config}/>
     ));
 
     search.instance().tipFindLocation("", 0, []);
@@ -58,11 +72,14 @@ function testAddValidFoundLocation(){
     const search = mount((
         <Search   settings={startProperties.options}
                   itineraryPlan={startProperties.itineraryPlan}
-                  updateStateVar={itineraryPlanMock}/>
+                  updateStateVar={itineraryPlanMock}
+                  serverConfig={startProperties.config}/>
     ));
     //console.log(search.state().narrow);
     expect(search.state().narrow[0].name).toEqual('type');
-    expect(search.state().narrow[0].values).toEqual(['none']);
+    expect(search.state().narrow[0].values).toEqual([]);
+    expect(search.state().narrow[1].name).toEqual('country');
+    expect(search.state().narrow[1].values).toEqual([]);
     simulateOnChangeEvent('fort collins', search);
 
     expect(itineraryPlanMock.mock.calls.length).toEqual(2);
@@ -87,10 +104,11 @@ function testUpdateFindPlaces(){
     const search = mount((
         <Search   settings={startProperties.options}
                   itineraryPlan={startProperties.itineraryPlan}
-                  updateStateVar={itineraryPlanMock}/>
+                  updateStateVar={itineraryPlanMock}
+                  serverConfig={startProperties.config}/>
     ));
 
-    search.instance().updateFindPlaces('narrow', ['none']);
+    search.instance().updateFindPlaces('narrow', []);
     expect(itineraryPlanMock.mock.calls.length).toEqual(1);
 }
 
@@ -111,7 +129,7 @@ const itineraryProperties = {
         'markers':{},
         'match': '',
         'limit': 0,
-        'narrow': [{'name': "type", 'values': ["none"]}]
+        'narrow': [{'name': "type", 'values': []}]
     }
 };
 
@@ -120,7 +138,8 @@ function testTipFindTable() {
     const search = mount((
         <Search   settings={startProperties.options}
                   itineraryPlan={startProperties.itineraryPlan}
-                  updateStateVar={itineraryPlanMock}/>
+                  updateStateVar={itineraryPlanMock}
+                  serverConfig={startProperties.config}/>
     ));
     let tempProps = search.props().itineraryPlan.placesFound;
     tempProps.push(
@@ -142,20 +161,46 @@ function testDropDownButton(){
     const search = mount((
         <Search   settings={startProperties.options}
                   itineraryPlan={startProperties.itineraryPlan}
-                  updateStateVar={itineraryPlanMock}/>
+                  updateStateVar={itineraryPlanMock}
+                  serverConfig={startProperties.config}/>
     ));
-    expect(search.state().narrow[0].values).toEqual(['none']);
+    expect(search.state().narrow[0].values).toEqual([]);
     search.find('DropdownItem').at(0).simulate('click');
     search.find('DropdownItem').at(1).simulate('click');
     search.find('DropdownItem').at(2).simulate('click');
-    expect(search.state().narrow[0].values).toEqual(['airport', 'heliport', 'balloonport']);
+    search.find('DropdownItem').at(3).simulate('click');
+    expect(search.state().narrow[0].values).toEqual(['airport', 'heliport', 'balloonport', 'closed']);
     search.find('DropdownItem').at(0).simulate('click');
     search.find('DropdownItem').at(1).simulate('click');
     search.find('DropdownItem').at(2).simulate('click');
-    expect(search.state().narrow[0].values).toEqual(['none']);
+    search.find('DropdownItem').at(3).simulate('click');
+    expect(search.state().narrow[0].values).toEqual([]);
 }
 
 test("Testing dropDownButton function", testDropDownButton);
+
+function testDropDownButtonCountry(){
+    const itineraryPlanMock = jest.fn();
+    const search = mount((
+        <Search   settings={startProperties.options}
+                  itineraryPlan={startProperties.itineraryPlan}
+                  updateStateVar={itineraryPlanMock}
+                  serverConfig={startProperties.config}/>
+    ));
+    expect(search.state().narrow[1].values).toEqual([]);
+    search.find('DropdownItem').at(4).simulate('click');
+    search.find('DropdownItem').at(5).simulate('click');
+    search.find('DropdownItem').at(6).simulate('click');
+    expect(search.state().narrow[1].values[0]).toEqual('AD');
+    expect(search.state().narrow[1].values[1]).toEqual('AE');
+    expect(search.state().narrow[1].values[2]).toEqual('AF');
+    search.find('DropdownItem').at(4).simulate('click');
+    search.find('DropdownItem').at(5).simulate('click');
+    search.find('DropdownItem').at(6).simulate('click');
+    expect(search.state().narrow[1].values).toEqual([]);
+}
+
+test("Testing dropDownButton function for Countries", testDropDownButtonCountry);
 
 const properties = {
     'options': {
@@ -168,7 +213,7 @@ const properties = {
         'markers':{},
         'match': '',
         'limit': 0,
-        'narrow': [{'name': "type", 'values': ["none"]}]
+        'narrow': [{'name': "type", 'values': []}]
     },
     'attributes': ["latitude", "longitude", "name", "id", "municipality", "altitude", "type"]
 };
@@ -179,12 +224,12 @@ function testGetAttributes() {
         <Search   settings={properties.options}
                   itineraryPlan={properties.itineraryPlan}
                   placeAttributes={properties.attributes}
-                  updateStateVar={itineraryPlanMock}/>
+                  updateStateVar={itineraryPlanMock}
+                  serverConfig={startProperties.config}/>
     ));
     console.log(search.props().placeAttributes);
     const attr = search.instance().getAttributes();
     expect(attr).toEqual(["name", "latitude", "longitude", "municipality", "altitude", "type"]);
-
 }
 
 test("Testing function getAttributes", testGetAttributes);
@@ -195,7 +240,8 @@ function testCreateInputField(){
         <Search   settings={properties.options}
                   itineraryPlan={properties.itineraryPlan}
                   placeAttributes={properties.attributes}
-                  updateStateVar={itineraryPlanMock}/>
+                  updateStateVar={itineraryPlanMock}
+                  serverConfig={startProperties.config}/>
     ));
 
     let numberOfInputs = search.find('Input').length;

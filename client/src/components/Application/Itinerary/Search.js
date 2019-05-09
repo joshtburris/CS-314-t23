@@ -10,7 +10,7 @@ export default class Itinerary extends Component {
     constructor(props){
         super(props);
         this.state = {
-            narrow: [{name: "type", values: ['none']}],
+            narrow: [{name: "type", values: []}, {name: "country", values: []}],
             searchResultNumber: 0
         };
         this.updateTipFindLocation = this.updateTipFindLocation.bind(this);
@@ -27,8 +27,12 @@ export default class Itinerary extends Component {
                     </Col> <Col>
                     <div style={{width: '110px'}}>Choose Filters: </div>
                     <UncontrolledButtonDropdown>
-                        <DropdownToggle caret color="primary"> Filters </DropdownToggle>
+                        <DropdownToggle caret color="primary"> Location Type </DropdownToggle>
                         {this.getDropdownItems()}
+                    </UncontrolledButtonDropdown>
+                    <UncontrolledButtonDropdown>
+                        <DropdownToggle caret color="primary"> Country </DropdownToggle>
+                        {this.getDropdownItemsCountry()}
                     </UncontrolledButtonDropdown>
                     </Col> <Col>
                     <div style={{height: '20px'}}/>
@@ -47,33 +51,48 @@ export default class Itinerary extends Component {
     getDropdownItems(){
         return(
             <DropdownMenu>
-                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('airport'); this.checkState();}} active={this.state.narrow[0].values.includes('airport')}>Airport</DropdownItem>
-                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('heliport');this.checkState();}} active={this.state.narrow[0].values.includes('heliport')}>Heliport</DropdownItem>
-                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('balloonport');this.checkState();}} active={this.state.narrow[0].values.includes('balloonport')}>Balloonport</DropdownItem>
+                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('airport', 0);}} active={this.state.narrow[0].values.includes('airport')}>Airport</DropdownItem>
+                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('heliport', 0);}} active={this.state.narrow[0].values.includes('heliport')}>Heliport</DropdownItem>
+                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('balloonport', 0);}} active={this.state.narrow[0].values.includes('balloonport')}>Balloonport</DropdownItem>
+                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('closed', 0);}} active={this.state.narrow[0].values.includes('closed')}>Closed</DropdownItem>
             </DropdownMenu>
         );
     }
 
-    checkboxOnClick(str){
-        const index = this.state.narrow[0].values.indexOf(str);
-        if (index < 0) {
-            this.state.narrow[0].values.push(str);
-        } else {
-            this.state.narrow[0].values.splice(index, 1);
+    getDropdownItemsCountry(){
+        let countryList = [];
+        for (let i = 0; i <this.props.serverConfig.filters.length; i++){
+            if (this.props.serverConfig.filters[i].name == "country") {
+                countryList = this.props.serverConfig.filters[i].values;
+                break;
+            }
         }
-        if(this.state.narrow[0].values.indexOf('none') > -1) {
-            this.state.narrow[0].values.splice(this.state.narrow[0].values.indexOf('none'), 1);
-        }
-        this.setState({ narrow: [{name: "type", values: [...this.state.narrow[0].values]}] });
-        this.updateFindPlaces("narrow", this.state.narrow);
+
+        return(
+            <DropdownMenu>
+                <div style={{height: '200px', width: '150px', overflowY: 'scroll'}}>
+                {countryList.map((countryItem) =>
+                    <DropdownItem
+                        color="primary"
+                        onClick={()=> {this.checkboxOnClick(countryItem, 1);}}
+                        active={this.state.narrow[1].values.includes(countryItem)}>
+                        {countryItem}
+                    </DropdownItem>
+                )}
+                </div>
+            </DropdownMenu>
+        );
     }
 
-    checkState(){
-        if(this.state.narrow[0].values.length === 0){
-            this.state.narrow[0].values.push("none");
-            this.setState({ narrow: [{name: "type", values: [...this.state.narrow[0].values]}] });
-            this.updateFindPlaces("narrow", this.state.narrow);
+    checkboxOnClick(str, i){
+        const index = this.state.narrow[i].values.indexOf(str);
+        if (index < 0) {
+            this.state.narrow[i].values.push(str);
+        } else {
+            this.state.narrow[i].values.splice(index, 1);
         }
+        this.setState({ narrow: [{name: "type", values: [...this.state.narrow[0].values]}, {name: "iso_country", values: [...this.state.narrow[1].values]}]});
+        this.updateFindPlaces("narrow", this.state.narrow);
     }
 
     createInputFields(stateVar, placeHolder){
@@ -92,9 +111,6 @@ export default class Itinerary extends Component {
     updateTipFindLocation(unit){
         unit.preventDefault();
         let flag = true, keyword = this.props.itineraryPlan.match, limit = this.props.itineraryPlan.limit, narrow = Object.assign(this.props.itineraryPlan.narrow);
-        if(narrow.length === 1 && narrow[0].values.indexOf('none') > -1){
-            narrow = []
-        }
         if(keyword.length === 0){
             this.setState({
                 errorMessage: <Alert className='bg-csu-canyon text-white font-weight-extrabold'>Error(0): Invalid input
@@ -112,7 +128,7 @@ export default class Itinerary extends Component {
         if (keyword.length === 0) return;
         const tipFindConfigRequest = {
             "requestType"    : "find",
-            "requestVersion" : 4,
+            "requestVersion" : 5,
             "match"          : String(keyword),
             "narrow"         : narrow,
             "limit"          : Number(limit),
@@ -123,10 +139,8 @@ export default class Itinerary extends Component {
             .then((response) => {
                 if (response.statusCode >= 200 && response.statusCode <= 299) {
                     //validate response
-                    console.log(response.body);
                     var ajv = new Ajv();
                     var valid = ajv.validate(schemaFind, response.body);
-                    console.log(schemaFind);
                     if (!valid) {
                         console.log(ajv.errors);
                         this.setState({
@@ -196,7 +210,6 @@ export default class Itinerary extends Component {
                 tempList.push(<td key={"placesFound_"+i+"_"+j}>{temp}</td>);
             }
         }
-        console.log(places[i].id, places[i].name, places[i].latitude, places[i].longitude);
         tempList.push(<td key={"placesFoundButton_"+i+temp}><Button type='submit'  color="link" onClick={()=>{this.props.addLocation(places[i].name, Number(places[i].latitude), Number(places[i].longitude))} }> <b>+</b> </Button></td>)
         return tempList;
     }

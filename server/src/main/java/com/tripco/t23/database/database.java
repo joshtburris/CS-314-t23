@@ -66,25 +66,31 @@ public class database {
         for(Map filter : narrow){
             //get each name variable
             filterName = filter.get("name").toString();
-
+            if (filterName.equals("country")){
+                filterName = "iso_country";
+            }
             //get the values variable corresponding to the names variable
             filterValues = (ArrayList) filter.get("values");
 
-            //build the end of the countString/searchString using the variables defined prior
-            finalFilter += " and (";
+            if(filterValues.size() > 0) {
+                //build the end of the countString/searchString using the variables defined prior
+                finalFilter += " and (";
 
-            //goes through each map and builds the string for each filter
-            for(int i=0; i < filterValues.size(); i++){
-                finalFilter += filterName + " like \'%" + filterValues.get(i) + "%\'";
+                //goes through each map and builds the string for each filter
+                for (int i = 0; i < filterValues.size(); i++) {
+                    finalFilter += filterName + " like \'%" + filterValues.get(i) + "%\'";
 
-                //add an or for the next item in the list, if it exists
-                if(i+1 < filterValues.size()){
-                    finalFilter += " or ";
+                    //add an or for the next item in the list, if it exists
+                    if (i + 1 < filterValues.size()) {
+                        finalFilter += " or ";
+                    }
                 }
+                //build the end of the string
+                finalFilter += ")";
             }
-            //build the end of the string
-            finalFilter += ") order by name;";
         }
+        //build the end of the string
+        finalFilter += " order by name;";
 
         //temporary copy of calLoginAll while tools to build final string are constructed
         String countString = "select count(id) from world where (id like \'%" + match + "%\' or name like \'%" + match
