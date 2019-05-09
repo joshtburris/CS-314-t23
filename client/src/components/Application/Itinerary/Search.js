@@ -56,10 +56,10 @@ export default class Itinerary extends Component {
     getDropdownItems(){
         return(
             <DropdownMenu>
-                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('airport', 0);}} active={this.state.narrow[0].values.includes('airport')}>Airport</DropdownItem>
-                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('heliport', 0);}} active={this.state.narrow[0].values.includes('heliport')}>Heliport</DropdownItem>
-                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('balloonport', 0);}} active={this.state.narrow[0].values.includes('balloonport')}>Balloonport</DropdownItem>
-                <DropdownItem color="primary" onClick={()=> {this.checkboxOnClick('closed', 0);}} active={this.state.narrow[0].values.includes('closed')}>Closed</DropdownItem>
+                <DropdownItem key={"filter_airport"} color="primary" onClick={()=> {this.checkboxOnClick('airport', 0);}} active={this.state.narrow[0].values.includes('airport')}>Airport</DropdownItem>
+                <DropdownItem key={"filter_heliport"} color="primary" onClick={()=> {this.checkboxOnClick('heliport', 0);}} active={this.state.narrow[0].values.includes('heliport')}>Heliport</DropdownItem>
+                <DropdownItem key={"filter_balloonport"} color="primary" onClick={()=> {this.checkboxOnClick('balloonport', 0);}} active={this.state.narrow[0].values.includes('balloonport')}>Balloonport</DropdownItem>
+                <DropdownItem key={"filter_closed"} color="primary" onClick={()=> {this.checkboxOnClick('closed', 0);}} active={this.state.narrow[0].values.includes('closed')}>Closed</DropdownItem>
             </DropdownMenu>
         );
     }
@@ -67,7 +67,7 @@ export default class Itinerary extends Component {
     getDropdownItemsCountry(){
         let countryList = [];
         for (let i = 0; i <this.props.serverConfig.filters.length; i++){
-            if (this.props.serverConfig.filters[i].name == "country") {
+            if (this.props.serverConfig.filters[i].name === "country") {
                 countryList = this.props.serverConfig.filters[i].values;
                 break;
             }
@@ -78,7 +78,7 @@ export default class Itinerary extends Component {
                 <div style={{height: '200px', width: '150px', overflowY: 'scroll'}}>
                 {countryList.map((countryItem) =>
                     <DropdownItem
-                        color="primary"
+                        color="primary" key={"country_" + countryItem}
                         onClick={()=> {this.checkboxOnClick(countryItem, 1);}}
                         active={this.state.narrow[1].values.includes(countryItem)}>
                         {countryItem}
@@ -189,11 +189,11 @@ export default class Itinerary extends Component {
 
     generateFindLocationsHeaders(){
         let list = [], header = this.getAttributes();
+        list.push(<th key={"findHeader_Options"}>{"Options"}</th>);
         for (let i in header){
             header[i] = header[i].charAt(0).toUpperCase() + header[i].slice(1);
             list.push(<th key={"findHeader_"+ i}>{header[i]}</th>)
         }
-        list.push(<th key={"findHeader_Options"}>{"Options"}</th>)
         return list;
     }
 
@@ -208,6 +208,7 @@ export default class Itinerary extends Component {
     findLocationsCol(places, i){
         let tempList = [], temp, attributes = this.getAttributes();
         let name = places[i].name;
+        tempList.push(<td key={"placesFoundButton_"+i+temp}><Button type='submit'  color="link" onClick={()=>{this.props.addLocation(places[i])} }> <b>+</b> </Button></td>);
         tempList.push(<td key={"placesFound_" + name}>{name}</td>);
         for(let j in attributes){
             if(attributes[j] !== "name" && attributes[j] !== "id"){
@@ -215,7 +216,6 @@ export default class Itinerary extends Component {
                 tempList.push(<td key={"placesFound_"+i+"_"+j}>{temp}</td>);
             }
         }
-        tempList.push(<td key={"placesFoundButton_"+i+temp}><Button type='submit'  color="link" onClick={()=>{this.props.addLocation(places[i])} }> <b>+</b> </Button></td>)
         return tempList;
     }
 

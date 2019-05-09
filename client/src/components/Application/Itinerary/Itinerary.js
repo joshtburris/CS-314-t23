@@ -75,14 +75,18 @@ export default class Itinerary extends Component {
 
     tableOptions() {
         return(
-            <Pane header={'Itinerary Options'}>
-                {<Container>
-                    <Button type="submit" value="Reverse" id="reverseButton" onClick={(e) => this.reverseItinerary(e)}>Reverse</Button>
-                    <Button type="submit" value="ToggleAll" id="markerToggleAll" onClick={(e) => this.allMarkerToggle()}>Toggle Markers</Button>
-                    <Button type="submit" value="Update" id="updateButton" onClick={(e) => this.calculateDistances()}>Update Distances</Button>
-                    <Row>Optimize your route:</Row>
+            <Pane header={'Modifications'}>
+                {<Container><Row>
+                    {"Tools:"}
+                </Row><Row>
+                    <Button type="submit" value="Reverse" id="reverseButton" onClick={(e) => this.reverseItinerary(e)}><b>⮀</b></Button>
+                    <Button type="submit" value="ToggleAll" id="markerToggleAll" onClick={(e) => this.allMarkerToggle()}><b>📍</b></Button>
+                    <Button type="submit" value="Update" id="updateButton" onClick={(e) => this.calculateDistances()}><b>🔄</b></Button>
+                </Row><Row>
+                    {"Optimization:"}
+                </Row><Row>
                     {this.renderOptimizations()}
-                </Container>}
+                </Row></Container>}
             </Pane>
         );
     }
@@ -143,9 +147,9 @@ export default class Itinerary extends Component {
                             Save File
                         </DropdownToggle>
                         <DropdownMenu>
-                            <DropdownItem id="saveJSON" onClick={(e) => this.saveFile(e, "json")}>JSON</DropdownItem>
-                            <DropdownItem id="saveCSV" onClick={(e) => this.saveFile(e, "csv")}>CSV</DropdownItem>
-                            <DropdownItem id="saveSVG" onClick={(e) => this.saveFile(e, "svg")}>SVG</DropdownItem>
+                            <DropdownItem id="saveJSON" key={"key_saveJSON"} onClick={(e) => this.saveFile(e, "json")}>JSON</DropdownItem>
+                            <DropdownItem id="saveCSV" key={"key_saveCSV"} onClick={(e) => this.saveFile(e, "csv")}>CSV</DropdownItem>
+                            <DropdownItem id="saveSVG" key={"key_saveSVG"} onClick={(e) => this.saveFile(e, "svg")}>SVG</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                 </Container>
