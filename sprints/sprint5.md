@@ -36,6 +36,10 @@
 * Master is never broken.  If broken, it is fixed immediately.
 * Continuous integration successfully builds and tests all pull requests for master branch.
 * All Java dependencies in pom.xml.  Do not load external libraries in your repo. 
+* Each team member must complete Interop with another team and file an issue in the **class** repo with the results.
+  * title is your team number and your name, 
+  * labels should include Interop and the Team that you tested with, 
+  * description should include a list of tests performed, noting any failures that occurred.
 
 
 ## Plan
