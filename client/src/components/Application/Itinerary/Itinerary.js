@@ -155,7 +155,7 @@ export default class Itinerary extends Component {
     renderMap() {
         return (
             <Pane header={'Itinerary'}>
-                <ClassMap   options={this.state.planOptions}
+                <ClassMap   options={this.props.options}
                             places={this.props.itineraryPlan.places}
                             markers={this.props.itineraryPlan.markers}
                             headerOptions={this.props.headerOptions}

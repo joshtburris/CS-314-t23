@@ -51,6 +51,54 @@ export default class Saver{
         let file = new Blob([Saver.getWorldMap(), SVG],{type: "text/plain;charset=utf-8"});
         saveAs(file, "MyItinerary.svg");
     }
+
+    static wrapLoc(places) {
+        let wrapLines = [],
+            temp = [], lat1, lat2, lng1, lng2,
+            startLoc = places[0], tempPlaces = Object.assign([],places);
+        tempPlaces.push(startLoc);
+        tempPlaces.splice(0, 0, places[places.length-1]);
+        let numOfPlaces = tempPlaces.length;
+        for (let i = 0; i < numOfPlaces-1; i++) {
+            lng1 = Number(tempPlaces[i].longitude); lng2 = Number(tempPlaces[i + 1].longitude);
+            lat1 = Number(tempPlaces[i].latitude); lat2 = Number(tempPlaces[i + 1].latitude);
+            if (Math.abs(lng1 - lng2) > 180) {
+                temp = this.endOldSectionOfPlaces(temp, lat1, lng1, lat2, lng2);
+                wrapLines.push(temp);
+                temp = [];
+                temp = this.startNewSectionOfPlaces(temp, lat1, lng1, lat2, lng2)
+            }
+            else { temp.push(L.latLng(Number(tempPlaces[i].latitude),
+                Number(tempPlaces[i].longitude))); }
+        }
+        wrapLines.push(temp);
+        return wrapLines;
+    }
+
+    static endOldSectionOfPlaces(temp, lat1,lng1, lat2,lng2){
+        if (lng1 < 0) {
+            temp.push(L.latLng(lat1, lng1));
+            temp.push(L.latLng(lat2, -360 + Math.abs(lng2)));
+        }
+        if (lng1 > 0) {
+            temp.push(L.latLng(lat1, lng1));
+            temp.push(L.latLng(lat2, 360 - Math.abs(lng2)));
+        }
+        return temp;
+    }
+
+    static startNewSectionOfPlaces(temp, lat1,lng1, lat2,lng2){
+        if (lng2 < 0) {
+            temp.push(L.latLng(lat1, -360 + Math.abs(lng1)));
+            temp.push(L.latLng(lat2, lng2));
+        }
+        if (lng2 > 0) {
+            temp.push(L.latLng(lat1, 360 - Math.abs(lng1)));
+            temp.push(L.latLng(lat2, lng2));
+        }
+        return temp;
+    }
+
     //I couldn't get eports working or load the file from well... a real file
     //this is a terrible way to be doing this
     static getWorldMap(){

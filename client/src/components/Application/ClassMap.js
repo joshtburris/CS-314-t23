@@ -1,5 +1,6 @@
 import 'leaflet/dist/leaflet.css';
 import React, {Component} from 'react';
+import Saver from './Itinerary/Saver';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import {Map, TileLayer, Polyline, Marker, Popup} from "react-leaflet";
@@ -24,7 +25,9 @@ export default class classMap extends Component{
         if (this.props.getUserLocationBounds === undefined) {c_location = L.latLngBounds([corner1, corner2]);}
         else {c_location = this.props.getUserLocationBounds()}
         return (
-            <Map bounds={this.checkForBounds(c_location)}
+            <Map maxBounds={L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180))}
+                 minZoom={1.15}
+                 bounds={this.checkForBounds(c_location)}
                  style={{height: 400, maxwidth: 700}}
                  id={'map'}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -79,15 +82,16 @@ export default class classMap extends Component{
         }
     }
 
+    //<Polyline positions = {[this.getLL()]}/>
+
     getLL() {
-        let LL = [];
-        for (let i in this.props.places) {
-            LL.push(L.latLng(parseFloat(this.props.places[i].latitude), parseFloat(this.props.places[i].longitude)))
-        }
-        if (this.props.places[0] != null) {
-            LL.push(L.latLng(parseFloat(this.props.places[0].latitude), parseFloat(this.props.places[0].longitude)));
-        }
-        return LL
+        let LL;
+        let places = Object.assign([], this.props.places);
+        try {
+            LL = Saver.wrapLoc(places);
+
+        }catch(err){ console.log("error: ", err); }
+        return LL;
     }
 
     getMarkerInfo(markerItem){
