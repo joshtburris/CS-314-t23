@@ -36,7 +36,7 @@ export default class Application extends Component {
                 distances:[],
                 markers:{},
                 match: '',
-                limit: 0,
+                limit: 100,
                 narrow: [{name: "type", values: []}, {name: "iso_country", values: []}]
             },
             headerOptions: {

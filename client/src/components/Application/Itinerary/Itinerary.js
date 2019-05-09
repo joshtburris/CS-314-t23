@@ -75,11 +75,12 @@ export default class Itinerary extends Component {
 
     tableOptions() {
         return(
-            <Pane header={'Header Options'}>
+            <Pane header={'Itinerary Options'}>
                 {<Container>
                     <Button type="submit" value="Reverse" id="reverseButton" onClick={(e) => this.reverseItinerary(e)}>Reverse</Button>
-                    <Button type="submit" value="ToggleAll" id="markerToggleAll" onClick={(e) => this.allMarkerToggle()}>Markers Toggle</Button>
+                    <Button type="submit" value="ToggleAll" id="markerToggleAll" onClick={(e) => this.allMarkerToggle()}>Toggle Markers</Button>
                     <Button type="submit" value="Update" id="updateButton" onClick={(e) => this.calculateDistances()}>Update Distances</Button>
+                    <Row>Optimize your route:</Row>
                     {this.renderOptimizations()}
                 </Container>}
             </Pane>

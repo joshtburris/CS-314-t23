@@ -26,6 +26,7 @@ export default class Itinerary extends Component {
                         {this.createInputFields('match', 'Search...')}
                     </Col> <Col>
                     <div style={{width: '110px'}}>Choose Filters: </div>
+                    <Row>
                     <UncontrolledButtonDropdown>
                         <DropdownToggle caret color="primary"> Location Type </DropdownToggle>
                         {this.getDropdownItems()}
@@ -34,6 +35,10 @@ export default class Itinerary extends Component {
                         <DropdownToggle caret color="primary"> Country </DropdownToggle>
                         {this.getDropdownItemsCountry()}
                     </UncontrolledButtonDropdown>
+                    </Row>
+                    </Col> <Col>
+                        <div style={{height: '20px'}}/>
+                        <Button type="submit" value="Clear" id="clearFilters" onClick={(e) => this.clearFilters()}>Clear Filters</Button>
                     </Col> <Col>
                     <div style={{height: '20px'}}/>
                     <Form onSubmit={this.updateTipFindLocation}>
@@ -230,6 +235,12 @@ export default class Itinerary extends Component {
             return({height: '400px', overflowX: 'scroll', overflowY: 'scroll'});
         }
         return({overflowX: 'scroll'});
+    }
+
+    clearFilters(){
+        this.state.narrow[0].values = [];
+        this.state.narrow[1].values = [];
+        this.updateFindPlaces("narrow", this.state.narrow);
     }
 
 }
