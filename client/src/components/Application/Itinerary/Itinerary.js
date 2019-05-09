@@ -87,8 +87,6 @@ export default class Itinerary extends Component {
     }
 
     addLocationManual(name, latitude, longitude) {
-        console.log("Another thing.");
-        console.log(this);
         name = name.trim();
         if (this.checkLocationInput(name, latitude, longitude)) {
             let newPlan = {};

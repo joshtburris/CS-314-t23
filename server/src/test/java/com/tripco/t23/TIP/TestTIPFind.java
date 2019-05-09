@@ -33,6 +33,7 @@ public class TestTIPFind {
         expect.put("type", "heliport");
         expect.put("latitude", "39.6349983215");
         expect.put("longitude", "-104.898002625");
+        expect.put("altitude", "5585");
         Map actual = dtc.getPlaces().get(0);
         assertEquals("maps are equal", expect, actual);
     }
@@ -78,6 +79,7 @@ public class TestTIPFind {
         expectItem.put("type", "heliport");
         expectItem.put("latitude", "39.85279846191406");
         expectItem.put("longitude", "-104.97699737548828");
+        expectItem.put("altitude", "5255");
         expect.add(expectItem);
         Map expectItem2 = new HashMap();
         expectItem2.put("id", "AR-0133");
@@ -86,10 +88,11 @@ public class TestTIPFind {
         expectItem2.put("type", "heliport");
         expectItem2.put("latitude", "-34.2325");
         expectItem2.put("longitude", "-59.3158");
+        expectItem2.put("altitude", "98");
         expect.add(expectItem2);
 
         ArrayList<Map> actual = dtc.getPlaces();
-        assertEquals("maps are equal", expect, actual);
+        assertEquals("Maps are equal with a filter", expect, actual);
     }
 
     @Test
@@ -119,6 +122,7 @@ public class TestTIPFind {
         expectItem.put("type", "heliport");
         expectItem.put("latitude", "39.85279846191406");
         expectItem.put("longitude", "-104.97699737548828");
+        expectItem.put("altitude", "5255");
         expect.add(expectItem);
 
         ArrayList<Map> actual = dtc.getPlaces();
@@ -138,6 +142,7 @@ public class TestTIPFind {
         expectItem.put("type", "closed");
         expectItem.put("latitude", "45.588562");
         expectItem.put("longitude", "10.755719");
+        expectItem.put("altitude", null);
         expectArray.add(expectItem);
 
         String expect = String.format("com.tripco.t23.TIP.TIPFind\tMatch: %s\tLimit: %d\tFound: %d\tPlaces: %s","Capri",1,4,expectArray);
