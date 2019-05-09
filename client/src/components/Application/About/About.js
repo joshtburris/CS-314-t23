@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Media } from 'reactstrap'
 import InfoPane from './InfoPane'
-import Pane from '../Pane'
 import KurtImage from '../../../../../team/KurtWimer/Kurt.jpg'
 import CalebImg from '../../../../../team/CalebET/Caleb.jpg'
 import JoshImg from '../../../../../team/joshtburris/Josh.jpg'
