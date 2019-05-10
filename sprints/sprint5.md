@@ -61,68 +61,69 @@ This sprint will complete the following Epics.
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *3* | *0* |
-| Tasks |  *19*   | *3* | 
-| Story Points |  *30*  | *5* | 
+| Epics | *3* | *2* |
+| Tasks |  *19*   | *18* | 
+| Story Points |  *30*  | *28* | 
 
 
 ## Scrums
 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
-| *4/22/2019* | *none* | *#104, #339, #345, #346* | *none* | 
+| *4/22/2019* | *none* | *#104, #339, #345, #346* | *none* |
 | *4/24/2019* | *#250, #269, #345* | *#104, #330, #346* | *none* |
 | *4/26/2019* | *#236, #334, #339, #356* | *#315, #333, #342, #353* | *none* |
 | *4/29/2019* | *#333* | *#315, #330, #342, #353* | *none* |
-| *5/1/2019* | *#333* | *#315, #330, #342, #353* | *none* | 
-| *5/3/2019* | *#104, #266, #315, #317, #330, #335, #342, #346, #353, #364, #368* | *#271, #338, #344, #347* | *none* | 
-| *5/6/2019* | *none* | *#271, #338, #344, #347* | *none* | 
+| *5/1/2019* | *none* | *#315, #330, #342, #353* | *none* |
+| *5/3/2019* | *#104, #266, #315, #317, #330, #335, #342, #346, #353, #364, #368* | *#271, #338, #344, #347* | *none* |
+| *5/6/2019* | *none* | *#271, #338, #344, #347* | *none* |
+| *5/8/2019* | *#359, #388, #343, #362, #310, #313, #312, #271, #347, #344,#338* | *#341* | *none* |
+
 
 
 ## Review (focus on solution and technology)
 
-In this sprint, ...
+In this sprint we improved user experience and made the back-end more efficient.
 
 #### Completed epics in Sprint Backlog 
 
 These Epics were completed.
 
-* *## epic title: comments*
-* 
+* *#331 Make the application easier to use: We've improved user experience and tried to put things in one place so they're easier to find.*
+* *#340 Fix bugs: We also created a lot more tests that catch bugs before they happen.*
 
 #### Incomplete epics in Sprint Backlog 
 
 These Epics were not completed.
 
-* *##331 Make the application easier to use: *
-*
+* *#332 Reduce technical debt: We weren't able to remove all of the duplicate code, but we did remove warnings and created some files for specific objects.*
 
 #### What went well
 
-The ...
+We worked a lot faster and more eficiently this sprint. We also finished all of the tasks we weren't able to finish in other sprints.
 
 
 #### Problems encountered and resolutions
 
-The ...
+User experience is really hard to get right. You basically just have to try different things and see if they look good, and it's really easy to get tunnel visioned on what you think looks good.
 
 
 ## Retrospective (focus on people, process, tools)
 
-In this sprint, ...
+In this sprint we worked better as a team and asking each other for help. The process went by way quicker when we work together more.
 
 #### What we changed this sprint
 
-Our changes for this sprint included ...
+Our changes for this sprint included focusing more on API fixes because we haven't done well on that in the past so we really tried to improve that.
 
 #### What we did well
 
-We ...
+Our UI looks better, but it could always be improved. Our program runs more efficiently and our tests make sure everything works as we make changes, not after.
 
 #### What we need to work on
 
-We could improve ...
+We could always add more tests and improve UI, but I really think we could work more on API and why it was failing for so long.
 
 #### What we will change next sprint 
 
-We will change ...
+Improve UI and add more tests and features.
